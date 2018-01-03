@@ -11,6 +11,7 @@ set(VERSION_PATCH "0")
 
 add_definitions(-D"BUILD_${BUILD_PALTFORM}")
 
+set(PLATFORM_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Platform")
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(RES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/res")
 set(THIRD_PARTY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty")
@@ -20,6 +21,9 @@ set(THIRD_PARTY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty")
 set(SOURCE_DIRS
     .
 	Classes
+	Common
+	Draw
+	Platform/${BUILD_PALTFORM}
 )
 
 foreach(DIR ${SOURCE_DIRS})
@@ -37,34 +41,88 @@ foreach(DIR ${SOURCE_DIRS})
 	string(REGEX REPLACE "/" "\\\\" GROUP_NAME ${DIR})
 	source_group("${GROUP_NAME}" FILES ${HEADERS} ${SOURCES})
 	
+	message("SOURCE: " ${HEADERS} ${SOURCES})
+	
 	list(APPEND ALL_HEADERS ${HEADERS})
 	list(APPEND ALL_SOURCES ${SOURCES})
 
 endforeach(DIR)
-		
+	
+# PLATFORM
+	
+set(SOURCE_PLATFORM_DIRS
+	${BUILD_PALTFORM}
+)
+
+foreach(DIR ${SOURCE_PLATFORM_DIRS})
+	file(GLOB
+		HEADERS
+		${PLATFORM_DIR}/${DIR}/*.h
+	)
+
+	file(GLOB
+		SOURCES
+		${PLATFORM_DIR}/${DIR}/*.cpp
+	)
+
+	# для имен групп в xcode нужен обратный слэш
+	string(REGEX REPLACE "/" "\\\\" GROUP_NAME ${DIR})
+	source_group("${GROUP_NAME}" FILES ${HEADERS} ${SOURCES})
+	
+	message("PLATFORM: " ${HEADERS} ${SOURCES})
+	
+	list(APPEND ALL_HEADERS ${HEADERS})
+	list(APPEND ALL_SOURCES ${SOURCES})
+
+endforeach(DIR)
+	
 # RES
 
 set(RESOURCE_DIRS
     .
 	Font
+	Shaders
 )
 
 foreach(DIR ${RESOURCE_DIRS})
 	file(GLOB
-		RESOURCE
+		RESOURCE_TTF
 		${RES_DIR}/${DIR}/*.ttf
 	)
 
+	file(GLOB
+		RESOURCE_TXT
+		${RES_DIR}/${DIR}/*.txt
+	)
+
+	file(GLOB
+		RESOURCE_FRAG
+		${RES_DIR}/${DIR}/*.frag
+	)
+
+	file(GLOB
+		RESOURCE_VERT
+		${RES_DIR}/${DIR}/*.vert
+	)
+	
 	# для имен групп в xcode нужен обратный слэш
-	string(REGEX REPLACE "/" "\\\\" GROUP_NAME ${DIR})
-	source_group("${GROUP_NAME}" FILES ${RESOURCE})
+	string(REGEX REPLACE "/" "\\\\" GROUP_NAME "res/${DIR}")
+	source_group("${GROUP_NAME}" FILES ${RESOURCE_TTF} ${RESOURCE_TXT} ${RESOURCE_FRAG} ${RESOURCE_VERT})
 	
-	message("RESOURCE: " ${RESOURCE})
+	list(APPEND ALL_RESOURCES ${RESOURCE_TTF})
+	list(APPEND ALL_RESOURCES ${RESOURCE_TXT})
+	list(APPEND ALL_RESOURCES ${RESOURCE_FRAG})
+	list(APPEND ALL_RESOURCES ${RESOURCE_VERT})
 	
-	list(APPEND ALL_RESOURCES ${RESOURCE})
 
 endforeach(DIR)
 		
+# DEFINES
+if (${BUILD_PALTFORM} STREQUAL "WIN32")
+	add_definitions(-DWIN32_RESOURCES_DIR="${RES_DIR}/")
+elseif()
+endif()		
+
 # Подключение библиотек -----------------------------------------------------------------
 
 # freetype
@@ -72,6 +130,10 @@ set(FREETYPE_NAME_LIB freetype)
 set(FREETYPE_DIR "ThirdParty/${FREETYPE_NAME_LIB}")
 include_directories("${FREETYPE_DIR}/include")
 add_subdirectory(${FREETYPE_DIR})
+
+# Platform, glm
+include_directories(${PLATFORM_DIR}/${BUILD_PALTFORM})
+include_directories(${THIRD_PARTY_DIR})
 
 # OpenGL es
 include_directories("${THIRD_PARTY_DIR}/GLES/include")
