@@ -1,6 +1,5 @@
 
 #include "CameraGLM.h"
-//#include "Display.h"
 
 CameraGLM::CameraGLM()
 {

@@ -12,7 +12,7 @@ DrawHelloTriangle::DrawHelloTriangle()
 
 DrawHelloTriangle::~DrawHelloTriangle()
 {
-
+	glDeleteProgram(_program);
 }
 
 void DrawHelloTriangle::draw()
