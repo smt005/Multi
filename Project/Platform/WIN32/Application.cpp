@@ -1,5 +1,6 @@
 
 #include "Application.h"
+#include "../../src/Common/Callback.h"
 
 HDC Application::_deviceContext = nullptr;
 HWND Application::_nativeWindow = nullptr;
@@ -89,6 +90,13 @@ float Application::aspect()
 
 	return height > 0 ? static_cast<float>(width) / static_cast<float>(height) : 1.0f;
 }
+
+void Application::close()
+{
+	exit(1);
+}
+
+//-------------------------------------------------------------------
 
 bool Application::createEGLDisplay()
 {
@@ -238,6 +246,8 @@ bool Application::createWindow(HINSTANCE applicationInstance, HWND& nativeWindow
 	return true;
 }
 
+//-------------------------------------------------------------------
+
 LRESULT CALLBACK handleWindowMessages(HWND nativeWindow, UINT message, WPARAM windowParameters, LPARAM longWindowParameters)
 {
 	switch (message)
@@ -248,6 +258,16 @@ LRESULT CALLBACK handleWindowMessages(HWND nativeWindow, UINT message, WPARAM wi
 		PostQuitMessage(0);
 		exit(true);
 		return 1;
+	} break;
+
+	case WM_LBUTTONDOWN:
+	{
+		Callback::tap_down();
+	} break;
+
+	case WM_LBUTTONUP:
+	{
+		Callback::tap_up();
 	} break;
 
 	}

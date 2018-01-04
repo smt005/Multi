@@ -8,7 +8,7 @@
 int WINAPI WinMain(HINSTANCE applicationInstance, HINSTANCE previousInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	if (!Application::createWindow(applicationInstance, Application::_nativeWindow, Application::_deviceContext)) exit(true);
-	if (!Application::initGLES()) exit(true);
+	if (!Application::initGLES()) exit(1);
 	
 	Draw::nextDraw(4);
 
@@ -27,6 +27,7 @@ int WINAPI WinMain(HINSTANCE applicationInstance, HINSTANCE previousInstance, LP
 
 	return 0;
 }
+
 #else OSX
 	// OSX
 #endif

@@ -2,8 +2,10 @@
 #include "DrawMap.h"
 #include "Application.h"
 #include "Shader.h"
+#include "../Common/Object.h"
 #include "../Common/CameraGLM.h"
 #include "../Common/Map.h"
+
 
 #define GL_GLEXT_PROTOTYPES
 #include <GLES2/gl2.h>
@@ -14,6 +16,7 @@ using namespace std;
 DrawMap::DrawMap()
 {
 	init();
+
 }
 
 DrawMap::~DrawMap()
@@ -31,6 +34,15 @@ void DrawMap::init()
 	CameraGLM::current().setLookAt(glm::vec3(3.0f, 1.5f, 3.0f), glm::vec3(.5f, .25f, .0f));
 	CameraGLM::current().setSpeed(0.1f);
 	CameraGLM::current().setCalcFrustum(false);
+
+	this->setCallback(EventCallback::TAP_DOUBLE, UiFunction(closeGame));
+	Callback::_hintObject = this;
+}
+
+bool DrawMap::closeGame(void *data)
+{
+	Application::close();
+	return true;
 }
 
 void DrawMap::prepareDraw(bool clear)

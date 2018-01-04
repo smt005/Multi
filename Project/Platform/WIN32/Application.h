@@ -28,6 +28,8 @@ public:
 	static int height();
 	static float aspect();
 
+	static void close();
+
 private:
 	static bool createEGLDisplay();
 	static bool chooseEGLConfig();

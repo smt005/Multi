@@ -1,9 +1,11 @@
 #pragma once
 
 #include "Draw.h"
-#include "../Common/Object.h"
+#include "../Common/Callback.h"
 
-class DrawMap : public Draw
+class Object;
+
+class DrawMap : public Draw, public Callback
 {
 private:
 	unsigned int _program;
@@ -18,4 +20,8 @@ public:
 	void prepareDraw(bool clear);
 	void draw(bool clear);
 	void drawModel( Object &object);
+
+private:
+	bool closeGame(void *data);
+
 };
