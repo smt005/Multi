@@ -177,19 +177,14 @@ void CameraGLM::setFromEye(const bool &fromEye)
 
 void CameraGLM::setDist(const float &dist)
 {
-	if (_dist == dist || dist == 0.0f) return;
+	if (_fromEye) return;
+	if (_dist == dist || dist <= 1.0f) return;
 
 	_dist = dist;
 
-	vec3 eye;
-	vec3 center;
-
-	if (!_fromEye)
-	{
-		center = _pos;
-		eye = _pos + _vector * (-_dist);
-	}
-
+	vec3 center = _pos;
+	vec3 eye = _pos + _vector * (-_dist);
+	
 	_matView = lookAt(eye, center, vec3(0.0f, 0.0f, 1.0f));
 	makeMatProjectView();
 }

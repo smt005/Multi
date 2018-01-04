@@ -3,6 +3,7 @@
 #include "Shader.h"
 #include "FilesManager.h"
 #include "../Common/Shape.h"
+#include "../Common/CameraGLM.h"
 
 #define GL_GLEXT_PROTOTYPES
 #include "GLES2/gl2.h"
@@ -60,9 +61,13 @@ void DrawLoadOBJ::draw(bool clear)
 
 	if (_countIndex == 0) return;
 
-	unsigned int a_position = glGetAttribLocation(_program, "a_position");
-	unsigned int a_texCoord = glGetAttribLocation(_program, "a_texCoord");
+	GLuint u_matrix = glGetUniformLocation(_program, "u_matrix");
 
+	GLuint a_position = glGetAttribLocation(_program, "a_position");
+	GLuint a_texCoord = glGetAttribLocation(_program, "a_texCoord0");
+
+	GLuint s_baseMap = glGetUniformLocation(_program, "s_baseMap");
+	
 	glBindBuffer(GL_ARRAY_BUFFER, _buffer[0]);
 	glEnableVertexAttribArray(a_position);
 	glVertexAttribPointer(a_position, SHAPE_VERTEX_POS_SIZE, GL_FLOAT, GL_FALSE, 3* sizeof(GLfloat), 0);
@@ -70,6 +75,11 @@ void DrawLoadOBJ::draw(bool clear)
 	glBindBuffer(GL_ARRAY_BUFFER, _buffer[1]);
 	glEnableVertexAttribArray(a_texCoord);
 	glVertexAttribPointer(a_texCoord, SHAPE_VERTEX_TEX_SIZE, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
+
+	glUniformMatrix4fv(u_matrix, 1, GL_FALSE, CameraGLM::current().matProjectViewFloat());
+
+	glUniform1i(s_baseMap, 0);
+	glBindTexture(GL_TEXTURE_2D, _textureId);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _buffer[2]);
 	glDrawElements(GL_TRIANGLES, _countIndex, GL_UNSIGNED_SHORT, 0);
@@ -165,7 +175,7 @@ int DrawLoadOBJ::initModelVBO()
 	glDeleteBuffers(3, _buffer);
 
 	Shape mesh;
-	mesh.loadObj("Models/Glider.obj");
+	mesh.loadObj("Models/Glider.obj", 25.0f);
 	//mesh.check();
 
 	glGenBuffers(3, _buffer);

@@ -91,7 +91,7 @@ void Shape::initVBO()
 	_hasVBO = true;
 }
 
-bool Shape::loadObj(const string& name)
+bool Shape::loadObj(const string& name, const float &sclae)
 {
 	char* data = ResourcesManager::loadTextFile(name.c_str());
 
@@ -249,9 +249,9 @@ bool Shape::loadObj(const string& name)
 		{
 			index = countVertexNew;
 
-			aVertexNew[index * 3	] = vertex[0];
-			aVertexNew[index * 3 + 1] = vertex[1];
-			aVertexNew[index * 3 + 2] = vertex[2];
+			aVertexNew[index * 3	] = vertex[0] * sclae;
+			aVertexNew[index * 3 + 1] = vertex[1] * sclae;
+			aVertexNew[index * 3 + 2] = vertex[2] * sclae;
 
 			aNormalNew[index * 3	] = normal[0];
 			aNormalNew[index * 3 + 1] = normal[1];

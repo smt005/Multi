@@ -35,7 +35,7 @@ public:
 	Shape(const string& name, bool needLoad = true);
 	~Shape();
 
-	bool loadObj(const string& name);
+	bool loadObj(const string& name, const float &sclae = 1.0f);
 	void initVBO();
 	void check();
 
