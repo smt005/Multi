@@ -44,7 +44,14 @@ char* FilesManager::loadTextFile(const char* fileName)
 char *ResourcesManager::_dir = WIN32_RESOURCES_DIR;
 
 char* ResourcesManager::loadTextFile(const char* fileName)
-{	
+{
+	char *fileNameWithDir = ResourcesManager::getFullPath(fileName);
+	return FilesManager::loadTextFile(fileNameWithDir);
+	delete[] fileNameWithDir;
+}
+
+char* ResourcesManager::getFullPath(const char* fileName)
+{
 	int lenDir = strlen(_dir);
 	int lenName = strlen(fileName);
 	int sumLen = lenDir + lenName + 1;
@@ -53,5 +60,5 @@ char* ResourcesManager::loadTextFile(const char* fileName)
 	strcpy_s(fileNameWithDir, lenDir + 1, _dir);
 	strncat(fileNameWithDir, fileName, lenName);
 
-	return FilesManager::loadTextFile(fileNameWithDir);
+	return fileNameWithDir;
 }

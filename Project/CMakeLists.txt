@@ -149,6 +149,12 @@ endif()
 
 # Подключение библиотек -----------------------------------------------------------------
 
+# FreeImage
+#set(FREEIMAGE_NAME_LIB FreeImage)
+#set(FREEIMAGE_DIR "ThirdParty/${FREEIMAGE_NAME_LIB}")
+#include_directories("${FREETYPE_DIR}/Source")
+#add_subdirectory(${FREEIMAGE_DIR})
+
 # freetype
 set(FREETYPE_NAME_LIB freetype)
 set(FREETYPE_DIR "ThirdParty/${FREETYPE_NAME_LIB}")
@@ -159,10 +165,20 @@ add_subdirectory(${FREETYPE_DIR})
 include_directories(${PLATFORM_DIR}/${BUILD_PALTFORM})
 include_directories(${THIRD_PARTY_DIR})
 
-# OpenGL es
-include_directories("${THIRD_PARTY_DIR}/GLES/include")
-link_directories("${THIRD_PARTY_DIR}/GLES/Windows/x86_32")
-
+if (${BUILD_PALTFORM} STREQUAL "WIN32")
+	# OpenGL es
+	include_directories("${THIRD_PARTY_DIR}/GLES/include")
+	link_directories("${THIRD_PARTY_DIR}/GLES/Windows/x86_32")
+	
+	# FreeImage
+	include_directories("${THIRD_PARTY_DIR}/FreeImage/Source")
+	link_directories("${THIRD_PARTY_DIR}/FreeImage/Windows/x86_32")
+	
+	message("include link LIB WIN32")
+	
+elseif()
+		message("include link LIB no WIN32")
+endif()
 # Создание проекта -----------------------------------------------------------------
 if (${BUILD_PALTFORM} STREQUAL "WIN32")
 	add_executable(${PROJECT_NAME} WIN32  ${ALL_HEADERS} ${ALL_SOURCES} ${ALL_RESOURCES} )
@@ -173,18 +189,25 @@ elseif()
 endif()
 
 # Подключение библиотеи -----------------------------------------------------------------
+
+target_link_libraries(${PROJECT_NAME}  ${FREEIMAGE_NAME_LIB})
 target_link_libraries(${PROJECT_NAME}  ${FREETYPE_NAME_LIB})
 
 if (${BUILD_PALTFORM} STREQUAL "WIN32")
+	# OpenGL ES
 	target_link_libraries(${PROJECT_NAME}  "libEGL")
 	target_link_libraries(${PROJECT_NAME}  "libGLESv2")
 	
 	file(COPY "${THIRD_PARTY_DIR}/GLES/Windows/x86_32/libEGL.dll" DESTINATION Debug)
 	file(COPY "${THIRD_PARTY_DIR}/GLES/Windows/x86_32/libGLESv2.dll" DESTINATION Debug)
 	
-	message("target_link_libraries GLES WIN32")
+	# FreeImage
+	target_link_libraries(${PROJECT_NAME}  "freeImage")
+	file(COPY "${THIRD_PARTY_DIR}/FreeImage/Windows/x86_32/FreeImage.dll" DESTINATION Debug)
+	
+	message("target_link_libraries LIB WIN32")
 elseif()
-	message("target_link_libraries no GLES WIN32")
+	message("target_link_libraries LIB no WIN32")
 endif()
 
 message(" END from make")

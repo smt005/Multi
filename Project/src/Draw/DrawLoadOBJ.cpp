@@ -4,6 +4,7 @@
 #include "FilesManager.h"
 #include "../Common/Shape.h"
 #include "../Common/CameraGLM.h"
+#include "../Common/TextureManager.h"
 
 #define GL_GLEXT_PROTOTYPES
 #include "GLES2/gl2.h"
@@ -17,7 +18,8 @@ DrawLoadOBJ::DrawLoadOBJ()
 	_status = Shader::getShaderProgram(_program, "Shaders/Texture.vert", "Shaders/Texture.frag");
 
 	_countIndex = initVBO();
-	getGridTextureId();
+	//getGridTextureId();
+	getLoadTextureId();
 
 	_time = 0;
 	_typeBuffer = 0;
@@ -132,6 +134,19 @@ void DrawLoadOBJ::getGridTextureId()
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+}
+
+
+void DrawLoadOBJ::getLoadTextureId()
+{
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, &_textureId);
+	glBindTexture(GL_TEXTURE_2D, _textureId);
+
+	_textureId = TextureManager::LoadTexture("Textures/GLD_BASE_EFFECT.png");
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
 int DrawLoadOBJ::initVBO()

@@ -14,6 +14,7 @@ private:
 	int initVBO();
 	int initModelVBO();
 	void getGridTextureId();
+	void getLoadTextureId();
 
 	int _time;
 	int _typeBuffer;
