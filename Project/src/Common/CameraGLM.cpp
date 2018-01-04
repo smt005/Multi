@@ -1,5 +1,6 @@
 
 #include "CameraGLM.h"
+#include "Application.h"
 
 CameraGLM::CameraGLM()
 {
@@ -71,8 +72,7 @@ void CameraGLM::makeFrustum()
 
 void CameraGLM::setDefault()
 {
-	//_matProject = perspective(45.0f, Display::aspect(), 0.1f, 1000.0f);
-	_matProject = perspective(45.0f, 0.5f, 0.1f, 1000.0f);
+	_matProject = perspective(45.0f, Application::aspect(), 0.1f, 1000.0f);
 	setLookAt(vec3(25.0f, 25.0f, 25.0f), vec3(0.0f, 0.0f, 0.0f));
 }
 

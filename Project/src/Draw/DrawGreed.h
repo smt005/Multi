@@ -27,13 +27,13 @@ public:
 	DrawGreed();
 	~DrawGreed();
 
-	void draw();
+	void draw(bool clear);
 	void drawGreed(bool clear = true);
 
 private:
 	static DrawGreed *_pInstance;
 
 public:
-	static void draw(bool clear = true);
+	static void drawStatic(bool clear = true);
 	static void clear();
 };

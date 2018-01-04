@@ -15,7 +15,7 @@ DrawHelloTriangle::~DrawHelloTriangle()
 	glDeleteProgram(_program);
 }
 
-void DrawHelloTriangle::draw()
+void DrawHelloTriangle::draw(bool clear)
 {
 	if (!_status) return;
 

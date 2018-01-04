@@ -11,5 +11,5 @@ public:
 	DrawHelloTriangle();
 	~DrawHelloTriangle();
 
-	void draw();
+	void draw(bool clear = true);
 };

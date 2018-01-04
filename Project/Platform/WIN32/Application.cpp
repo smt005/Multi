@@ -61,6 +61,35 @@ release:
 }
 
 
+int Application::width()
+{
+	int width = 0;
+	eglQuerySurface(_eglDisplay, _eglSurface, EGL_WIDTH, &width);
+	return width != 0 ? width : 1;
+}
+
+int Application::height()
+{
+	int height = 0;
+	eglQuerySurface(_eglDisplay, _eglSurface, EGL_HEIGHT, &height);
+	return height != 0 ? height : 1;
+}
+
+float Application::aspect()
+{
+	if (!_eglDisplay || !_eglSurface)
+	{
+		return 1.0;
+	}
+
+	int width = 0;
+	int height = 0;
+	eglQuerySurface(_eglDisplay, _eglSurface, EGL_WIDTH, &width);
+	eglQuerySurface(_eglDisplay, _eglSurface, EGL_HEIGHT, &height);
+
+	return height > 0 ? static_cast<float>(width) / static_cast<float>(height) : 1.0f;
+}
+
 bool Application::createEGLDisplay()
 {
 	_eglDisplay = eglGetDisplay(_deviceContext);

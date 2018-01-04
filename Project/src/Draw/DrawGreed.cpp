@@ -61,7 +61,7 @@ void DrawGreed::drawPoint(float* point)
 	glDrawArrays(GL_POINTS, 0, 1);
 }
 
-void DrawGreed::draw()
+void DrawGreed::draw(bool clear)
 {
 	drawGreed(true);
 }
@@ -151,7 +151,7 @@ void DrawGreed::clear()
 	_pInstance = 0;
 }
 
-void DrawGreed::draw(bool clear)
+void DrawGreed::drawStatic(bool clear)
 {
 	if (!_pInstance) _pInstance = new DrawGreed();
 

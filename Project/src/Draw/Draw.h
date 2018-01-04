@@ -8,7 +8,7 @@ public:
 	Draw();
 	~Draw();
 
-	virtual void draw();
+	virtual void draw(bool clear = true);
 
 	static void resetNumber();
 	static void draws();

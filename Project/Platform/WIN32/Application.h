@@ -24,6 +24,10 @@ public:
 	static bool createWindow(HINSTANCE applicationInstance, HWND& nativeWindow, HDC& deviceContext);
 	static bool initGLES();
 
+	static int width();
+	static int height();
+	static float aspect();
+
 private:
 	static bool createEGLDisplay();
 	static bool chooseEGLConfig();
