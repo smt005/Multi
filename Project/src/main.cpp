@@ -10,7 +10,7 @@ int WINAPI WinMain(HINSTANCE applicationInstance, HINSTANCE previousInstance, LP
 	if (!Application::createWindow(applicationInstance, Application::_nativeWindow, Application::_deviceContext)) exit(true);
 	if (!Application::initGLES()) exit(true);
 	
-	Draw::nextDraw(3);
+	Draw::nextDraw(4);
 
 	while (true)
 	{

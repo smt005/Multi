@@ -2,5 +2,13 @@
   "First": {
     "shape": "Models/Glider.obj",
     "texture": "Textures/GLD_BASE_EFFECT.png"
+  },
+  "Plane5": {
+    "shape": "Models/Plane5.obj",
+    "texture": "Textures/RGB.png"
+  },
+  "Box1": {
+    "shape": "Models/Box1.obj",
+    "texture": "Textures/Box.jpg"
   }
 }

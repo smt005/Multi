@@ -2,7 +2,7 @@
 
 #include "ArrayClass.h"
 #include "Shape.h"
-//#include "Texture.h"
+#include "Texture.h"
 #include "Json.h"
 
 #include <string>
@@ -15,11 +15,11 @@ class Model : public ArrayClass <Model>
 {
 private:
 	Shape *_shape;
-	//Texture *_texture;
+	Texture *_texture;
 
 public:
 	Shape& shape();
-	//Texture& texture();
+	Texture& texture();
 	const unsigned int& textureId();
 
 	void create(const string &name);

@@ -3,6 +3,7 @@
 #include "DrawHelloTriangle.h"
 #include "DrawGreed.h"
 #include "DrawLoadOBJ.h"
+#include "DrawMap.h"
 
 #define GL_GLEXT_PROTOTYPES
 #include "GLES2/gl2.h"
@@ -75,11 +76,17 @@ bool Draw::nextDraw(int step)
 		delete _currentDraw;
 		_currentDraw = new DrawGreed();
 	} break;
-
+	
 	case 3:
 	{
 		delete _currentDraw;
 		_currentDraw = new DrawLoadOBJ();
+	} break;
+	
+	case 4:
+	{
+		delete _currentDraw;
+		_currentDraw = new DrawMap();
 	} break;
 
 	default: return false;

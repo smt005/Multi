@@ -16,7 +16,7 @@ Shape& Model::shape()
 	return *_shape;
 }
 
-/*Texture& Model::texture()
+Texture& Model::texture()
 {
 	if (_texture) return *_texture;
 
@@ -30,7 +30,7 @@ const unsigned int& Model::textureId()
 
 	_texture = &Texture::getByIndex(0);
 	return _texture->id();
-}*/
+}
 
 void Model::create(const string &newName)
 {
@@ -44,7 +44,7 @@ void Model::create(const string &newName)
 
 	// TODO:
 	_shape = Shape::getShape(shape);
-	//_texture = &Texture::getByName(texture);
+	_texture = &Texture::getByName(texture);
 }
 
 // STATIC

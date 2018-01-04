@@ -1,0 +1,21 @@
+#pragma once
+
+#include "Draw.h"
+#include "../Common/Object.h"
+
+class DrawMap : public Draw
+{
+private:
+	unsigned int _program;
+	unsigned int _cuttrentBufer = 0;
+	unsigned int _cuttrentTexture = 0;
+
+public:
+	DrawMap();
+	~DrawMap();
+
+	void init();
+	void prepareDraw(bool clear);
+	void draw(bool clear);
+	void drawModel( Object &object);
+};

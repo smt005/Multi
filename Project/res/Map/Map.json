@@ -1,0 +1,64 @@
+{
+  "area": 100,
+  "objects": [
+    {
+      "name": "Plane",
+      "model": "Plane5",
+      "pos": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "Town",
+      "model": "Box1",
+      "type": 1,
+      "pos": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "Car_01",
+      "model": "First",
+      "type": 2,
+      "pos": [
+        0,
+        5,
+        0
+      ]
+    },
+    {
+      "name": "Car_02",
+      "model": "First",
+      "type": 2,
+      "pos": [
+        5,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "Car_03",
+      "model": "First",
+      "type": 2,
+      "pos": [
+        0,
+        -5,
+        0
+      ]
+    },
+    {
+      "name": "Car_04",
+      "model": "First",
+      "type": 2,
+      "pos": [
+        -5,
+        0,
+        0
+      ]
+    }
+  ]
+}

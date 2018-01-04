@@ -81,6 +81,7 @@ endforeach(DIR)
 set(RESOURCE_DIRS
     .
 	Font
+	Map
 	Models
 	Shaders
 	Textures
