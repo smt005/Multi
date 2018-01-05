@@ -23,6 +23,7 @@ public:
 public:
 	static bool createWindow(HINSTANCE applicationInstance, HWND& nativeWindow, HDC& deviceContext);
 	static bool initGLES();
+	static void actionOnFrame();
 
 	static int width();
 	static int height();

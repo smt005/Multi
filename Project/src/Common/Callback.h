@@ -38,6 +38,7 @@ public:
 	static Callback *_hintObject;
 	static bool _tap;
 	static double _time;
+	static glm::vec2 _pos;
 	static glm::vec2 _vector;
 
 public:
@@ -49,6 +50,6 @@ public:
 	static void tap_up();
 	static void tap_long();
 	static void tap_double();
-	static void move(const int *vec);
+	static void move(const float *pos);
 	static void hint();
 };

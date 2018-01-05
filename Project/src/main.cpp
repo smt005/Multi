@@ -14,6 +14,7 @@ int WINAPI WinMain(HINSTANCE applicationInstance, HINSTANCE previousInstance, LP
 
 	while (true)
 	{
+		Application::actionOnFrame();
 		Draw::draws();
 
 		if (!eglSwapBuffers(Application::_eglDisplay, Application::_eglSurface)) return 0;

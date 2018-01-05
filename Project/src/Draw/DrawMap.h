@@ -23,5 +23,6 @@ public:
 
 private:
 	bool closeGame(void *data);
+	bool rotateCamera(void *data);
 
 };

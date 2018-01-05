@@ -18,6 +18,7 @@ namespace ñallback
 Callback *Callback::_hintObject = 0;
 bool Callback::_tap = false;
 double Callback::_time = 0;
+glm::vec2 Callback::_pos;
 glm::vec2 Callback::_vector;
 
 void Callback::setCallback(const EventCallback &event, const CallbackFunction &function)
@@ -134,23 +135,20 @@ void Callback::tap_double()
 	}
 }
 
-void Callback::move(const int *vec)
+void Callback::move(const float *pos)
 {
-	float lenght = 0.0f;
-
-	if (vec[0] == 0 && vec[1] == 0)
+	if (_pos.x == pos[0] && _pos.y == pos[1])
 	{
-		_vector.x = 0.0f;
-		_vector.y = 0.0f;
-	}
-	else
-	{
-		_vector.x = (float)vec[0];
-		_vector.y = (float)vec[1];
-		lenght = glm::length(_vector);
+		_vector.x = 0.0;
+		_vector.y = 0.0;
+		return;
 	}
 
-	if (_hintObject && lenght != 0.0f && _hintObject->_move)
+	_vector.x = (float)(_pos.x - pos[0]);
+	_vector.y = (float)(_pos.y - pos[1]);
+	_pos = glm::vec2(pos[0], pos[1]);
+
+	if (_hintObject && _hintObject->_move)
 	{
 		//LOG_LINE _vector.x << '\t' << _vector.y <<  '\t' << lenght LOG_END
 		_hintObject->_move(_hintObject);

@@ -61,6 +61,14 @@ release:
 	return false;
 }
 
+void Application::actionOnFrame()
+{
+	POINT mousePos;
+	GetCursorPos(&mousePos);
+	float pos[] = { mousePos.x, mousePos.y };
+	Callback::move(pos);
+	Callback::tap_pinch();
+}
 
 int Application::width()
 {

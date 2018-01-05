@@ -36,12 +36,21 @@ void DrawMap::init()
 	CameraGLM::current().setCalcFrustum(false);
 
 	this->setCallback(EventCallback::TAP_DOUBLE, UiFunction(closeGame));
+	//this->setCallback(EventCallback::MOVE, UiFunction(rotateCamera));
+	this->setCallback(EventCallback::TAP_PINCH, UiFunction(rotateCamera));
+	
 	Callback::_hintObject = this;
 }
 
 bool DrawMap::closeGame(void *data)
 {
 	Application::close();
+	return true;
+}
+
+bool DrawMap::rotateCamera(void *data)
+{
+	CameraGLM::current().rotate(Callback::_vector);
 	return true;
 }
 
