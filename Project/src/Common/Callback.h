@@ -30,16 +30,20 @@ private:
 	CallbackFunction _move = 0;
 	CallbackFunction _hint = 0;
 
-public:
-	const bool &hasCallback() { return _hasCallback; };
-	void setCallback(const EventCallback &event, const CallbackFunction &function);
+	static bool _wasLongTap;
+	static double _currentTime;
 
 public:
 	static Callback *_hintObject;
 	static bool _tap;
+	
 	static double _time;
 	static glm::vec2 _pos;
 	static glm::vec2 _vector;
+
+public:
+	const bool &hasCallback() { return _hasCallback; };
+	void setCallback(const EventCallback &event, const CallbackFunction &function);
 
 public:
 	static bool tap() { return _tap; }

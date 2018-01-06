@@ -65,7 +65,7 @@ void Application::actionOnFrame()
 {
 	POINT mousePos;
 	GetCursorPos(&mousePos);
-	float pos[] = { mousePos.x, mousePos.y };
+	float pos[] = { static_cast<float>(mousePos.x), static_cast<float>(mousePos.y) };
 	Callback::move(pos);
 	Callback::tap_pinch();
 }
@@ -97,6 +97,14 @@ float Application::aspect()
 	eglQuerySurface(_eglDisplay, _eglSurface, EGL_HEIGHT, &height);
 
 	return height > 0 ? static_cast<float>(width) / static_cast<float>(height) : 1.0f;
+}
+
+double Application::getCurentTime()
+{
+	SYSTEMTIME systemTime;
+	GetLocalTime(&systemTime);
+	int currentTime = (systemTime.wMinute * 60000) + (systemTime.wSecond * 1000) + systemTime.wMilliseconds;
+	return static_cast<double>(currentTime);
 }
 
 void Application::close()

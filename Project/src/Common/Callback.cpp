@@ -4,20 +4,12 @@
 #include "Control.h"
 #include "Application.h"
 
-#ifdef WIN32
-#include <windows.h>
-#endif
-
-namespace ñallback
-{
-	SYSTEMTIME _systemTime;
-	double _currentTime = 0;
-	bool _wasLongTap = false;
-};
-
 Callback *Callback::_hintObject = 0;
+
 bool Callback::_tap = false;
+bool Callback::_wasLongTap = false;
 double Callback::_time = 0;
+double Callback::_currentTime = 0;
 glm::vec2 Callback::_pos;
 glm::vec2 Callback::_vector;
 
@@ -56,19 +48,16 @@ void Callback::tap_down()
 	_tap = true;
 	_vector.x = 0.0f;
 	_vector.y = 0.0f;
-	ñallback::_wasLongTap = false;
+	_wasLongTap = false;
 
-	GetLocalTime(&ñallback::_systemTime);
-	int currentTime = (ñallback::_systemTime.wMinute * 60000) + (ñallback::_systemTime.wSecond * 1000) + ñallback::_systemTime.wMilliseconds;
-	_time = static_cast<double>(currentTime) - ñallback::_currentTime;
+	double currentTime = Application::getCurentTime();
+	_time = currentTime - _currentTime;
 	_time /= 1000;
 
 	if (_time < 0.3) tap_double();
 
-	ñallback::_currentTime = currentTime;
+	_currentTime = currentTime;
 	_time = 0;
-
-	//Log("%s", "tap_bown");
 
 	if (_hintObject && _hintObject->_tap_down)
 	{
@@ -80,18 +69,16 @@ void Callback::tap_pinch()
 {
 	if (!_tap) return;
 
-	GetLocalTime(&ñallback::_systemTime);
-	int currentTime = (ñallback::_systemTime.wMinute * 60000) + (ñallback::_systemTime.wSecond * 1000) + ñallback::_systemTime.wMilliseconds;
-	_time = static_cast<double>(currentTime) - ñallback::_currentTime;
+	double currentTime = Application::getCurentTime();
+	_time = currentTime - _currentTime;
 	_time /= 1000;
 
 	if (_hintObject && _hintObject->_tap_pinch)
 	{
-		//Log("%s%l", "tap_pinch _time = ", _time);
 		_hintObject->_tap_pinch(_hintObject);
 	}
 
-	if (!ñallback::_wasLongTap && _time > 1.0) tap_long();
+	if (!_wasLongTap && _time > 1.0) tap_long();
 }
 
 void Callback::tap_up()
@@ -99,13 +86,10 @@ void Callback::tap_up()
 	if (!_tap) return;
 	_tap = false;
 
-	GetLocalTime(&ñallback::_systemTime);
-	int currentTime = (ñallback::_systemTime.wMinute * 60000) + (ñallback::_systemTime.wSecond * 1000) + ñallback::_systemTime.wMilliseconds;
-	_time = static_cast<double>(currentTime) - ñallback::_currentTime;
+	double currentTime = Application::getCurentTime();
+	_time = currentTime - _currentTime;
 	_time /= 1000;
 
-	//Log("%s%l", "tap_up _time = ", _time);
-	
 	if (_hintObject && _hintObject->_tap_up)
 	{
 		_hintObject->_tap_up(_hintObject);
@@ -116,8 +100,7 @@ void Callback::tap_up()
 
 void Callback::tap_long()
 {
-	ñallback::_wasLongTap = true;
-	//Log("%s%l", "tap_long_tap _time = ", _time);
+	_wasLongTap = true;
 
 	if (_hintObject && _hintObject->_tap_long)
 	{
@@ -127,8 +110,6 @@ void Callback::tap_long()
 
 void Callback::tap_double()
 {
-	//Log("%s", "\ttap_double");
-
 	if (_hintObject && _hintObject->_tap_double)
 	{
 		_hintObject->_tap_double(_hintObject);
@@ -150,7 +131,6 @@ void Callback::move(const float *pos)
 
 	if (_hintObject && _hintObject->_move)
 	{
-		//LOG_LINE _vector.x << '\t' << _vector.y <<  '\t' << lenght LOG_END
 		_hintObject->_move(_hintObject);
 	}
 }
