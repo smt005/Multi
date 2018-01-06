@@ -1,8 +1,8 @@
 #pragma once
 
-#include "ArrayClass.h"
-#include "ArrayTemplate.h"
-#include "Object.h"
+#include "Common/ArrayClass.h"
+#include "Common/ArrayTemplate.h"
+#include "Object/Object.h"
 
 class Map : public ArrayClass <Map>
 {

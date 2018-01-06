@@ -1,14 +1,14 @@
 #pragma once
 
-#include "ArrayClass.h"
-#include "Shape.h"
-#include "Texture.h"
-#include "Json.h"
+#include "Common/ArrayClass.h"
+#include "Common/Json.h"
+#include "Object/Shape.h"
+#include "Object/Texture.h"
 
 #include <string>
 using namespace std;
 
-#include "json.h"
+//#include "json.h"
 using json = nlohmann::json;
 
 class Model : public ArrayClass <Model>

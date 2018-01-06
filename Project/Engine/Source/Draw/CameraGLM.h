@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ArrayClass.h"
-#include "IncludesMatem.h"
+#include "Common/ArrayClass.h"
+#include "Common/IncludesMatem.h"
 
 using namespace glm;
 

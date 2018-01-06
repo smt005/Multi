@@ -1,7 +1,7 @@
 
 #include "DrawGreed.h"
 #include "Shader.h"
-#include "../Common/CameraGLM.h"
+#include "../Engine/Source/Draw/CameraGLM.h"
 
 #define GL_GLEXT_PROTOTYPES
 #include "GLES2/gl2.h"

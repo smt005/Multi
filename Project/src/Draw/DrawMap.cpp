@@ -2,9 +2,9 @@
 #include "DrawMap.h"
 #include "Application.h"
 #include "Shader.h"
-#include "../Common/Object.h"
-#include "../Common/CameraGLM.h"
-#include "../Common/Map.h"
+#include "Object/Object.h"
+#include "Draw/CameraGLM.h"
+#include "Object/Map.h"
 
 
 #define GL_GLEXT_PROTOTYPES

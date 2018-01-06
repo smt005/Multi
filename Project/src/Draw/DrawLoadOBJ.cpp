@@ -2,9 +2,9 @@
 #include "DrawLoadOBJ.h"
 #include "Shader.h"
 #include "FilesManager.h"
-#include "../Common/Shape.h"
-#include "../Common/CameraGLM.h"
-#include "../Common/TextureManager.h"
+#include "Object/Shape.h"
+#include "Object/TextureManager.h"
+#include "Draw/CameraGLM.h"
 
 #define GL_GLEXT_PROTOTYPES
 #include "GLES2/gl2.h"

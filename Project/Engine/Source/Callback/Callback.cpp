@@ -1,8 +1,7 @@
 
-#include "Callback.h"
-#include "IncludesMatem.h"
-#include "Control.h"
 #include "Application.h"
+#include "Callback/Callback.h"
+#include "Common/IncludesMatem.h"
 
 Callback *Callback::_hintObject = 0;
 

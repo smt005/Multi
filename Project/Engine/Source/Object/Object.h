@@ -1,9 +1,8 @@
 #pragma once
 
 #include "Model.h"
-#include "IncludesMatem.h"
-
-#include "json.h"
+#include "Common/IncludesMatem.h"
+#include "Common/json.h"
 #include <string>
 
 using namespace std;

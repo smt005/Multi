@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "ArrayClass.h"
+#include "Common/ArrayClass.h"
 
 using namespace std;
 
