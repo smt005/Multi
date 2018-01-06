@@ -1,6 +1,6 @@
 
 #include "DrawHelloTriangle.h"
-#include "Shader.h"
+#include "Draw/Shader.h"
 
 #define GL_GLEXT_PROTOTYPES
 #include "GLES2/gl2.h"

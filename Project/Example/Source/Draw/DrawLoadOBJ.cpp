@@ -1,6 +1,6 @@
 
 #include "DrawLoadOBJ.h"
-#include "Shader.h"
+#include "Draw/Shader.h"
 #include "FilesManager.h"
 #include "Object/Shape.h"
 #include "Object/TextureManager.h"

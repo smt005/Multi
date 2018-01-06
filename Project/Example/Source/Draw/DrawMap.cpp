@@ -1,7 +1,7 @@
 
 #include "DrawMap.h"
 #include "Application.h"
-#include "Shader.h"
+#include "Draw/Shader.h"
 #include "Object/Object.h"
 #include "Draw/CameraGLM.h"
 #include "Object/Map.h"

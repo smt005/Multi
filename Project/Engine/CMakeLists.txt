@@ -28,9 +28,6 @@ foreach(DIR ${ENGINE_SOURCE_DIR})
 		${ENGINE_DIR}/${DIR}/*.cpp
 	)
 
-	message("  ${ENGINE_NAME_LIB}" ${HEADERS})
-	message("  ${ENGINE_NAME_LIB}" ${SOURCES})
-	
 	# для имен групп в xcode нужен обратный слэш
 	string(REGEX REPLACE "/" "\\\\" GROUP_NAME ${DIR})
 	source_group("${GROUP_NAME}" FILES ${HEADERS} ${SOURCES})
@@ -44,4 +41,4 @@ endforeach(DIR)
 
 add_library(${ENGINE_NAME_LIB} STATIC ${ALL_ENGINE_HEADERS} ${ALL_ENGINE_SOURCES})
 
-message(" END generatte ENGINE")
+message(" END generatte ENGINE_NAME_LIB")

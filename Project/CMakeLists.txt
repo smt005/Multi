@@ -185,6 +185,10 @@ set(ENGINE_NAME_LIB Engine)
 include_directories(${ENGINE_NAME_LIB}/Source)
 add_subdirectory(${ENGINE_NAME_LIB})
 
+set(EXAMPLE_NAME_LIB Example)
+include_directories(${EXAMPLE_NAME_LIB}/Source)
+add_subdirectory(${EXAMPLE_NAME_LIB})
+
 # -----------------
 
 # Создание проекта -----------------------------------------------------------------
@@ -200,7 +204,9 @@ endif()
 
 target_link_libraries(${PROJECT_NAME}  ${FREEIMAGE_NAME_LIB})
 target_link_libraries(${PROJECT_NAME}  ${FREETYPE_NAME_LIB})
+
 target_link_libraries(${PROJECT_NAME}  ${ENGINE_NAME_LIB})
+target_link_libraries(${PROJECT_NAME}  ${EXAMPLE_NAME_LIB})
 
 if (${BUILD_PALTFORM} STREQUAL "WIN32")
 	# OpenGL ES
