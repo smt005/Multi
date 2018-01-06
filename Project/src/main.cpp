@@ -1,7 +1,10 @@
 
 #include <windows.h>
 #include "Application.h"
+#include "Game.h"
 #include "Draw/Draw.h"
+
+#define EXAMPLE true
 
 #ifdef WIN32
 
@@ -10,12 +13,27 @@ int WINAPI WinMain(HINSTANCE applicationInstance, HINSTANCE previousInstance, LP
 	if (!Application::createWindow(applicationInstance, Application::_nativeWindow, Application::_deviceContext)) exit(true);
 	if (!Application::initGLES()) exit(1);
 	
-	Draw::nextDraw(4);
+	if (EXAMPLE)
+	{
+		Draw::nextDraw(4);
+	}
+	else
+	{
+		Game::init();
+	}
 
 	while (true)
 	{
 		Application::actionOnFrame();
-		Draw::draws();
+		
+		if (EXAMPLE)
+		{
+			Draw::draws();
+		}
+		else
+		{
+			Game::tact();
+		}
 
 		if (!eglSwapBuffers(Application::_eglDisplay, Application::_eglSurface)) return 0;
 
