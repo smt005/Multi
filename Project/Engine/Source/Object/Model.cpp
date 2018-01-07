@@ -1,5 +1,5 @@
 #include "Model.h"
-#include "FilesManager.h"
+#include "../Platform/Source/FilesManager.h"
 
 #define FILE_NAME_MODEL_DATA	"Models/Models.json"
 #define FILE_NAME_SHAPE_FILE	"Models/Box1.obj"
@@ -55,7 +55,7 @@ json Model::data(const string &name)
 {
 	if (_data.empty())
 	{
-		char *dataString = ResourcesManager::loadTextFile(FILE_NAME_MODEL_DATA);
+		char *dataString = FilesManager::loadTextFile(FILE_NAME_MODEL_DATA);
 		if (!dataString) return json::basic_json();
 
 		_data = json::parse(dataString);

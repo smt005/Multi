@@ -1,23 +1,23 @@
 
-#include "Application.h"
+#include "ApplicationPlatform.h"
 #include "Callback/Callback.h"
 
-HDC Application::_deviceContext = nullptr;
-HWND Application::_nativeWindow = nullptr;
-EGLDisplay Application::_eglDisplay = nullptr;
-EGLConfig Application::_eglConfig = nullptr;
-EGLSurface Application::_eglSurface = nullptr;
-EGLContext Application::_eglContext = nullptr;
-
-const int Application::WindowWidth = 1600;
-const int Application::WindowHeight = 1000;
-
 #define	WINDOW_CLASS_NAME	"MultiClass"
-#define APPLICATION_NAME	"Multi v.0.0 [" __DATE__"  " __TIME__" ]"
+#define ApplicationWin_NAME	"Multi v.0.0 [" __DATE__"  " __TIME__" ]"
 
 LRESULT CALLBACK handleWindowMessages(HWND nativeWindow, UINT message, WPARAM windowParameters, LPARAM longWindowParameters);
 
-bool Application::initGLES()
+HDC ApplicationPlatform::_deviceContext = nullptr;
+HWND ApplicationPlatform::_nativeWindow = nullptr;
+EGLDisplay ApplicationPlatform::_eglDisplay = nullptr;
+EGLConfig ApplicationPlatform::_eglConfig = nullptr;
+EGLSurface ApplicationPlatform::_eglSurface = nullptr;
+EGLContext ApplicationPlatform::_eglContext = nullptr;
+
+int ApplicationPlatform::WindowWidth = 1500;
+int ApplicationPlatform::WindowHeight = 1000;
+
+bool ApplicationPlatform::initGLES()
 {
 	if (!createEGLDisplay())
 	{
@@ -61,7 +61,7 @@ release:
 	return false;
 }
 
-void Application::actionOnFrame()
+void ApplicationPlatform::actionOnFrame()
 {
 	POINT mousePos;
 	GetCursorPos(&mousePos);
@@ -70,21 +70,21 @@ void Application::actionOnFrame()
 	Callback::tap_pinch();
 }
 
-int Application::width()
+int ApplicationPlatform::width()
 {
 	int width = 0;
 	eglQuerySurface(_eglDisplay, _eglSurface, EGL_WIDTH, &width);
 	return width != 0 ? width : 1;
 }
 
-int Application::height()
+int ApplicationPlatform::height()
 {
 	int height = 0;
 	eglQuerySurface(_eglDisplay, _eglSurface, EGL_HEIGHT, &height);
 	return height != 0 ? height : 1;
 }
 
-float Application::aspect()
+float ApplicationPlatform::aspect()
 {
 	if (!_eglDisplay || !_eglSurface)
 	{
@@ -99,7 +99,7 @@ float Application::aspect()
 	return height > 0 ? static_cast<float>(width) / static_cast<float>(height) : 1.0f;
 }
 
-double Application::getCurentTime()
+double ApplicationPlatform::getCurentTime()
 {
 	SYSTEMTIME systemTime;
 	GetLocalTime(&systemTime);
@@ -107,14 +107,14 @@ double Application::getCurentTime()
 	return static_cast<double>(currentTime);
 }
 
-void Application::close()
+void ApplicationPlatform::close()
 {
 	exit(1);
 }
 
 //-------------------------------------------------------------------
 
-bool Application::createEGLDisplay()
+bool ApplicationPlatform::createEGLDisplay()
 {
 	_eglDisplay = eglGetDisplay(_deviceContext);
 	if (_eglDisplay == EGL_NO_DISPLAY)
@@ -138,7 +138,7 @@ bool Application::createEGLDisplay()
 	return true;
 }
 
-bool Application::chooseEGLConfig()
+bool ApplicationPlatform::chooseEGLConfig()
 {
 	const EGLint configurationAttributes[] =
 	{
@@ -157,7 +157,7 @@ bool Application::chooseEGLConfig()
 	return true;
 }
 
-bool Application::createEGLSurface()
+bool ApplicationPlatform::createEGLSurface()
 {
 	_eglSurface = eglCreateWindowSurface(_eglDisplay, _eglConfig, _nativeWindow, NULL);
 	if (_eglSurface == EGL_NO_SURFACE)
@@ -174,7 +174,7 @@ bool Application::createEGLSurface()
 	return true;
 }
 
-bool Application::setupEGLContext()
+bool ApplicationPlatform::setupEGLContext()
 {
 	eglBindAPI(EGL_OPENGL_ES_API);
 	if (!testEGLError("eglBindAPI"))
@@ -203,7 +203,7 @@ bool Application::setupEGLContext()
 	return true;
 }
 
-bool Application::testEGLError(const char* functionLastCalled)
+bool ApplicationPlatform::testEGLError(const char* functionLastCalled)
 {
 	EGLint lastError = eglGetError();
 	if (lastError != EGL_SUCCESS)
@@ -216,7 +216,7 @@ bool Application::testEGLError(const char* functionLastCalled)
 	return true;
 }
 
-bool Application::createWindow(HINSTANCE applicationInstance, HWND& nativeWindow, HDC& deviceContext)
+bool ApplicationPlatform::createWindow(HINSTANCE applicationInstance, HWND& nativeWindow, HDC& deviceContext)
 {
 	// Describe the native window in a window class structure
 	WNDCLASS nativeWindowDescription;
@@ -245,7 +245,7 @@ bool Application::createWindow(HINSTANCE applicationInstance, HWND& nativeWindow
 	AdjustWindowRectEx(&windowRectangle, WS_CAPTION | WS_SYSMENU, false, 0);
 
 	// Create the window from the available information
-	nativeWindow = CreateWindow(WINDOW_CLASS_NAME, APPLICATION_NAME, WS_VISIBLE | WS_SYSMENU, CW_USEDEFAULT, CW_USEDEFAULT, windowRectangle.right - windowRectangle.left, windowRectangle.bottom - windowRectangle.top, NULL, NULL, applicationInstance, NULL);
+	nativeWindow = CreateWindow(WINDOW_CLASS_NAME, ApplicationWin_NAME, WS_VISIBLE | WS_SYSMENU, CW_USEDEFAULT, CW_USEDEFAULT, windowRectangle.right - windowRectangle.left, windowRectangle.bottom - windowRectangle.top, NULL, NULL, applicationInstance, NULL);
 	if (!nativeWindow)
 	{
 		MessageBox(0, "Failed to create the window", "ERROR", MB_OK | MB_ICONEXCLAMATION);

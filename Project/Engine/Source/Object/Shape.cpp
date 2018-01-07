@@ -1,7 +1,7 @@
 
 
 #include "Shape.h"
-#include "FilesManager.h"
+#include "../Platform/Source/FilesManager.h"
 
 #include <fstream>
 #include <iostream>
@@ -93,7 +93,7 @@ void Shape::initVBO()
 
 bool Shape::loadObj(const string& name, const float &sclae)
 {
-	char* data = ResourcesManager::loadTextFile(name.c_str());
+	char* data = FilesManager::loadTextFile(name.c_str());
 
 	if (!data)
 	{

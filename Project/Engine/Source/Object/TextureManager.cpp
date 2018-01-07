@@ -4,11 +4,11 @@
 #define GL_GLEXT_PROTOTYPES
 #include "GLES2/gl2.h"
 #include "FreeImage.h"
-#include "FilesManager.h"
+#include "../Platform/Source/FilesManager.h"
 
 unsigned int TextureManager::LoadTexture(const char* fileName)
 {
-	char *fileNameWithDir = ResourcesManager::getFullPath(fileName);
+	char *fileNameWithDir = FilesManager::getFullPath(fileName);
 
 	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 	FIBITMAP *dib(0);

@@ -1,20 +1,25 @@
 
-#include "FilesManager.h"
+#include "FilesManagerPlatform.h"
 #include <fstream>
 #include <iostream>
 
-char* FilesManager::loadTextFile(const char* fileName)
+char *FilesManagerPlatform::_dir = WIN32_RESOURCES_DIR;
+
+char* FilesManagerPlatform::loadTextFile(const char* fileName)
 {
 	if (!fileName)
 	{
 		return NULL;
 	}
 
+	char *fileNameWithDir = getFullPath(fileName);
+	
 	FILE* file;
 	char* buf = NULL;
 
-	if (fopen_s(&file, fileName, "r") == NULL)
+	if (fopen_s(&file, fileNameWithDir, "r") == NULL)
 	{
+		delete[] fileNameWithDir;
 
 		fseek(file, 0, SEEK_END);
 		int lenght = ftell(file);
@@ -34,23 +39,14 @@ char* FilesManager::loadTextFile(const char* fileName)
 	}
 	else
 	{
+		delete[] fileNameWithDir;
 		return NULL;
 	}
 
 	return buf;
 }
 
-
-char *ResourcesManager::_dir = WIN32_RESOURCES_DIR;
-
-char* ResourcesManager::loadTextFile(const char* fileName)
-{
-	char *fileNameWithDir = ResourcesManager::getFullPath(fileName);
-	return FilesManager::loadTextFile(fileNameWithDir);
-	delete[] fileNameWithDir;
-}
-
-char* ResourcesManager::getFullPath(const char* fileName)
+char* FilesManagerPlatform::getFullPath(const char* fileName)
 {
 	int lenDir = strlen(_dir);
 	int lenName = strlen(fileName);

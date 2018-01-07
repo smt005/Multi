@@ -1,6 +1,6 @@
 
 #include "Shader.h"
-#include "FilesManager.h"
+#include "../Platform/Source/FilesManager.h"
 
 #define GL_GLEXT_PROTOTYPES
 #include <GLES2/gl2.h>
@@ -16,7 +16,7 @@ bool Shader::getShaderProgram(unsigned int& program, const char* vertexLink, con
 		return false;
 	}
 
-	char* fragmentShaderSource = ResourcesManager::loadTextFile(fragmentLink);
+	char* fragmentShaderSource = FilesManager::loadTextFile(fragmentLink);
 	if (!fragmentShaderSource)
 	{
 		return false;
@@ -48,7 +48,7 @@ bool Shader::getShaderProgram(unsigned int& program, const char* vertexLink, con
 		return false;
 	}
 
-	char* vertexShaderSource = ResourcesManager::loadTextFile(vertexLink);
+	char* vertexShaderSource = FilesManager::loadTextFile(vertexLink);
 	if (!vertexShaderSource)
 	{
 		return false;

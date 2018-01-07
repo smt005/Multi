@@ -39,7 +39,7 @@ foreach(DIR ${SOURCE_DIRS})
 	string(REGEX REPLACE "/" "\\\\" GROUP_NAME ${DIR})
 	source_group("${GROUP_NAME}" FILES ${HEADERS} ${SOURCES})
 	
-	message("SOURCE: " ${HEADERS} ${SOURCES})
+	#message("SOURCE: " ${HEADERS} ${SOURCES})
 	
 	list(APPEND ALL_HEADERS ${HEADERS})
 	list(APPEND ALL_SOURCES ${SOURCES})
@@ -193,6 +193,11 @@ set(GAME_NAME_LIB Game)
 include_directories(${GAME_NAME_LIB}/Source)
 add_subdirectory(${GAME_NAME_LIB})
 
+set(PLATFORM_NAME_LIB Platform)
+include_directories("${PLATFORM_NAME_LIB}/Source")
+#include_directories("${PLATFORM_NAME_LIB}/${BUILD_PALTFORM}/Source")
+add_subdirectory(${PLATFORM_NAME_LIB})
+
 # -----------------
 
 # Создание проекта -----------------------------------------------------------------
@@ -208,6 +213,7 @@ endif()
 target_link_libraries(${PROJECT_NAME}  ${ENGINE_NAME_LIB})
 target_link_libraries(${PROJECT_NAME}  ${EXAMPLE_NAME_LIB})
 target_link_libraries(${PROJECT_NAME}  ${GAME_NAME_LIB})
+target_link_libraries(${PROJECT_NAME}  ${PLATFORM_NAME_LIB})
 
 target_link_libraries(${PROJECT_NAME}  ${FREEIMAGE_NAME_LIB})
 target_link_libraries(${PROJECT_NAME}  ${FREETYPE_NAME_LIB})

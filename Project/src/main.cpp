@@ -1,8 +1,8 @@
 
 #include <windows.h>
-#include "Application.h"
 #include "Game.h"
 #include "Draw/Draw.h"
+#include "Source/ApplicationPlatform.h"
 
 #define EXAMPLE true
 
@@ -10,8 +10,8 @@
 
 int WINAPI WinMain(HINSTANCE applicationInstance, HINSTANCE previousInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	if (!Application::createWindow(applicationInstance, Application::_nativeWindow, Application::_deviceContext)) exit(true);
-	if (!Application::initGLES()) exit(1);
+	if (!ApplicationPlatform::createWindow(applicationInstance, ApplicationPlatform::_nativeWindow, ApplicationPlatform::_deviceContext)) exit(true);
+	if (!ApplicationPlatform::initGLES()) exit(1);
 	
 	if (EXAMPLE)
 	{
@@ -24,7 +24,7 @@ int WINAPI WinMain(HINSTANCE applicationInstance, HINSTANCE previousInstance, LP
 
 	while (true)
 	{
-		Application::actionOnFrame();
+		ApplicationPlatform::actionOnFrame();
 		
 		if (EXAMPLE)
 		{
@@ -35,11 +35,11 @@ int WINAPI WinMain(HINSTANCE applicationInstance, HINSTANCE previousInstance, LP
 			Game::tact();
 		}
 
-		if (!eglSwapBuffers(Application::_eglDisplay, Application::_eglSurface)) return 0;
+		if (!eglSwapBuffers(ApplicationPlatform::_eglDisplay, ApplicationPlatform::_eglSurface)) return 0;
 
 		// Check for messages from the windowing system. These will pass through the callback registered earlier.
 		MSG eventMessage;
-		PeekMessage(&eventMessage, Application::_nativeWindow, NULL, NULL, PM_REMOVE);
+		PeekMessage(&eventMessage, ApplicationPlatform::_nativeWindow, NULL, NULL, PM_REMOVE);
 		TranslateMessage(&eventMessage);
 		DispatchMessage(&eventMessage);
 	}

@@ -32,7 +32,7 @@ foreach(DIR ${ENGINE_SOURCE_DIR})
 	string(REGEX REPLACE "/" "\\\\" GROUP_NAME ${DIR})
 	source_group("${GROUP_NAME}" FILES ${HEADERS} ${SOURCES})
 	
-	message("SOURCE: " ${HEADERS} ${SOURCES})
+	#message("SOURCE: " ${HEADERS} ${SOURCES})
 	
 	list(APPEND ALL_ENGINE_HEADERS ${HEADERS})
 	list(APPEND ALL_ENGINE_SOURCES ${SOURCES})

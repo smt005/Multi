@@ -1,6 +1,6 @@
 
 #include "Map.h"
-#include "FilesManager.h"
+#include "../Platform/Source/FilesManager.h"
 
 Map::Map()
 {
@@ -17,7 +17,7 @@ void Map::create(const string &newName)
 	setName(newName);
 
 	string fileName = "Map/" + name() + ".json";
-	string dataString = ResourcesManager::loadTextFile(fileName.c_str());;
+	string dataString = FilesManager::loadTextFile(fileName.c_str());;
 	json data = json::parse(dataString.c_str());
 
 	_area = data["area"].is_null() ? 10.0f : data["area"];

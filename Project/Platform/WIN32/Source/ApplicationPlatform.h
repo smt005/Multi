@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Application.h"
 
 #include <windows.h>
 #include "EGL/egl.h"
@@ -7,7 +8,7 @@
 #define GL_GLEXT_PROTOTYPES
 #include <GLES2/gl2.h>
 
-class Application
+class ApplicationPlatform
 {
 public:
 	static HDC _deviceContext;
@@ -17,12 +18,14 @@ public:
 	static EGLSurface _eglSurface;
 	static EGLContext _eglContext;
 
-	static const int WindowWidth;
-	static const int WindowHeight;
+	static int WindowWidth;
+	static int WindowHeight;
 
 public:
 	static bool createWindow(HINSTANCE applicationInstance, HWND& nativeWindow, HDC& deviceContext);
 	static bool initGLES();
+
+public:
 	static void actionOnFrame();
 
 	static int width();
