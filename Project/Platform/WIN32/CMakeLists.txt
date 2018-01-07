@@ -5,10 +5,15 @@ message(" START generatte ${PLATFORM_NAME_LIB}")
 set(PLATFORM_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../)
 set(PLATFORM_LIB_DIR WIN32)
 
+# DEFINES
+add_definitions(-DWIN32_RESOURCES_DIR="${RES_DIR}/")
+
 # SOURCE
 
-include_directories(${PLATFORM_DIR})
+include_directories(${PROJECT_DIR})
+include_directories(${PLATFORM_DIR}/Source)
 include_directories(${PLATFORM_DIR}/${PLATFORM_LIB_DIR}/Source)
+include_directories(${THIRD_PARTY_DIR})
 
 set(PLATFORM_SOURCE_DIR
 	Source

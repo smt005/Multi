@@ -11,17 +11,16 @@ set(VERSION_PATCH "0")
 
 add_definitions(-D"BUILD_${BUILD_PALTFORM}")
 
-set(PLATFORM_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Platform")
+set(PROJECT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+set(THIRD_PARTY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty")
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(RES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/res")
-set(THIRD_PARTY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty")
+
 
 # SRC
 
 set(SOURCE_DIRS
     .
-	Draw
-	Platform/${BUILD_PALTFORM}
 )
 
 foreach(DIR ${SOURCE_DIRS})
@@ -45,35 +44,7 @@ foreach(DIR ${SOURCE_DIRS})
 	list(APPEND ALL_SOURCES ${SOURCES})
 
 endforeach(DIR)
-	
-# PLATFORM
-	
-set(SOURCE_PLATFORM_DIRS
-	${BUILD_PALTFORM}
-)
 
-foreach(DIR ${SOURCE_PLATFORM_DIRS})
-	file(GLOB
-		HEADERS
-		${PLATFORM_DIR}/${DIR}/*.h
-	)
-
-	file(GLOB
-		SOURCES
-		${PLATFORM_DIR}/${DIR}/*.cpp
-	)
-
-	# для имен групп в xcode нужен обратный слэш
-	string(REGEX REPLACE "/" "\\\\" GROUP_NAME ${DIR})
-	source_group("${GROUP_NAME}" FILES ${HEADERS} ${SOURCES})
-	
-	message("PLATFORM: " ${HEADERS} ${SOURCES})
-	
-	list(APPEND ALL_HEADERS ${HEADERS})
-	list(APPEND ALL_SOURCES ${SOURCES})
-
-endforeach(DIR)
-	
 # RES
 
 set(RESOURCE_DIRS
@@ -139,30 +110,14 @@ foreach(DIR ${RESOURCE_DIRS})
 	list(APPEND ALL_RESOURCES ${RESOURCE_JPG})
 
 endforeach(DIR)
-		
-# DEFINES
-if (${BUILD_PALTFORM} STREQUAL "WIN32")
-	add_definitions(-DWIN32_RESOURCES_DIR="${RES_DIR}/")
-elseif()
-endif()		
 
 # Подключение библиотек -----------------------------------------------------------------
-
-# FreeImage
-#set(FREEIMAGE_NAME_LIB FreeImage)
-#set(FREEIMAGE_DIR "ThirdParty/${FREEIMAGE_NAME_LIB}")
-#include_directories("${FREETYPE_DIR}/Source")
-#add_subdirectory(${FREEIMAGE_DIR})
 
 # freetype
 set(FREETYPE_NAME_LIB freetype)
 set(FREETYPE_DIR "ThirdParty/${FREETYPE_NAME_LIB}")
 include_directories("${FREETYPE_DIR}/include")
 add_subdirectory(${FREETYPE_DIR})
-
-# Platform, glm
-include_directories(${PLATFORM_DIR}/${BUILD_PALTFORM})
-include_directories(${THIRD_PARTY_DIR})
 
 if (${BUILD_PALTFORM} STREQUAL "WIN32")
 	# OpenGL es
@@ -179,7 +134,11 @@ elseif()
 		message("include link LIB no WIN32")
 endif()
 
-#---------------------------
+#------------------------
+
+set(PLATFORM_NAME_LIB Platform)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Platform/${BUILD_PALTFORM}/Source)
+add_subdirectory(${PLATFORM_NAME_LIB})
 
 set(ENGINE_NAME_LIB Engine)
 include_directories(${ENGINE_NAME_LIB}/Source)
@@ -193,12 +152,6 @@ set(GAME_NAME_LIB Game)
 include_directories(${GAME_NAME_LIB}/Source)
 add_subdirectory(${GAME_NAME_LIB})
 
-set(PLATFORM_NAME_LIB Platform)
-include_directories("${PLATFORM_NAME_LIB}/Source")
-#include_directories("${PLATFORM_NAME_LIB}/${BUILD_PALTFORM}/Source")
-add_subdirectory(${PLATFORM_NAME_LIB})
-
-# -----------------
 
 # Создание проекта -----------------------------------------------------------------
 if (${BUILD_PALTFORM} STREQUAL "WIN32")

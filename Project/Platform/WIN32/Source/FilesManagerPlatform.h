@@ -1,7 +1,5 @@
 #pragma once
 
-#include "FilesManager.h"
-
 class FilesManagerPlatform
 {
 private:

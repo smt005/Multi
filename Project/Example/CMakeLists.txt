@@ -6,8 +6,9 @@ set(EXAMPLE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Source")
 
 # SOURCE
 
+include_directories(${PROJECT_DIR})
 include_directories(${EXAMPLE_DIR})
-include_directories(${THIRD_PARTY_DIR}/glm)
+include_directories(${THIRD_PARTY_DIR})
 
 set(EXAMPLE_SOURCE_DIR
     .

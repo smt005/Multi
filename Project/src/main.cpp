@@ -2,7 +2,7 @@
 #include <windows.h>
 #include "Game.h"
 #include "Draw/Draw.h"
-#include "Source/ApplicationPlatform.h"
+#include "ApplicationPlatform.h"
 
 #define EXAMPLE true
 

@@ -1,7 +1,7 @@
 
 #include "DrawLoadOBJ.h"
 #include "Draw/Shader.h"
-#include "../Platform/Source/FilesManager.h"
+#include "Platform/Source/FilesManager.h"
 #include "Object/Shape.h"
 #include "Object/TextureManager.h"
 #include "Draw/CameraGLM.h"

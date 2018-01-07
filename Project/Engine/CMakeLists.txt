@@ -6,8 +6,9 @@ set(ENGINE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Source")
 
 # SOURCE
 
+include_directories(${PROJECT_DIR})
 include_directories(${ENGINE_DIR})
-include_directories(${THIRD_PARTY_DIR}/glm)
+include_directories(${THIRD_PARTY_DIR})
 
 set(ENGINE_SOURCE_DIR
     .
@@ -41,4 +42,4 @@ endforeach(DIR)
 
 add_library(${ENGINE_NAME_LIB} STATIC ${ALL_ENGINE_HEADERS} ${ALL_ENGINE_SOURCES})
 
-message(" END generatte ENGINE_NAME_LIB")
+message(" END generatte ${ENGINE_NAME_LIB}")

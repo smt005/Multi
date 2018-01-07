@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Application.h"
-
 #include <windows.h>
 #include "EGL/egl.h"
 
