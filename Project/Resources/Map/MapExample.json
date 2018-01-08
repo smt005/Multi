@@ -3,11 +3,11 @@
   "objects": [
     {
       "name": "Plane",
-      "model": "Plane100",
+      "model": "Plane5",
       "pos": [
         0,
         0,
-        -1
+        0
       ]
     },
     {
@@ -17,7 +17,7 @@
       "pos": [
         0,
         0,
-        4
+        1
       ]
     },
     {

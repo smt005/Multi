@@ -7,6 +7,10 @@
     "shape": "Models/Plane5.obj",
     "texture": "Textures/RGB.png"
   },
+  "Plane100": {
+    "shape": "Models/Plane100.obj",
+    "texture": "Textures/Ambient.png"
+  },
   "Box1": {
     "shape": "Models/Box1.obj",
     "texture": "Textures/Box.jpg"
