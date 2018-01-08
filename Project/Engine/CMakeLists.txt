@@ -17,6 +17,7 @@ set(ENGINE_SOURCE_DIR
 	Common
 	Draw
 	Object
+	AI
 )
 
 foreach(DIR ${ENGINE_SOURCE_DIR})

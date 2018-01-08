@@ -17,6 +17,8 @@ public:
 	Map();
 	~Map();
 
+	const float& getArea() { return _area; };
+
 	void create(const string &newName);
 	void action();
 };

@@ -39,7 +39,7 @@ void Model::create(const string &newName)
 	json dataModel = data(newName);
 	if (dataModel.empty()) return;
 
-	const string &shape = dataModel["shape"].is_string() ? dataModel["shape"]: FILE_NAME_SHAPE_FILE;
+	const string &shape = dataModel["shape"].is_string() ? dataModel["shape"] : FILE_NAME_SHAPE_FILE;
 	const string &texture = dataModel["texture"].is_string() ? dataModel["texture"] : FILE_NAME_TEXTURE_FILE;
 
 	// TODO:

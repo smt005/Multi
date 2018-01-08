@@ -4,6 +4,7 @@
 #include "Draw/DrawEngine.h"
 #include "Draw/CameraGLM.h"
 #include "Object/Map.h"
+#include "AI/AIExample.h"
 
 GameMini::GameMini()
 {
@@ -22,6 +23,25 @@ void GameMini::init()
 
 void GameMini::tact()
 {
+	if (_timerTarget > 300)
+	{
+		_timerTarget = 0.0;
+		if (_map)
+		{
+			int diameter = static_cast<int>(_map->getArea());
+			int radius = static_cast<int>(_map->getArea() * 0.5f);
+			float k = 0.5f;
+			float posX = static_cast<float>((rand() % diameter + 1) - radius) * k;
+			float posY = static_cast<float>((rand() % diameter + 1) - radius) * k;
+			float posZ = 1.0f;
+			glm::mat4x4 matrix = glm::translate(glm::mat4x4(1.0f), glm::vec3(posX, posY, posZ));
+
+			Object &target = _map->_objects.getByName("Target");
+			target.setMatrix(matrix);
+		}
+	}
+	++_timerTarget;
+
 	_map->action();
 }
 
@@ -34,9 +54,7 @@ void GameMini::draw()
 void GameMini::initMap()
 {
 	_map = &Map::getByName("Map");
-
-	// Добавление глайдеров
-	
+	AIExample::findTarget();
 }
 
 void GameMini::initDraw()

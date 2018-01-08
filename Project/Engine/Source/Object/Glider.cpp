@@ -1,33 +1,47 @@
 
 #include "Glider.h"
+#include "AI/AIInterface.h"
+#include "AI/AIExample.h"
 
 GliderTemplate GliderTemplate::_template;
 
 Glider::Glider()
 {
 	_template = &GliderTemplate::_template;
+	_ai = new AIExample(*this);
 
 	_speedHeight = _template->_speedHeight;
-	_height = (_template->_minHeight + _template->_maxHeight) * 0.5f;
+	setHeight(_template->_minHeight);
 }
 
 Glider::~Glider()
 {
-
+	delete _ai;
 }
 
 void Glider::action()
 {
-	if (_height > _template->_maxHeight)
+	if (_ai)
+	{
+		_ai->action();
+	}
+
+	if (getHeight() > _template->_maxHeight)
 	{
 		_speedHeight = -_template->_speedHeight;
 	}
 
-	if (_height < _template->_minHeight)
+	if (getHeight() < _template->_minHeight)
 	{
 		_speedHeight = _template->_speedHeight;
 	}
 
-	_height += _speedHeight;
-	setHeight(_height);
+	setHeight(getHeight() + _speedHeight);
+}
+
+void Glider::move(const glm::vec3 &vector)
+{
+	glm::vec3 offsetVector = vector * _template->_speed;
+	_matrix[3][0] += offsetVector.x;
+	_matrix[3][1] += offsetVector.y;
 }

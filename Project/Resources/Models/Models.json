@@ -14,5 +14,9 @@
   "Box1": {
     "shape": "Models/Box1.obj",
     "texture": "Textures/Box.jpg"
-  }
+  },
+  "Car": {
+	"shape": "Models/Car.obj",
+    "texture": "Textures/Car.jpg"
+   }
 }

@@ -11,95 +11,95 @@
       ]
     },
     {
-      "name": "Town",
+      "name": "Target",
       "model": "Box1",
       "type": 1,
       "pos": [
         0,
         0,
-        4
+        1
       ]
     },
     {
-      "name": "Car_01",
+      "name": "First_01",
       "model": "First",
       "type": 2,
       "pos": [
         0,
         5,
-        0
+        1
       ]
     },
     {
-      "name": "Car_02",
+      "name": "First_02",
       "model": "First",
       "type": 2,
       "pos": [
         5,
         0,
-        0
+        1
       ]
     },
     {
-      "name": "Car_03",
+      "name": "First_03",
       "model": "First",
       "type": 2,
       "pos": [
         0,
         -5,
-        0
+        1
       ]
     },
     {
-      "name": "Car_04",
+      "name": "First_04",
       "model": "First",
       "type": 2,
       "pos": [
         -5,
         0,
-        0
+        1
       ]
     }
   ],
   "gliders": [
     {
       "name": "Glider_00",
-      "model": "First",
+      "model": "Car",
       "type": 2,
       "pos": [
-        4,
-        4,
-        2
+        10,
+        10,
+        0.4
       ]
     },
     {
       "name": "Glider_01",
-      "model": "First",
+      "model": "Car",
       "type": 2,
       "pos": [
-        -4,
-        4,
-        2
+        -10,
+        10,
+        0.3
       ]
     },
     {
       "name": "Glider_02",
-      "model": "First",
+      "model": "Car",
       "type": 2,
       "pos": [
-        4,
-        -4,
-        2
+        10,
+        -10,
+        0.2
       ]
     },
     {
       "name": "Glider_03",
-      "model": "First",
+      "model": "Car",
       "type": 2,
       "pos": [
-        -4,
-        -4,
-        2
+        -10,
+        -10,
+        0.1
       ]
     }
   ]

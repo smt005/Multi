@@ -204,7 +204,7 @@ ArrayT& ArrayTemplate<ArrayT>::add(ArrayT *newItem)
 template <class ArrayT>
 ArrayT& ArrayTemplate<ArrayT>::getByName(const string &name)
 {
-	if (!_array) return;
+	if (!_array) ArrayT *newItem = new ArrayT();
 
 	for (int i = 0; i < _count; ++i)
 	{

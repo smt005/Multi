@@ -21,6 +21,11 @@ Model& Object::model()
 	return *_model;
 };
 
+const float& Object::getHeight()
+{
+	return _matrix[3][2];
+}
+
 void Object::set(const string &name, const string &modelName, const vec3 &pos, const json &data)
 {
 	_name = name;
@@ -35,17 +40,15 @@ void Object::setHeight(const float &height)
 	_matrix[3][2] = height;
 }
 
+void Object::setVector(const glm::vec3 &vector)
+{
+
+}
+
 // Virtual
 
 void Object::setData(const json &data)
 {
-	/*_consumption = data["consumption"].is_null() ? 1.0f : data["consumption"];
-	_capacity = data["capacity"].is_null() ? 10.0f : data["capacity"];
-	_filling = data["filling"].is_null() ? 0.0f : data["filling"];
-	_speed = data["speed"].is_null() ? 1.0f : data["speed"];
-	_collectionRate = data["collectionRate"].is_null() ? 1.0f : data["collectionRate"];
-
-	_factor = 50.0f;*/
 }
 
 void Object::action()

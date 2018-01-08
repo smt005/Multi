@@ -32,10 +32,10 @@ public:
 	float _radius = 0;
 
 	Shape();
-	Shape(const string& name, bool needLoad = true);
+	Shape(const string& name, const bool &needLoad = true);
 	~Shape();
 
-	bool loadObj(const string& name, const float &sclae = 1.0f);
+	bool loadObj(const string& name);
 	void initVBO();
 	void check();
 
