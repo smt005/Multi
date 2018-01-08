@@ -1,6 +1,6 @@
 #pragma once
 
-class Application
+class App
 {
 public:
 	static int width();

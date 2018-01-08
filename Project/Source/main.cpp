@@ -4,7 +4,7 @@
 #include "Draw/Draw.h"
 #include "ApplicationPlatform.h"
 
-#define EXAMPLE true
+#define EXAMPLE false
 
 #ifdef WIN32
 
@@ -19,7 +19,7 @@ int WINAPI WinMain(HINSTANCE applicationInstance, HINSTANCE previousInstance, LP
 	}
 	else
 	{
-		Game::init();
+		Game::gameInit();
 	}
 
 	while (true)
@@ -32,7 +32,8 @@ int WINAPI WinMain(HINSTANCE applicationInstance, HINSTANCE previousInstance, LP
 		}
 		else
 		{
-			Game::tact();
+			Game::gameTact();
+			Game::gameDraw();
 		}
 
 		if (!eglSwapBuffers(ApplicationPlatform::_eglDisplay, ApplicationPlatform::_eglSurface)) return 0;

@@ -49,7 +49,7 @@ void Callback::tap_down()
 	_vector.y = 0.0f;
 	_wasLongTap = false;
 
-	double currentTime = Application::getCurentTime();
+	double currentTime = App::getCurentTime();
 	_time = currentTime - _currentTime;
 	_time /= 1000;
 
@@ -68,7 +68,7 @@ void Callback::tap_pinch()
 {
 	if (!_tap) return;
 
-	double currentTime = Application::getCurentTime();
+	double currentTime = App::getCurentTime();
 	_time = currentTime - _currentTime;
 	_time /= 1000;
 
@@ -85,7 +85,7 @@ void Callback::tap_up()
 	if (!_tap) return;
 	_tap = false;
 
-	double currentTime = Application::getCurentTime();
+	double currentTime = App::getCurentTime();
 	_time = currentTime - _currentTime;
 	_time /= 1000;
 

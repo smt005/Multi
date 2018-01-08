@@ -2,27 +2,27 @@
 #include "Application.h"
 #include "ApplicationPlatform.h"
 
-int Application::width()
+int App::width()
 {
 	return ApplicationPlatform::width();
 }
 
-int Application::height()
+int App::height()
 {
 	return ApplicationPlatform::height();
 }
 
-float Application::aspect()
+float App::aspect()
 {
 	return ApplicationPlatform::aspect();
 }
 
-double Application::getCurentTime()
+double App::getCurentTime()
 {
 	return ApplicationPlatform::getCurentTime();
 }
 
-void Application::close()
+void App::close()
 {
 	return ApplicationPlatform::close();
 }

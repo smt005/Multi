@@ -43,7 +43,7 @@ void DrawMap::init()
 
 bool DrawMap::closeGame(void *data)
 {
-	Application::close();
+	App::close();
 	return true;
 }
 
@@ -55,8 +55,8 @@ bool DrawMap::rotateCamera(void *data)
 
 void DrawMap::prepareDraw(bool clear)
 {
-	int widthScreen = Application::width();
-	int heightScreen = Application::height();
+	int widthScreen = App::width();
+	int heightScreen = App::height();
 	glViewport(0.0, 0.0, widthScreen, heightScreen);
 
 	glDepthFunc(GL_LEQUAL);

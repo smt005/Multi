@@ -8,6 +8,7 @@ set(ENGINE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Source")
 
 include_directories(${PROJECT_DIR})
 include_directories(${ENGINE_DIR})
+include_directories("${PROJECT_DIR}/Platform/Source")
 include_directories(${THIRD_PARTY_DIR})
 
 set(ENGINE_SOURCE_DIR
