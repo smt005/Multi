@@ -7,7 +7,7 @@
       "pos": [
         0,
         0,
-        -1
+        0
       ]
     },
     {
@@ -58,6 +58,48 @@
         -5,
         0,
         0
+      ]
+    }
+  ],
+  "gliders": [
+    {
+      "name": "Glider_00",
+      "model": "First",
+      "type": 2,
+      "pos": [
+        4,
+        4,
+        2
+      ]
+    },
+    {
+      "name": "Glider_01",
+      "model": "First",
+      "type": 2,
+      "pos": [
+        -4,
+        4,
+        2
+      ]
+    },
+    {
+      "name": "Glider_02",
+      "model": "First",
+      "type": 2,
+      "pos": [
+        4,
+        -4,
+        2
+      ]
+    },
+    {
+      "name": "Glider_03",
+      "model": "First",
+      "type": 2,
+      "pos": [
+        -4,
+        -4,
+        2
       ]
     }
   ]

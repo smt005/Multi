@@ -39,4 +39,28 @@ void Map::create(const string &newName)
 		Object &object = _objects.add();
 		object.set(name, modelName, pos);
 	}
+
+	for (auto element : data["gliders"])
+	{
+		const string &name = element["name"].is_string() ? element["name"] : "";
+		const string &modelName = element["model"].is_string() ? element["model"] : "default";
+		unsigned int type = element["type"].is_number_unsigned() ? element["type"] : 0;
+
+		vec3 pos(0.0f);
+		int index = 0;
+		for (float elementPos : element["pos"])
+		{
+			pos[index] = elementPos;
+			++index;
+		}
+
+		Glider &object = _gliders.add();
+		object.set(name, modelName, pos);
+	}
+}
+
+void Map::action()
+{
+	for (int i = 0; i < _objects.count(); ++i) _objects[i].action();
+	for (int i = 0; i < _gliders.count(); ++i) _gliders[i].action();
 }

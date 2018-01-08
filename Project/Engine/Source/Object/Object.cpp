@@ -30,6 +30,13 @@ void Object::set(const string &name, const string &modelName, const vec3 &pos, c
 	if (!data.empty()) setData(data);
 }
 
+void Object::setHeight(const float &height)
+{
+	_matrix[3][2] = height;
+}
+
+// Virtual
+
 void Object::setData(const json &data)
 {
 	/*_consumption = data["consumption"].is_null() ? 1.0f : data["consumption"];

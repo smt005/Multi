@@ -77,11 +77,19 @@ void DrawEngine::drawMap()
 	GLuint u_matProjectionView = glGetUniformLocation(_programBase, "u_matProjectionView");
 	glUniformMatrix4fv(u_matProjectionView, 1, GL_FALSE, CameraGLM::current().matPV());
 
-	ArrayTemplate <Object> &objects = Map::getByName("Map")._objects;
+	Map &map = Map::getByName("Map");
+	ArrayTemplate <Object> &objects = map._objects;
 
 	for (int i = 0; i < objects.count(); ++i)
 	{
 		drawModel(objects[i]);
+	}
+
+	ArrayTemplate <Glider> &gliders = map._gliders;
+
+	for (int i = 0; i < gliders.count(); ++i)
+	{
+		drawModel(gliders[i]);
 	}
 }
 

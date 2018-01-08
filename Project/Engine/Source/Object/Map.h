@@ -3,6 +3,7 @@
 #include "Common/ArrayClass.h"
 #include "Common/ArrayTemplate.h"
 #include "Object/Object.h"
+#include "Object/Glider.h"
 
 class Map : public ArrayClass <Map>
 {
@@ -11,9 +12,11 @@ private:
 
 public:
 	ArrayTemplate <Object> _objects;
+	ArrayTemplate <Glider> _gliders;
 
 	Map();
 	~Map();
 
 	void create(const string &newName);
+	void action();
 };

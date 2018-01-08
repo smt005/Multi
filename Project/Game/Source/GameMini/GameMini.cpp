@@ -22,7 +22,7 @@ void GameMini::init()
 
 void GameMini::tact()
 {
-	
+	_map->action();
 }
 
 void GameMini::draw()
@@ -34,6 +34,9 @@ void GameMini::draw()
 void GameMini::initMap()
 {
 	_map = &Map::getByName("Map");
+
+	// Добавление глайдеров
+	
 }
 
 void GameMini::initDraw()

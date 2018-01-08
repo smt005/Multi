@@ -37,8 +37,9 @@ public:
 	Model& model();
 
 	void set(const string &name, const string &modelName, const vec3 &pos = vec3(0.0f), const json &data = json::basic_json());
-	
-	// VIRTUAL
+	void setHeight(const float &height);
+
+	// Virtual
 
 	virtual void setData(const json &data);
 	virtual void action();
