@@ -73,8 +73,8 @@ void GameMini::initDraw()
 void GameMini::initCallback()
 {
 	this->setCallback(EventCallback::TAP_DOUBLE, UiFunction(closeGame));
-	//this->setCallback(EventCallback::TAP_PINCH, UiFunction(rotateCamera));
-	this->setCallback(EventCallback::MOVE, UiFunction(rotateCamera));
+	this->setCallback(EventCallback::TAP_PINCH, UiFunction(rotateCamera));
+	//this->setCallback(EventCallback::MOVE, UiFunction(rotateCamera));
 
 	Callback::_hintObject = this;
 }

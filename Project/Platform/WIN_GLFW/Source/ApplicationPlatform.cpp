@@ -22,7 +22,7 @@ bool ApplicationPlatform::execution()
 	if (!glfwInit())
 		return -1;
 
-	window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+	window = glfwCreateWindow(WindowWidth, WindowHeight, ApplicationWin_NAME, NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -109,7 +109,7 @@ double ApplicationPlatform::getCurentTime()
 {
 	SYSTEMTIME systemTime;
 	GetLocalTime(&systemTime);
-	int currentTime = 0;
+	int currentTime = (systemTime.wMinute * 60000) + (systemTime.wSecond * 1000) + systemTime.wMilliseconds;
 	return static_cast<double>(currentTime);
 }
 
@@ -127,7 +127,54 @@ void ApplicationPlatform::cursorPositionCallback(GLFWwindow* Window, double x, d
 
 void ApplicationPlatform::mouseButtonCallback(GLFWwindow* Window, int Button, int Action, int mods)
 {
+	switch (Action)
+	{
+	case GLFW_PRESS:
+	{
+		switch (Button)
+		{
+		case GLFW_MOUSE_BUTTON_LEFT:
+		{
+			Callback::tap_down();
+		}
+		break;
+		case GLFW_MOUSE_BUTTON_MIDDLE:
+		{
 
+		}
+		break;
+		case GLFW_MOUSE_BUTTON_RIGHT:
+		{
+
+		}
+		break;
+		}
+	}
+	break;
+
+	case GLFW_RELEASE:
+	{
+		switch (Button)
+		{
+		case GLFW_MOUSE_BUTTON_LEFT:
+		{
+			Callback::tap_up();
+		}
+		break;
+		case GLFW_MOUSE_BUTTON_MIDDLE:
+		{
+
+		}
+		break;
+		case GLFW_MOUSE_BUTTON_RIGHT:
+		{
+
+		}
+		break;
+		}
+	}
+	break;
+	}
 }
 
 void ApplicationPlatform::keyCallback(GLFWwindow* Window, int Key, int Scancode, int Action, int Mods)
