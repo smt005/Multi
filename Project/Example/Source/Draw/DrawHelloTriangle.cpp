@@ -2,8 +2,12 @@
 #include "DrawHelloTriangle.h"
 #include "Draw/Shader.h"
 
-#define GL_GLEXT_PROTOTYPES
-#include "GLES2/gl2.h"
+#ifdef BUILD_WIN_GLES
+	#define GL_GLEXT_PROTOTYPES
+	#include "GLES2/gl2.h"
+#else BUILD_WIN_GLFW
+	#include <GL/glew.h>
+#endif
 
 DrawHelloTriangle::DrawHelloTriangle()
 {

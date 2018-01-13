@@ -19,8 +19,11 @@ set(RES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Resources")
 
 # SRC
 
+set(MAIN_SOURCE "${SRC_DIR}/${BUILD_PALTFORM}_main.cpp")
+list(APPEND ALL_SOURCES ${MAIN_SOURCE})
+
 set(SOURCE_DIRS
-    .
+
 )
 
 foreach(DIR ${SOURCE_DIRS})
@@ -114,24 +117,36 @@ endforeach(DIR)
 # Подключение библиотек -----------------------------------------------------------------
 
 # freetype
-set(FREETYPE_NAME_LIB freetype)
-set(FREETYPE_DIR "ThirdParty/${FREETYPE_NAME_LIB}")
-include_directories("${FREETYPE_DIR}/include")
-add_subdirectory(${FREETYPE_DIR})
+#set(FREETYPE_NAME_LIB freetype)
+#set(FREETYPE_DIR "ThirdParty/${FREETYPE_NAME_LIB}")
+#include_directories("${FREETYPE_DIR}/include")
+#add_subdirectory(${FREETYPE_DIR})
 
-if (${BUILD_PALTFORM} STREQUAL "WIN32")
+if (${BUILD_PALTFORM} STREQUAL "WIN_GLES")
 	# OpenGL es
 	include_directories("${THIRD_PARTY_DIR}/GLES/include")
-	link_directories("${THIRD_PARTY_DIR}/GLES/Windows/x86_32")
+	link_directories("${THIRD_PARTY_DIR}/GLES/WIN/x86_32")
 	
 	# FreeImage
 	include_directories("${THIRD_PARTY_DIR}/FreeImage/Source")
 	link_directories("${THIRD_PARTY_DIR}/FreeImage/Windows/x86_32")
 	
-	message("include link LIB WIN32")
+	message("include link LIB WIN_GLES")
+elseif(${BUILD_PALTFORM} STREQUAL "WIN_GLFW")
+	# 
+	include_directories("${THIRD_PARTY_DIR}/GLFW/include")
+	link_directories("${THIRD_PARTY_DIR}/GLFW/WIN/x86_32")
+
+	include_directories("${THIRD_PARTY_DIR}/glew/include")
+	link_directories("${THIRD_PARTY_DIR}/glew/lib/Release/Win32")
+
+	# FreeImage
+	include_directories("${THIRD_PARTY_DIR}/FreeImage/Source")
+	link_directories("${THIRD_PARTY_DIR}/FreeImage/Windows/x86_32")
 	
+	message("include link LIB WIN_GLFW")
 elseif()
-		message("include link LIB no WIN32")
+	message("include link LIB no OSX")
 endif()
 
 #------------------------
@@ -154,12 +169,15 @@ add_subdirectory(${GAME_NAME_LIB})
 
 
 # Создание проекта -----------------------------------------------------------------
-if (${BUILD_PALTFORM} STREQUAL "WIN32")
+if (${BUILD_PALTFORM} STREQUAL "WIN_GLES")
 	add_executable(${PROJECT_NAME} WIN32  ${ALL_HEADERS} ${ALL_SOURCES} ${ALL_RESOURCES} )
-	message("add_executable WIN32")
+	message("add_executable WIN_GLES")
+elseif(${BUILD_PALTFORM} STREQUAL "WIN_GLFW")
+	add_executable(${PROJECT_NAME} EXCLUDE_FROM_ALL ${ALL_HEADERS} ${ALL_SOURCES} ${ALL_RESOURCES} )
+	message("add_executable WIN_GLFW")
 elseif()
 	add_executable(${PROJECT_NAME} EXCLUDE_FROM_ALL  ${ALL_HEADERS} ${ALL_SOURCES} ${ALL_RESOURCES} )
-	message("add_executable no WIN32")
+	message("add_executable no OSX")
 endif()
 
 # Подключение библиотеи -----------------------------------------------------------------
@@ -169,23 +187,37 @@ target_link_libraries(${PROJECT_NAME}  ${GAME_NAME_LIB})
 target_link_libraries(${PROJECT_NAME}  ${PLATFORM_NAME_LIB})
 
 target_link_libraries(${PROJECT_NAME}  ${FREEIMAGE_NAME_LIB})
-target_link_libraries(${PROJECT_NAME}  ${FREETYPE_NAME_LIB})
+#target_link_libraries(${PROJECT_NAME}  ${FREETYPE_NAME_LIB})
 
-if (${BUILD_PALTFORM} STREQUAL "WIN32")
+if (${BUILD_PALTFORM} STREQUAL "WIN_GLES")
 	# OpenGL ES
 	target_link_libraries(${PROJECT_NAME}  "libEGL")
 	target_link_libraries(${PROJECT_NAME}  "libGLESv2")
 	
-	file(COPY "${THIRD_PARTY_DIR}/GLES/Windows/x86_32/libEGL.dll" DESTINATION Debug)
-	file(COPY "${THIRD_PARTY_DIR}/GLES/Windows/x86_32/libGLESv2.dll" DESTINATION Debug)
+	file(COPY "${THIRD_PARTY_DIR}/GLES/WIN/x86_32/libEGL.dll" DESTINATION Debug)
+	file(COPY "${THIRD_PARTY_DIR}/GLES/WIN/x86_32/libGLESv2.dll" DESTINATION Debug)
 	
 	# FreeImage
 	target_link_libraries(${PROJECT_NAME}  "freeImage")
 	file(COPY "${THIRD_PARTY_DIR}/FreeImage/Windows/x86_32/FreeImage.dll" DESTINATION Debug)
 	
-	message("target_link_libraries LIB WIN32")
+	message("target_link_libraries LIB WIN_GLES")
+elseif(${BUILD_PALTFORM} STREQUAL "WIN_GLFW")
+	# GLFW OpenGL
+	target_link_libraries(${PROJECT_NAME}  "glfw3")
+	target_link_libraries(${PROJECT_NAME}  "opengl32")
+
+	target_link_libraries(${PROJECT_NAME}  "glew32")
+	target_link_libraries(${PROJECT_NAME}  "glew32s")
+	file(COPY "${THIRD_PARTY_DIR}/glew/bin/Release/Win32/glew32.dll" DESTINATION Debug)
+
+	# FreeImage
+	target_link_libraries(${PROJECT_NAME}  "freeImage")
+	file(COPY "${THIRD_PARTY_DIR}/FreeImage/Windows/x86_32/FreeImage.dll" DESTINATION Debug)
+	
+	message("target_link_libraries LIB WIN_GLES")
 elseif()
-	message("target_link_libraries LIB no WIN32")
+	message("target_link_libraries LIB no OSX")
 endif()
 
 message(" END from make")

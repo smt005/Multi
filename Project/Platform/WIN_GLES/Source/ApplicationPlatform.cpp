@@ -1,9 +1,13 @@
 
 #include "ApplicationPlatform.h"
+#include "Game/Source/Game.h"
+#include "Example/Source/Draw/Draw.h"
 #include "Engine/Source/Callback/Callback.h"
 
 #define	WINDOW_CLASS_NAME	"MultiClass"
 #define ApplicationWin_NAME	"Multi v.0.0 [" __DATE__"  " __TIME__" ]"
+
+#define EXAMPLE false
 
 LRESULT CALLBACK handleWindowMessages(HWND nativeWindow, UINT message, WPARAM windowParameters, LPARAM longWindowParameters);
 
@@ -214,6 +218,46 @@ bool ApplicationPlatform::testEGLError(const char* functionLastCalled)
 	}
 
 	return true;
+}
+
+bool ApplicationPlatform::execution(HINSTANCE& applicationInstance)
+{
+	if (!ApplicationPlatform::createWindow(applicationInstance, ApplicationPlatform::_nativeWindow, ApplicationPlatform::_deviceContext)) exit(true);
+	if (!ApplicationPlatform::initGLES()) exit(1);
+
+	if (EXAMPLE)
+	{
+		Draw::nextDraw(4);
+	}
+	else
+	{
+		Game::gameInit();
+	}
+
+	while (true)
+	{
+		ApplicationPlatform::actionOnFrame();
+
+		if (EXAMPLE)
+		{
+			Draw::draws();
+		}
+		else
+		{
+			Game::gameTact();
+			Game::gameDraw();
+		}
+
+		if (!eglSwapBuffers(ApplicationPlatform::_eglDisplay, ApplicationPlatform::_eglSurface)) return 0;
+
+		// Check for messages from the windowing system. These will pass through the callback registered earlier.
+		MSG eventMessage;
+		PeekMessage(&eventMessage, ApplicationPlatform::_nativeWindow, NULL, NULL, PM_REMOVE);
+		TranslateMessage(&eventMessage);
+		DispatchMessage(&eventMessage);
+	}
+
+	return 0;
 }
 
 bool ApplicationPlatform::createWindow(HINSTANCE applicationInstance, HWND& nativeWindow, HDC& deviceContext)

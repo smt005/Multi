@@ -5,8 +5,12 @@
 #include "Draw/CameraGLM.h"
 #include "Object/Map.h"
 
-#define GL_GLEXT_PROTOTYPES
-#include <GLES2/gl2.h>
+#ifdef BUILD_WIN_GLES
+	#define GL_GLEXT_PROTOTYPES
+	#include "GLES2/gl2.h"
+#else BUILD_WIN_GLFW
+	#include <GL/glew.h>
+#endif
 
 float DrawEngine::_backgroundColor[4] = {0.3f, 0.6f, 0.9f, 1.0f};
 unsigned int DrawEngine::_programBase;
@@ -42,7 +46,7 @@ void DrawEngine::clearColor()
 void DrawEngine::clearColor(const float &red, const float &green, const float &blue, const float &alpha)
 {
 	glClearColor(red, green, blue, alpha);
-	glClearDepthf(1.0f);
+//glClearDepthf(1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

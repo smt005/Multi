@@ -1,11 +1,21 @@
 
 POST_CMAKE_COMMAND_WIN?= echo Done.
 
-DIR_PROJECT_WIN="Build/WIN"
+DIR_PROJECT_WIN_GLES="Build/WIN32_GLES"
+DIR_PROJECT_WIN_GLFW="Build/WIN32_GLFW"
 
-WIN32:
-	mkdir -p ${DIR_PROJECT_WIN} && cd ${DIR_PROJECT_WIN} && \
+WIN_GLES:
+	rm -rf ${DIR_PROJECT_WIN_GLES} && \
+	mkdir -p ${DIR_PROJECT_WIN_GLES} && cd ${DIR_PROJECT_WIN_GLES} && \
 	cmake -G "Visual Studio 15 2017" \
-	-DBUILD_PALTFORM=WIN32 \
+	-DBUILD_PALTFORM=WIN_GLES \
+	../../ && \
+	${POST_CMAKE_COMMAND_WIN}
+	
+WIN_GLFW:
+	rm -rf ${DIR_PROJECT_WIN_GLFW} && \
+	mkdir -p ${DIR_PROJECT_WIN_GLFW} && cd ${DIR_PROJECT_WIN_GLFW} && \
+	cmake -G "Visual Studio 15 2017" \
+	-DBUILD_PALTFORM=WIN_GLFW \
 	../../ && \
 	${POST_CMAKE_COMMAND_WIN}

@@ -20,6 +20,7 @@ public:
 	static int WindowHeight;
 
 public:
+	static bool execution(HINSTANCE& applicationInstance);
 	static bool createWindow(HINSTANCE applicationInstance, HWND& nativeWindow, HDC& deviceContext);
 	static bool initGLES();
 

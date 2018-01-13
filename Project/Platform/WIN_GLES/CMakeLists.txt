@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 message(" START generatte ${PLATFORM_NAME_LIB}")
 
 set(PLATFORM_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../)
-set(PLATFORM_LIB_DIR WIN32)
+set(PLATFORM_LIB_DIR ${BUILD_PALTFORM})
 
 # DEFINES
 add_definitions(-DWIN32_RESOURCES_DIR="${RES_DIR}/")
