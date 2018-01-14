@@ -4,7 +4,15 @@
 
 #define _USE_MATH_DEFINES
 #include <cmath>
-//#include <corecrt_math_defines.h>
+
+#ifdef BUILD_WIN_GLES
+	#include <corecrt_math_defines.h>
+#elif BUILD_WIN_GLFW
+	#include <corecrt_math_defines.h>
+#elif BUILD_OSX
+
+#endif
+
 
 // GLM
 #include <glm/fwd.hpp>
