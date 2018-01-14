@@ -37,6 +37,8 @@ foreach(DIR ${EXAMPLE_SOURCE_DIR})
 
 endforeach(DIR)
 
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 add_library(${EXAMPLE_NAME_LIB} STATIC ${ALL_EXAMPLE_HEADERS} ${ALL_EXAMPLE_SOURCES})
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 message(" END generatte ${EXAMPLE_NAME_LIB}")

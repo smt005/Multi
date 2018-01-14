@@ -10,8 +10,10 @@
 #ifdef BUILD_WIN_GLES
 	#define GL_GLEXT_PROTOTYPES
 	#include "GLES2/gl2.h"
-#else BUILD_WIN_GLFW
-	#include <GL/glew.h>
+#elif BUILD_WIN_GLFW
+    #include <GL/glew.h>
+#elif BUILD_OSX
+    #include "glfw3.h"
 #endif
 
 #include <string>
@@ -31,7 +33,11 @@ DrawMap::~DrawMap()
 void DrawMap::init()
 {
 	bool status = true;
-	status *= Shader::getShaderProgram(_program, "Shaders/Base.vert", "Shaders/Base.frag");
+#ifdef BUILD_OSX
+    status *= Shader::getShaderProgram(_program, "Shaders/OSX/Base.vert", "Shaders/OSX/Base.frag");
+#else
+    status *= Shader::getShaderProgram(_program, "Shaders/Base.vert", "Shaders/Base.frag");
+#endif
 	_status = status;
 
 	CameraGLM::current().setDefault();
@@ -69,7 +75,11 @@ void DrawMap::prepareDraw(bool clear)
 	if (clear)
 	{
 		glClearColor(0.3f, 0.6f, 0.9f, 1.0f);
-		glClearDepthf(1.0f);
+#ifdef BUILD_OSX
+        glClearDepth(1.0f);
+#else
+        glClearDepthf(1.0f);
+#endif
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 

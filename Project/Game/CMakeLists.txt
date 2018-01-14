@@ -38,6 +38,8 @@ foreach(DIR ${GAME_SOURCE_DIR})
 
 endforeach(DIR)
 
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 add_library(${GAME_NAME_LIB} STATIC ${ALL_GAME_HEADERS} ${ALL_GAME_SOURCES})
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 message(" END generatte ${GAME_NAME_LIB}")

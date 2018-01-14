@@ -20,13 +20,13 @@ void Map::create(const string &newName)
 	string dataString = FilesManager::loadTextFile(fileName.c_str());;
 	json data = json::parse(dataString.c_str());
 
-	_area = data["area"].is_null() ? 10.0f : data["area"];
+	_area = data["area"].is_null() ? 10.0f : data["area"].get<float>();
 
 	for (auto element : data["objects"])
 	{
 		const string &name = element["name"].is_string() ? element["name"] : "";
 		const string &modelName = element["model"].is_string() ? element["model"] : "default";
-		unsigned int type = element["type"].is_number_unsigned() ? element["type"] : 0;
+		unsigned int type = element["type"].is_number_unsigned() ? element["type"].get<unsigned int>()  : 0;
 
 		vec3 pos(0.0f);
 		int index = 0;
@@ -44,7 +44,7 @@ void Map::create(const string &newName)
 	{
 		const string &name = element["name"].is_string() ? element["name"] : "";
 		const string &modelName = element["model"].is_string() ? element["model"] : "default";
-		unsigned int type = element["type"].is_number_unsigned() ? element["type"] : 0;
+		unsigned int type = element["type"].is_number_unsigned() ? element["type"].get<unsigned int>()  : 0;
 
 		vec3 pos(0.0f);
 		int index = 0;

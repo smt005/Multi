@@ -70,6 +70,22 @@ foreach(DIR ${RESOURCE_DIRS})
 		${RES_DIR}/${DIR}/*.txt
 	)
 
+if (${BUILD_PALTFORM} STREQUAL "OSX")
+	file(GLOB
+		RESOURCE_FRAG
+		${RES_DIR}/${DIR}/${BUILD_PALTFORM}*.frag
+	)
+
+	file(GLOB
+		RESOURCE_VERT
+		${RES_DIR}/${DIR}/${BUILD_PALTFORM}*.vert
+	)
+
+	file(GLOB
+		RESOURCE_OBJ
+		${RES_DIR}/${DIR}/*.obj
+	)	
+elseif()	
 	file(GLOB
 		RESOURCE_FRAG
 		${RES_DIR}/${DIR}/*.frag
@@ -79,6 +95,7 @@ foreach(DIR ${RESOURCE_DIRS})
 		RESOURCE_VERT
 		${RES_DIR}/${DIR}/*.vert
 	)
+endif()
 
 	#file(GLOB
 	#	RESOURCE_OBJ
@@ -101,7 +118,7 @@ foreach(DIR ${RESOURCE_DIRS})
 	)
 
 	# для имен групп в xcode нужен обратный слэш
-	string(REGEX REPLACE "/" "\\\\" GROUP_NAME "res/${DIR}")
+	string(REGEX REPLACE "/" "\\\\" GROUP_NAME "Resources/${DIR}")
 	source_group("${GROUP_NAME}" FILES ${RESOURCE_TTF} ${RESOURCE_TXT} ${RESOURCE_FRAG} ${RESOURCE_VERT} ${RESOURCE_JSON} ${RESOURCE_PNG} ${RESOURCE_JPG})
 	
 	list(APPEND ALL_RESOURCES ${RESOURCE_TTF})
@@ -145,8 +162,22 @@ elseif(${BUILD_PALTFORM} STREQUAL "WIN_GLFW")
 	link_directories("${THIRD_PARTY_DIR}/FreeImage/Windows/x86_32")
 	
 	message("include link LIB WIN_GLFW")
+elseif(${BUILD_PALTFORM} STREQUAL "OSX")
+	include_directories("${THIRD_PARTY_DIR}/GLFW/include")
+	link_directories("${THIRD_PARTY_DIR}/GLFW/OSX")
+
+	# FreeImage
+	set(FREEIMAGE_NAME_LIB FreeImage)
+	set(FREEIMAGE_DIR "${THIRD_PARTY_DIR}/${FREEIMAGE_NAME_LIB}")
+	include_directories("${THIRD_PARTY_DIR}/${FREEIMAGE_NAME_LIB}/Source")
+	add_subdirectory("${FREEIMAGE_DIR}")
+
+	set (USED_FRAMEWORKS
+		"-framework OpenGL"
+	)
+	message("include link LIB OSX")
 elseif()
-	message("include link LIB no OSX")
+	message("include link LIB ...")
 endif()
 
 #------------------------
@@ -171,12 +202,17 @@ add_subdirectory(${GAME_NAME_LIB})
 # Создание проекта -----------------------------------------------------------------
 if (${BUILD_PALTFORM} STREQUAL "WIN_GLES")
 	add_executable(${PROJECT_NAME} WIN32  ${ALL_HEADERS} ${ALL_SOURCES} ${ALL_RESOURCES} )
+
 	message("add_executable WIN_GLES")
 elseif(${BUILD_PALTFORM} STREQUAL "WIN_GLFW")
 	add_executable(${PROJECT_NAME} EXCLUDE_FROM_ALL ${ALL_HEADERS} ${ALL_SOURCES} ${ALL_RESOURCES} )
+
 	message("add_executable WIN_GLFW")
-elseif()
-	add_executable(${PROJECT_NAME} EXCLUDE_FROM_ALL  ${ALL_HEADERS} ${ALL_SOURCES} ${ALL_RESOURCES} )
+elseif (${BUILD_PALTFORM} STREQUAL "OSX")
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+	add_executable(${PROJECT_NAME} MACOSX_BUNDLE  ${ALL_HEADERS} ${ALL_SOURCES} ${ALL_RESOURCES} )
+	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
 	message("add_executable no OSX")
 endif()
 
@@ -216,8 +252,18 @@ elseif(${BUILD_PALTFORM} STREQUAL "WIN_GLFW")
 	file(COPY "${THIRD_PARTY_DIR}/FreeImage/Windows/x86_32/FreeImage.dll" DESTINATION Debug)
 	
 	message("target_link_libraries LIB WIN_GLES")
+elseif (${BUILD_PALTFORM} STREQUAL "OSX")
+	target_link_libraries (${PROJECT_NAME} ${USED_FRAMEWORKS})
+	
+	find_library(GLFW_LIBRARY NAMES glfw.3.2.dylib HINTS "${THIRD_PARTY_DIR}/GLFW/OSX")
+	target_link_libraries(${PROJECT_NAME} PUBLIC ${GLFW_LIBRARY})
+
+	# FreeImage
+	target_link_libraries(${PROJECT_NAME}  ${FREEIMAGE_NAME_LIB})
+
+	message("target_link_libraries LIB OSX")
 elseif()
-	message("target_link_libraries LIB no OSX")
+	message("target_link_libraries LIB ...")
 endif()
 
 message(" END from make")

@@ -6,14 +6,20 @@
 #ifdef BUILD_WIN_GLES
 	#define GL_GLEXT_PROTOTYPES
 	#include "GLES2/gl2.h"
-#else BUILD_WIN_GLFW
-	#include <GL/glew.h>
+#elif BUILD_WIN_GLFW
+    #include <GL/glew.h>
+#elif BUILD_OSX
+    #include "glfw3.h"
 #endif
 
 DrawGreed::DrawGreed()
 {
-	Shader::getShaderProgram(_program, "Shaders/LineMatrix.vert", "Shaders/LineMatrix.frag");
-
+#ifdef BUILD_OSX
+    Shader::getShaderProgram(_program, "Shaders/OSX/LineMatrix.vert", "Shaders/OSX/LineMatrix.frag");
+#else
+    Shader::getShaderProgram(_program, "Shaders/LineMatrix.vert", "Shaders/LineMatrix.frag");
+#endif
+	
 	if (!_program) return;
 
 	_u_matrix = glGetUniformLocation(_program, "u_matrix");
@@ -37,8 +43,13 @@ DrawGreed::~DrawGreed()
 
 void DrawGreed::prepareDraw()
 {
-	glClearDepthf(1.0f);
-	glDepthFunc(GL_LEQUAL);
+#ifdef BUILD_OSX
+	glClearDepth(1.0f);
+#else
+    glClearDepthf(1.0f);
+#endif
+    
+    glDepthFunc(GL_LEQUAL);
 	glEnable(GL_DEPTH_TEST);
 
 	glUseProgram(_program);

@@ -9,8 +9,10 @@
 #ifdef BUILD_WIN_GLES
 	#define GL_GLEXT_PROTOTYPES
 	#include "GLES2/gl2.h"
-#else BUILD_WIN_GLFW
-	#include <GL/glew.h>
+#elif BUILD_WIN_GLFW
+    #include <GL/glew.h>
+#elif BUILD_OSX
+    #include "glfw3.h"
 #endif
 
 #include <fstream>
@@ -19,8 +21,12 @@
 
 DrawLoadOBJ::DrawLoadOBJ()
 {
-	_status = Shader::getShaderProgram(_program, "Shaders/Texture.vert", "Shaders/Texture.frag");
-
+#ifdef BUILD_OSX
+    _status = Shader::getShaderProgram(_program, "Shaders/OSX/Texture.vert", "Shaders/OSX/Texture.frag");
+#else
+    _status = Shader::getShaderProgram(_program, "Shaders/Texture.vert", "Shaders/Texture.frag");
+#endif
+	
 	_countIndex = initVBO();
 	//getGridTextureId();
 	getLoadTextureId();

@@ -42,6 +42,8 @@ foreach(DIR ${ENGINE_SOURCE_DIR})
 
 endforeach(DIR)
 
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 add_library(${ENGINE_NAME_LIB} STATIC ${ALL_ENGINE_HEADERS} ${ALL_ENGINE_SOURCES})
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 message(" END generatte ${ENGINE_NAME_LIB}")

@@ -13,8 +13,6 @@
 int ApplicationPlatform::WindowWidth = 1500;
 int ApplicationPlatform::WindowHeight = 1000;
 
-
-
 bool ApplicationPlatform::execution()
 {
 	GLFWwindow* window;

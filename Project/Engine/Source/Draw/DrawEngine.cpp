@@ -8,8 +8,10 @@
 #ifdef BUILD_WIN_GLES
 	#define GL_GLEXT_PROTOTYPES
 	#include "GLES2/gl2.h"
-#else BUILD_WIN_GLFW
-	#include <GL/glew.h>
+#elif BUILD_WIN_GLFW
+    #include <GL/glew.h>
+#elif BUILD_OSX
+    #include "glfw3.h"
 #endif
 
 float DrawEngine::_backgroundColor[4] = {0.3f, 0.6f, 0.9f, 1.0f};
@@ -68,7 +70,11 @@ void DrawEngine::prepareDraw(bool clear)
 // DrawMap
 void DrawEngine::initDrawMap()
 {
-	Shader::getShaderProgram(_programBase, "Shaders/Base.vert", "Shaders/Base.frag");
+#ifdef BUILD_OSX
+    Shader::getShaderProgram(_programBase, "Shaders/OSX/Base.vert", "Shaders/OSX/Base.frag");
+#else
+    Shader::getShaderProgram(_programBase, "Shaders/Base.vert", "Shaders/Base.frag");
+#endif
 }
 
 void DrawEngine::drawMap()

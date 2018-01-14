@@ -5,8 +5,10 @@
 #ifdef BUILD_WIN_GLES
 	#define GL_GLEXT_PROTOTYPES
 	#include "GLES2/gl2.h"
-#else BUILD_WIN_GLFW
+#elif BUILD_WIN_GLFW
 	#include <GL/glew.h>
+#elif BUILD_OSX
+    #include "glfw3.h"
 #endif
 
 #include<fstream>

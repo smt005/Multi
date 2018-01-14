@@ -5,13 +5,19 @@
 #ifdef BUILD_WIN_GLES
 	#define GL_GLEXT_PROTOTYPES
 	#include "GLES2/gl2.h"
-#else BUILD_WIN_GLFW
-	#include <GL/glew.h>
+#elif BUILD_WIN_GLFW
+    #include <GL/glew.h>
+#elif BUILD_OSX
+    #include "glfw3.h"
 #endif
 
 DrawHelloTriangle::DrawHelloTriangle()
 {
-	_status = Shader::getShaderProgram(_program, "Shaders/Sample.vert", "Shaders/Sample.frag");
+#ifdef BUILD_OSX
+    _status = Shader::getShaderProgram(_program, "Shaders/OSX/Sample.vert", "Shaders/OSX/Sample.frag");
+#else
+    _status = Shader::getShaderProgram(_program, "Shaders/Sample.vert", "Shaders/Sample.frag");
+#endif
 }
 
 DrawHelloTriangle::~DrawHelloTriangle()

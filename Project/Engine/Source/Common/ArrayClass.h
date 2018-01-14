@@ -70,7 +70,7 @@ int ArrayClass<Tarray>::getIndex(const string &searchName)
 {
 	for (int i = 0; i < _count; ++i)
 	{
-		T *item = _array[i];
+		Tarray *item = _array[i];
 
 		if (item)
 		{
@@ -86,7 +86,7 @@ int ArrayClass<Tarray>::getIndex(const Tarray &searchItem)
 {
 	for (int i = 0; i < _count; ++i)
 	{
-		T *item = _array[i];
+		Tarray *item = _array[i];
 
 		if (item)
 		{
