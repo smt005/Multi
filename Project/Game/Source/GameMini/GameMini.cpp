@@ -65,7 +65,8 @@ void GameMini::initDraw()
 	_camera = &CameraGLM::getByName("First");
 	_camera->setDefault();
 	//_camera->setLookAt(glm::vec3(3.0f, 1.5f, 3.0f), glm::vec3(.5f, .25f, .0f));
-	_camera->setLookAt(glm::vec3(-25.0f, -25.0f, 50.0f), glm::vec3(0.5f, 0.5f, 1.0f));
+	//_camera->setLookAt(glm::vec3(-25.0f, -25.0f, 50.0f), glm::vec3(0.5f, 0.5f, 1.0f));
+    _camera->setLookAt(glm::vec3(-5.0f, -5.0f, 5.0f), glm::vec3(0.5f, 0.5f, 1.0f));
 	_camera->setSpeed(0.1f);
 	_camera->setCalcFrustum(false);
 }
