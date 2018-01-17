@@ -10,8 +10,9 @@
 
 #define EXAMPLE false
 
-int ApplicationPlatform::WindowWidth = 1500;
-int ApplicationPlatform::WindowHeight = 1000;
+int ApplicationPlatform::_windowWidth = 640;
+int ApplicationPlatform::_windowHeight = 480;
+float ApplicationPlatform::_cursorPos[2];
 
 bool ApplicationPlatform::execution()
 {
@@ -20,7 +21,7 @@ bool ApplicationPlatform::execution()
     if (!glfwInit())
         return -1;
     
-    window = glfwCreateWindow(WindowWidth, WindowHeight, ApplicationWin_NAME, NULL, NULL);
+    window = glfwCreateWindow(_windowWidth, _windowHeight, ApplicationWin_NAME, NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -67,28 +68,28 @@ bool ApplicationPlatform::execution()
 
 void ApplicationPlatform::actionOnFrame()
 {
-    //Callback::move(pos);
+    Callback::move(_cursorPos);
     Callback::tap_pinch();
 }
 
 int ApplicationPlatform::width()
 {
-    int width = WindowWidth;
+    int width = _windowWidth;
     // ...
     return width != 0 ? width : 1;
 }
 
 int ApplicationPlatform::height()
 {
-    int height = WindowHeight;
+    int height = _windowHeight;
     // ...
     return height != 0 ? height : 1;
 }
 
 float ApplicationPlatform::aspect()
 {
-    int width = WindowWidth;
-    int height = WindowHeight;
+    int width = _windowWidth;
+    int height = _windowHeight;
     
     // ...
     
@@ -114,8 +115,8 @@ void ApplicationPlatform::close()
 
 void ApplicationPlatform::cursorPositionCallback(GLFWwindow* Window, double x, double y)
 {
-    float pos[] = { static_cast<float>(x), static_cast<float>(y) };
-    Callback::move(pos);
+    _cursorPos[0] = static_cast<float>(x);
+    _cursorPos[1] = static_cast<float>(y);
 }
 
 void ApplicationPlatform::mouseButtonCallback(GLFWwindow* Window, int Button, int Action, int mods)

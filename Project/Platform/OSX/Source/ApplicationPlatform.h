@@ -19,9 +19,6 @@ public:
         KEY_RELEASE = GLFW_RELEASE,
         KEY_REPEAT = GLFW_REPEAT
     };
-    
-	static int WindowWidth;
-	static int WindowHeight;
 
 public:
     static bool execution();
@@ -36,6 +33,10 @@ public:
 	static void close();
 
 private:
+    static int _windowWidth;
+    static int _windowHeight;
+    static float _cursorPos[2];
+    
     static void cursorPositionCallback(GLFWwindow* Window, double x, double y);
     static void mouseButtonCallback(GLFWwindow* Window, int Button, int Action, int mods);
     static void keyCallback(GLFWwindow* Window, int Key, int Scancode, int Action, int Mods);
