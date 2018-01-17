@@ -20,5 +20,6 @@ public:
 	const float& getArea() { return _area; };
 
 	void create(const string &newName);
+	void getDataJson(json& dataJson);
 	void action();
 };

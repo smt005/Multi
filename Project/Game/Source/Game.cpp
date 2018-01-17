@@ -3,21 +3,22 @@
 
 Game *Game::_game = nullptr;
 
-Game::Game()
-{
-}
-
-Game::~Game()
-{
-	delete[] _game;
-	_game = nullptr;
-}
 
 void Game::gameInit()
 {
 	GameMini *game = new GameMini();
 	game->setCurrent();
 	game->init();
+}
+
+void Game::gameSave()
+{
+	if (!_game) return;
+
+	Game* gameTemp = _game;
+	_game = nullptr;
+	gameTemp->save();
+	delete _game;
 }
 
 void Game::gameTact()
@@ -34,6 +35,7 @@ void Game::setCurrent()
 {
 	if (_game)
 	{
+		_game->save();
 		delete[] _game;
 	}
 
@@ -43,6 +45,10 @@ void Game::setCurrent()
 void Game::init()
 {
 
+}
+
+void Game::save()
+{
 }
 
 void Game::tact()

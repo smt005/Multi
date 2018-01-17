@@ -113,6 +113,7 @@ double ApplicationPlatform::getCurentTime()
 
 void ApplicationPlatform::close()
 {
+	Game::gameSave();
 	exit(1);
 }
 

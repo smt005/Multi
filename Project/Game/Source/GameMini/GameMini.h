@@ -18,6 +18,7 @@ public:
 	~GameMini();
 
 	void init();
+	void save();
 	void tact();
 	void draw();
 

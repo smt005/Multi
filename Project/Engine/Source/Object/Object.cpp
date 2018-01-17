@@ -15,6 +15,16 @@ Object::~Object()
 {
 }
 
+void Object::getDataJson(json& dataJson)
+{
+	dataJson["name"] = name();
+	dataJson["model"] = model().name();
+
+	dataJson["pos"].push_back(_matrix[3][0]);
+	dataJson["pos"].push_back(_matrix[3][1]);
+	dataJson["pos"].push_back(_matrix[3][2]);
+}
+
 Model& Object::model()
 {
 	if (!_model) _model = &Model::getByName("default");

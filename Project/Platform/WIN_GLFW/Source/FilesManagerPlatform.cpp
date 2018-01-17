@@ -46,6 +46,29 @@ char* FilesManagerPlatform::loadTextFile(const char* fileName)
 	return buf;
 }
 
+void FilesManagerPlatform::saveTextFile(const char *fileName, const char *data)
+{
+	if (!fileName)
+	{
+		return;
+	}
+
+	char *fileNameWithDir = getFullPath(fileName);
+
+	FILE* file;
+	if (fopen_s(&file, fileNameWithDir, "w") != NULL)
+	{
+		delete[] fileNameWithDir;
+		return;
+	}
+
+	fputs(data, file);
+
+	fclose(file);
+	delete[] fileNameWithDir;
+}
+
+
 char* FilesManagerPlatform::getFullPath(const char* fileName)
 {
 	int lenDir = strlen(_dir);

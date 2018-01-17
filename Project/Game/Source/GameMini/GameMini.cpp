@@ -1,5 +1,6 @@
 #include "GameMini.h"
 #include "Application.h"
+#include "FilesManager.h"
 
 #include "Draw/DrawEngine.h"
 #include "Draw/CameraGLM.h"
@@ -19,6 +20,19 @@ void GameMini::init()
 	initMap();
 	initDraw();
 	initCallback();
+}
+
+void GameMini::save()
+{
+	json dataJson;
+
+	if (_map)
+	{
+		_map->getDataJson(dataJson);
+	}
+
+	std::string dataString = dataJson.dump();
+	FilesManager::saveTextFile("Saves/GameMini.sav", dataString.c_str());
 }
 
 void GameMini::tact()

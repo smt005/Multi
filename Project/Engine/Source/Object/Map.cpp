@@ -59,6 +59,26 @@ void Map::create(const string &newName)
 	}
 }
 
+void Map::getDataJson(json& dataJson)
+{
+	dataJson["name"] = name();
+	dataJson["area"] = _area;
+
+	for (int i = 0; i < _objects.count(); ++i)
+	{
+		json dataObject;
+		_objects[i].getDataJson(dataObject);
+		dataJson["objects"].push_back(dataObject);
+	}
+
+	for (int i = 0; i < _gliders.count(); ++i)
+	{
+		json dataObject;
+		_objects[i].getDataJson(dataObject);
+		dataJson["gliders"].push_back(dataObject);
+	}
+}
+
 void Map::action()
 {
 	for (int i = 0; i < _objects.count(); ++i) _objects[i].action();

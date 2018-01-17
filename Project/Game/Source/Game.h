@@ -5,17 +5,16 @@ class Game
 private:
 	static Game *_game;
 
-public:
-	Game();
-	~Game();
-
+public:	
 	static void gameInit();
+	static void gameSave();	
 	static void gameTact();
 	static void gameDraw();
 
 	void setCurrent();
 
 	virtual void init();
+	virtual void save();
 	virtual void tact();
 	virtual void draw();
 };
