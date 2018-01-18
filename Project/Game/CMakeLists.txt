@@ -14,6 +14,7 @@ include_directories(${THIRD_PARTY_DIR})
 set(GAME_SOURCE_DIR
     .
 	GameMini
+	GameEvolutionTest
 )
 
 foreach(DIR ${GAME_SOURCE_DIR})

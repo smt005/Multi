@@ -18,5 +18,10 @@
   "Car": {
 	"shape": "Models/Car.obj",
     "texture": "Textures/Car.jpg"
+   },
+  "Cell_test": {
+	"shape": "Models/Cell_test.obj",
+	"scale": 0.1,
+    "texture": "Textures/Cell_blue_test.png"
    }
 }

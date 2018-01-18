@@ -2,6 +2,7 @@
 
 #include "AIInterface.h"
 
+class Map;
 class Glider;
 class Object;
 
@@ -17,5 +18,5 @@ public:
 
 	void action();
 
-	static void findTarget();
+	static void findTarget(Map& map, const char* nameTarget);
 };

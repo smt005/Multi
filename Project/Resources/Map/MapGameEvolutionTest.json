@@ -1,0 +1,66 @@
+{
+  "area": 100,
+  "objects": [
+    {
+      "name": "Plane",
+      "model": "Plane100",
+      "pos": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "Target",
+      "model": "Car",
+      "type": 1,
+      "pos": [
+        0,
+        0,
+        1
+      ]
+    }
+	],
+  "gliders": [
+    {
+      "name": "Glider_00",
+      "model": "Cell_test",
+      "type": 2,
+      "pos": [
+        10,
+        10,
+        0.4
+      ]
+    },
+    {
+      "name": "Glider_01",
+      "model": "Cell_test",
+      "type": 2,
+      "pos": [
+        -10,
+        10,
+        0.3
+      ]
+    },
+    {
+      "name": "Glider_02",
+      "model": "Cell_test",
+      "type": 2,
+      "pos": [
+        10,
+        -10,
+        0.2
+      ]
+    },
+    {
+      "name": "Glider_03",
+      "model": "Cell_test",
+      "type": 2,
+      "pos": [
+        -10,
+        -10,
+        0.1
+      ]
+    }
+  ]
+}

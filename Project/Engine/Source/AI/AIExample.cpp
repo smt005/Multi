@@ -31,9 +31,10 @@ void AIExample::action()
 	}
 }
 
-void AIExample::findTarget()
+void AIExample::findTarget(Map& map, const char* nameTarget)
 {
-	Map &map = Map::getByName("Map");
 	ArrayTemplate <Object> &objects = map._objects;
-	_targetObject = &objects.getByName("Target");
+	_targetObject = &objects.getByName(nameTarget);
+
+	int i = 0;
 }

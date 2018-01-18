@@ -38,6 +38,7 @@ public:
 	bool loadObj(const string& name);
 	void initVBO();
 	void check();
+	void setScale(float *scale);
 
 private:
 	void	getVertex(char* charLine, float* aVertex, int count);

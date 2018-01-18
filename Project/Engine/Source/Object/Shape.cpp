@@ -360,6 +360,18 @@ int Shape::getCount(char* pointToChar)
 	return atoi(line);
 }
 
+void Shape::setScale(float *scale)
+{
+	if (!scale) return;
+
+	for (int i = 0; i < _countVertex * 3; i = i + 3)
+	{
+		_aVertex[i]     *= scale[0];
+		_aVertex[i + 1] *= scale[1];
+		_aVertex[i + 2] *= scale[2];
+	}
+}
+
 void Shape::check()
 {
 /*	LOG_LINE "\nVERTEXS: " << (_aVertex ? "YES" : "NO") << "\t COUNT = " << _countVertex LOG_END

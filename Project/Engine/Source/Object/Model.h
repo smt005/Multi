@@ -16,6 +16,7 @@ class Model : public ArrayClass <Model>
 private:
 	Shape *_shape;
 	Texture *_texture;
+	float _scale[3];
 
 public:
 	Shape& shape();

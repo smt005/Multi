@@ -1,12 +1,14 @@
 #include "Game.h"
 #include "GameMini/GameMini.h"
+#include "GameEvolutionTest/GameEvolutionTest.h"
 
 Game *Game::_game = nullptr;
 
 
 void Game::gameInit()
 {
-	GameMini *game = new GameMini();
+	//GameMini *game = new GameMini();
+	GameEvolutionTest *game = new GameEvolutionTest();
 	game->setCurrent();
 	game->init();
 }

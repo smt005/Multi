@@ -1,5 +1,6 @@
 #pragma once
 
+class Map;
 class Object;
 
 class DrawEngine
@@ -22,6 +23,6 @@ public:
 
 	// DrawMap
 	static void initDrawMap();
-	static void drawMap();
+	static void drawMap(Map& map);
 	static void drawModel(Object &object);
 };

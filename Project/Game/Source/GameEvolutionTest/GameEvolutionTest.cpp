@@ -1,4 +1,4 @@
-#include "GameMini.h"
+#include "GameEvolutionTest.h"
 #include "Application.h"
 #include "FilesManager.h"
 
@@ -7,22 +7,22 @@
 #include "Object/Map.h"
 #include "AI/AIExample.h"
 
-GameMini::GameMini()
+GameEvolutionTest::GameEvolutionTest()
 {
 }
 
-GameMini::~GameMini()
+GameEvolutionTest::~GameEvolutionTest()
 {
 }
 
-void GameMini::init()
+void GameEvolutionTest::init()
 {
 	initMap();
 	initDraw();
 	initCallback();
 }
 
-void GameMini::save()
+void GameEvolutionTest::save()
 {
 	json dataJson;
 
@@ -32,10 +32,10 @@ void GameMini::save()
 	}
 
 	std::string dataString = dataJson.dump();
-	FilesManager::saveTextFile("Saves/GameMini.sav", dataString.c_str());
+	FilesManager::saveTextFile("Saves/GameEvolutionTest.sav", dataString.c_str());
 }
 
-void GameMini::tact()
+void GameEvolutionTest::tact()
 {
 	if (_timerTarget > 300)
 	{
@@ -59,48 +59,45 @@ void GameMini::tact()
 	_map->action();
 }
 
-void GameMini::draw()
+void GameEvolutionTest::draw()
 {
 	DrawEngine::prepareDraw(true);
 	DrawEngine::drawMap(*_map);
 }
 
-void GameMini::initMap()
+void GameEvolutionTest::initMap()
 {
-	_map = &Map::getByName("Map");
+	_map = &Map::getByName("MapGameEvolutionTest");
 	AIExample::findTarget(*_map, "Target");
 }
 
-void GameMini::initDraw()
+void GameEvolutionTest::initDraw()
 {
 	DrawEngine::setBackgroundColor(0.3f, 0.6f, 0.9f, 1.0f);
 	DrawEngine::initDrawMap();
 
 	_camera = &CameraGLM::getByName("First");
 	_camera->setDefault();
-	//_camera->setLookAt(glm::vec3(3.0f, 1.5f, 3.0f), glm::vec3(.5f, .25f, .0f));
-	//_camera->setLookAt(glm::vec3(-25.0f, -25.0f, 50.0f), glm::vec3(0.5f, 0.5f, 1.0f));
     _camera->setLookAt(glm::vec3(-5.0f, -5.0f, 5.0f), glm::vec3(0.5f, 0.5f, 1.0f));
 	_camera->setSpeed(0.1f);
 	_camera->setCalcFrustum(false);
 }
 
-void GameMini::initCallback()
+void GameEvolutionTest::initCallback()
 {
 	this->setCallback(EventCallback::TAP_DOUBLE, UiFunction(closeGame));
 	this->setCallback(EventCallback::TAP_PINCH, UiFunction(rotateCamera));
-	//this->setCallback(EventCallback::MOVE, UiFunction(rotateCamera));
 
 	Callback::_hintObject = this;
 }
 
-bool GameMini::closeGame(void *data)
+bool GameEvolutionTest::closeGame(void *data)
 {
 	App::close();
 	return true;
 }
 
-bool GameMini::rotateCamera(void *data)
+bool GameEvolutionTest::rotateCamera(void *data)
 {
 	CameraGLM::current().rotate(Callback::_vector);
 	return true;

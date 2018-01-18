@@ -42,9 +42,49 @@ void Model::create(const string &newName)
 	const string &shape = dataModel["shape"].is_string() ? dataModel["shape"] : FILE_NAME_SHAPE_FILE;
 	const string &texture = dataModel["texture"].is_string() ? dataModel["texture"] : FILE_NAME_TEXTURE_FILE;
 
+	bool hasScalling = false;
+	if (dataModel["scale"].is_number_float())
+	{
+		float value = dataModel["scale"].get<float>();
+		_scale[0] = value;
+		_scale[1] = value;
+		_scale[2] = value;
+
+		hasScalling = true;
+	}
+	else if (dataModel["scale"].is_array())
+	{
+		int index = 0;
+		for (float value : dataModel["scale"])
+		{
+			_scale[index] = value;
+
+			if (index >= 2) break;
+			++index;
+		}
+
+		hasScalling = true;
+	}
+
 	// TODO:
 	_shape = Shape::getShape(shape);
 	_texture = &Texture::getByName(texture);
+
+	if (hasScalling)
+	{
+		_shape->setScale(_scale);
+		
+		// Временно
+		string endName = "_[";
+		endName += "0.1";
+		endName += ",";
+		endName += "0.1";
+		endName += ",";
+		endName += "0.1";
+		endName += "]";
+
+		_shape->_name = _shape->_name + endName;
+	}
 }
 
 // STATIC
