@@ -85,7 +85,8 @@ if (${BUILD_PALTFORM} STREQUAL "OSX")
 		RESOURCE_OBJ
 		${RES_DIR}/${DIR}/*.obj
 	)	
-elseif()	
+endif()
+#elseif()	
 	file(GLOB
 		RESOURCE_FRAG
 		${RES_DIR}/${DIR}/*.frag
@@ -95,7 +96,7 @@ elseif()
 		RESOURCE_VERT
 		${RES_DIR}/${DIR}/*.vert
 	)
-endif()
+#endif()
 
 	#file(GLOB
 	#	RESOURCE_OBJ

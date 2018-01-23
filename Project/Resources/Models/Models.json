@@ -3,13 +3,13 @@
     "shape": "Models/Glider.obj",
     "texture": "Textures/GLD_BASE_EFFECT.png"
   },
-  "Plane5": {
-    "shape": "Models/Plane5.obj",
-    "texture": "Textures/RGB.png"
-  },
   "Plane100": {
     "shape": "Models/Plane100.obj",
     "texture": "Textures/Ambient.png"
+  },
+   "PlaneFood": {
+    "shape": "Models/Plane100.obj",
+    "texture": "Textures/Food_128.png"
   },
   "Box1": {
     "shape": "Models/Box1.obj",

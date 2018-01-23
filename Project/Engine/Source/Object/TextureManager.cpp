@@ -67,8 +67,6 @@ unsigned int TextureManager::LoadTexture(const char* fileName)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	FreeImage_Unload(dib);
-
 	delete[] fileNameWithDir;
 	return  _textureId;
 }

@@ -6,6 +6,6 @@ void main()
 {
 	vec4 baseColor;
 	baseColor = texture2D(s_baseMap, v_texCoord);
-	baseColor.a = 1.0;
+	baseColor.a = 0.05;
     gl_FragColor = baseColor;
 }

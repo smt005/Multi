@@ -10,6 +10,87 @@
         0
       ]
     },
+     {
+      "name": "PlaneFood",
+      "model": "PlaneFood",
+      "pos": [
+        0,
+        0,
+        0
+      ]
+    },
+     {
+      "name": "PlaneFood",
+      "model": "PlaneFood",
+      "pos": [
+        0,
+        0,
+        0.025
+      ]
+    },
+     {
+      "name": "PlaneFood",
+      "model": "PlaneFood",
+      "pos": [
+        0,
+        0,
+        0.05
+      ]
+    },
+     {
+      "name": "PlaneFood",
+      "model": "PlaneFood",
+      "pos": [
+        0,
+        0,
+        0.075
+      ]
+    },
+     {
+      "name": "PlaneFood",
+      "model": "PlaneFood",
+      "pos": [
+        0,
+        0,
+        0.1
+      ]
+    },
+     {
+      "name": "PlaneFood",
+      "model": "PlaneFood",
+      "pos": [
+        0,
+        0,
+        0.125
+      ]
+    },
+     {
+      "name": "PlaneFood",
+      "model": "PlaneFood",
+      "pos": [
+        0,
+        0,
+        0.15
+      ]
+    },
+     {
+      "name": "PlaneFood",
+      "model": "PlaneFood",
+      "pos": [
+        0,
+        0,
+        0.175
+      ]
+    },
+     {
+      "name": "PlaneFood",
+      "model": "PlaneFood",
+      "pos": [
+        0,
+        0,
+        0.2
+      ]
+    },
     {
       "name": "Target",
       "model": "Car",
@@ -20,7 +101,7 @@
         1
       ]
     }
-	],
+  ],
   "gliders": [
     {
       "name": "Glider_00",
