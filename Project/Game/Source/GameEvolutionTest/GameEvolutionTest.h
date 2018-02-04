@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Game.h"
+#include "Engine/Source/Physics/Physics.h"
 #include "Callback/Callback.h"
 
 class Map;
@@ -12,6 +13,7 @@ private:
 	Map *_map = nullptr;
 	CameraGLM *_camera = nullptr;
 	double _timerTarget = 0.0;
+	Physics physics;
 
 public:
 	GameEvolutionTest();

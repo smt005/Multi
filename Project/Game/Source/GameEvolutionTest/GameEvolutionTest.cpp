@@ -20,6 +20,7 @@ void GameEvolutionTest::init()
 	initMap();
 	initDraw();
 	initCallback();
+	physics.createWorldTest();
 }
 
 void GameEvolutionTest::save()
@@ -37,6 +38,8 @@ void GameEvolutionTest::save()
 
 void GameEvolutionTest::tact()
 {
+	physics.update();
+
 	if (_timerTarget > 300)
 	{
 		_timerTarget = 0.0;

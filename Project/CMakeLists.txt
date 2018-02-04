@@ -11,6 +11,8 @@ set(VERSION_PATCH "0")
 
 add_definitions(-D"BUILD_${BUILD_PALTFORM}")
 
+SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON) 
+
 set(PROJECT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(THIRD_PARTY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty")
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Source")
@@ -134,6 +136,36 @@ endforeach(DIR)
 
 # Подключение библиотек -----------------------------------------------------------------
 
+#	Физика -------------------
+
+set(BULLET_NAME_LIB "bullet3")
+set(BULLET_PHYSICS_SOURCE_DIR "X:/Projects/zip/ThirdParty/Physics/${BULLET_NAME_LIB}")
+
+OPTION(BUILD_UNIT_TESTS "Build Unit Tests"	OFF)
+OPTION(BUILD_BULLET2_DEMOS "Build Unit Tests"	OFF)
+OPTION(USE_GRAPHICAL_BENCHMARK "Use Graphical Benchmark" OFF)
+OPTION(BUILD_CPU_DEMOS "Build original Bullet CPU examples" OFF)
+OPTION(USE_GLUT "Use Glut"	OFF)
+OPTION(BUILD_PYBULLET "Set when you want to build pybullet (Python bindings for Bullet)" OFF)
+OPTION(BUILD_ENET "Set when you want to build apps with enet UDP networking support" OFF)
+OPTION(BUILD_CLSOCKET "Set when you want to build apps with enet TCP networking support" OFF)
+OPTION(BUILD_BULLET2_DEMOS "Set when you want to build the Bullet 2 demos" OFF)
+OPTION(BUILD_EXTRAS "Set when you want to build the extras" OFF)
+OPTION(INSTALL_CMAKE_FILES "Install generated CMake files" OFF)
+
+add_subdirectory(${BULLET_NAME_LIB})
+
+INCLUDE_DIRECTORIES(
+	${BULLET_PHYSICS_SOURCE_DIR}/src
+)
+
+LINK_LIBRARIES(
+	BulletDynamics BulletCollision LinearMath
+)
+
+# ---------------------
+
+
 # freetype
 #set(FREETYPE_NAME_LIB freetype)
 #set(FREETYPE_DIR "ThirdParty/${FREETYPE_NAME_LIB}")
@@ -201,9 +233,40 @@ add_subdirectory(${GAME_NAME_LIB})
 
 
 # Создание проекта -----------------------------------------------------------------
+
+IF (WIN32)
+	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+ENDIF()
+
 if (${BUILD_PALTFORM} STREQUAL "WIN_GLES")
 	add_executable(${PROJECT_NAME} WIN32  ${ALL_HEADERS} ${ALL_SOURCES} ${ALL_RESOURCES} )
 
+	#	Физика -------------------
+	SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES  DEBUG_POSTFIX "_Debug")
+	SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES  MINSIZEREL_POSTFIX "_MinsizeRel")
+	SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES  RELWITHDEBINFO_POSTFIX "_RelWithDebugInfo")
+
+	set_property(TARGET BulletDynamics PROPERTY FOLDER ${BULLET_NAME_LIB})
+	set_property(TARGET BulletCollision PROPERTY FOLDER ${BULLET_NAME_LIB})
+	set_property(TARGET LinearMath PROPERTY FOLDER ${BULLET_NAME_LIB})
+	
+	set_property(TARGET Bullet2FileLoader PROPERTY FOLDER ${BULLET_NAME_LIB})
+	set_property(TARGET Bullet3Common PROPERTY FOLDER ${BULLET_NAME_LIB})
+	set_property(TARGET Bullet3Collision PROPERTY FOLDER ${BULLET_NAME_LIB})
+	set_property(TARGET Bullet3Dynamics PROPERTY FOLDER ${BULLET_NAME_LIB})
+	set_property(TARGET Bullet3Geometry PROPERTY FOLDER ${BULLET_NAME_LIB})
+	set_property(TARGET Bullet3OpenCL_clew PROPERTY FOLDER ${BULLET_NAME_LIB})
+	set_property(TARGET BulletInverseDynamics PROPERTY FOLDER ${BULLET_NAME_LIB})
+	set_property(TARGET BulletSoftBody PROPERTY FOLDER ${BULLET_NAME_LIB})
+	set_property(TARGET Bullet3Dynamics PROPERTY FOLDER ${BULLET_NAME_LIB})
+	
+	target_link_libraries(${PROJECT_NAME} BulletDynamics)
+	target_link_libraries(${PROJECT_NAME} BulletCollision)
+	target_link_libraries(${PROJECT_NAME} LinearMath)
+
+	#	-------------------
+	
 	message("add_executable WIN_GLES")
 elseif(${BUILD_PALTFORM} STREQUAL "WIN_GLFW")
 	add_executable(${PROJECT_NAME} EXCLUDE_FROM_ALL ${ALL_HEADERS} ${ALL_SOURCES} ${ALL_RESOURCES} )
