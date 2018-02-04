@@ -18,15 +18,20 @@ set(THIRD_PARTY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty")
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Source")
 set(RES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Resources")
 
-
 # SRC
 
-set(MAIN_SOURCE "${SRC_DIR}/${BUILD_PALTFORM}_main.cpp")
-list(APPEND ALL_SOURCES ${MAIN_SOURCE})
+if (${BUILD_PALTFORM} STREQUAL "IOS")
+	set(SOURCE_DIRS
+		IOS
+	)
+elseif()
+	set(MAIN_SOURCE "${SRC_DIR}/${BUILD_PALTFORM}_main.cpp")
+	list(APPEND ALL_SOURCES ${MAIN_SOURCE})
 
-set(SOURCE_DIRS
+	set(SOURCE_DIRS
 
-)
+	)
+endif()
 
 foreach(DIR ${SOURCE_DIRS})
 	file(GLOB
@@ -34,16 +39,21 @@ foreach(DIR ${SOURCE_DIRS})
 		${SRC_DIR}/${DIR}/*.h
 	)
 
-	file(GLOB
-		SOURCES
-		${SRC_DIR}/${DIR}/*.cpp
-	)
+	if (${BUILD_PALTFORM} STREQUAL "IOS")
+		file(GLOB
+			SOURCES
+			${SRC_DIR}/${DIR}/*.m
+		)
+	elseif()
+		file(GLOB
+			SOURCES
+			${SRC_DIR}/${DIR}/*.cpp
+		)
+	endif()
 
 	# для имен групп в xcode нужен обратный слэш
 	string(REGEX REPLACE "/" "\\\\" GROUP_NAME ${DIR})
 	source_group("${GROUP_NAME}" FILES ${HEADERS} ${SOURCES})
-	
-	#message("SOURCE: " ${HEADERS} ${SOURCES})
 	
 	list(APPEND ALL_HEADERS ${HEADERS})
 	list(APPEND ALL_SOURCES ${SOURCES})
@@ -137,11 +147,12 @@ endforeach(DIR)
 # Подключение библиотек -----------------------------------------------------------------
 
 #	Физика -------------------
+if (${BUILD_PALTFORM} STREQUAL "IOS")
+    message("...................................... IOS choise")
+elseif()
 
 set(BULLET_NAME_LIB "bullet3")
 set(BULLET_PHYSICS_SOURCE_DIR ${THIRD_PARTY_DIR}/${BULLET_NAME_LIB})
-
-message("BULLET_PHYSICS_SOURCE_DIR = ${BULLET_PHYSICS_SOURCE_DIR}")
 
 OPTION(BUILD_UNIT_TESTS "Build Unit Tests"	OFF)
 OPTION(BUILD_BULLET2_DEMOS "Build Unit Tests"	OFF)
@@ -167,12 +178,13 @@ LINK_LIBRARIES(
 
 # ---------------------
 
-
 # freetype
 #set(FREETYPE_NAME_LIB freetype)
 #set(FREETYPE_DIR "ThirdParty/${FREETYPE_NAME_LIB}")
 #include_directories("${FREETYPE_DIR}/include")
 #add_subdirectory(${FREETYPE_DIR})
+
+endif()
 
 if (${BUILD_PALTFORM} STREQUAL "WIN_GLES")
 	# OpenGL es
@@ -210,12 +222,26 @@ elseif(${BUILD_PALTFORM} STREQUAL "OSX")
 	set (USED_FRAMEWORKS
 		"-framework OpenGL"
 	)
+
 	message("include link LIB OSX")
+elseif(${BUILD_PALTFORM} STREQUAL "IOS")
+
+	set (USED_FRAMEWORKS
+		"-framework UIKit"
+		"-framework OpenGLES"
+		"-framework QuartzCore"
+		"-ObjC"
+	)
+
+	message("include link LIB IOS")
 elseif()
 	message("include link LIB ...")
 endif()
 
 #------------------------
+if (${BUILD_PALTFORM} STREQUAL "IOS")
+    message("...................................... IOS choise")
+elseif()
 
 set(PLATFORM_NAME_LIB Platform)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Platform/${BUILD_PALTFORM}/Source)
@@ -233,6 +259,7 @@ set(GAME_NAME_LIB Game)
 include_directories(${GAME_NAME_LIB}/Source)
 add_subdirectory(${GAME_NAME_LIB})
 
+endif()
 
 # Создание проекта -----------------------------------------------------------------
 
@@ -254,11 +281,42 @@ elseif (${BUILD_PALTFORM} STREQUAL "OSX")
 	add_executable(${PROJECT_NAME} MACOSX_BUNDLE  ${ALL_HEADERS} ${ALL_SOURCES} ${ALL_RESOURCES} )
 	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-	message("add_executable no OSX")
+	message("add_executable OSX")
+elseif (${BUILD_PALTFORM} STREQUAL "IOS")
+	set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/Source/IOS" ${CMAKE_MODULE_PATH})
+
+	add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${ALL_HEADERS} ${ALL_SOURCES} ${ALL_RESOURCES})
+	set(CMAKE_OSX_SYSROOT "iphoneos")
+
+	macro(set_xcode_property targ xc_prop_name xc_prop_val)
+		set_property(TARGET ${targ} PROPERTY XCODE_ATTRIBUTE_${xc_prop_name} ${xc_prop_val})
+	endmacro(set_xcode_property)
+
+	set(targetname ${PROJECT_NAME})
+
+	add_definitions(-DBUILD_IOS)
+	set_xcode_property(${targetname} "ENABLE_BITCODE" "YES")
+	set_xcode_property(${targetname} "GCC_UNROLL_LOOPS" "YES")
+	set_xcode_property(${targetname} "GCC_THUMB_SUPPORT" "NO")
+	set_xcode_property(${targetname} "GCC_UNROLL_GCC_PRECOMPILE_PREFIX_HEADER" "YES")
+	set_xcode_property(${targetname} "IPHONEOS_DEPLOYMENT_TARGET" "7.0")
+	set_xcode_property(${targetname} "CODE_SIGN_IDENTITY" "iPhone Developer")
+	set_xcode_property(${targetname} "COMBINE_HIDPI_IMAGES" "NO")
+	set_xcode_property(${targetname} "COMPRESS_PNG_FILES" "NO")
+	set_xcode_property(${targetname} "ONLY_ACTIVE_ARCH" "YES")
+	set_xcode_property(${targetname} "SKIP_INSTALL" "NO")
+
+	set_xcode_property(${targetname} TARGETED_DEVICE_FAMILY "1,2")
+
+	message("add_executable IOS")
+elseif()
+	message("add_executable ...")
 endif()
 
 # Подключение библиотеи -----------------------------------------------------------------
-
+if (${BUILD_PALTFORM} STREQUAL "IOS")
+    message("...................................... IOS choise")
+elseif()
 	#	Физика -------------------
 	SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES  DEBUG_POSTFIX "_Debug")
 	SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES  MINSIZEREL_POSTFIX "_MinsizeRel")
@@ -292,6 +350,8 @@ target_link_libraries(${PROJECT_NAME}  ${PLATFORM_NAME_LIB})
 
 target_link_libraries(${PROJECT_NAME}  ${FREEIMAGE_NAME_LIB})
 #target_link_libraries(${PROJECT_NAME}  ${FREETYPE_NAME_LIB})
+
+endif()
 
 if (${BUILD_PALTFORM} STREQUAL "WIN_GLES")
 	# OpenGL ES
@@ -330,6 +390,10 @@ elseif (${BUILD_PALTFORM} STREQUAL "OSX")
 	target_link_libraries(${PROJECT_NAME}  ${FREEIMAGE_NAME_LIB})
 
 	message("target_link_libraries LIB OSX")
+elseif (${BUILD_PALTFORM} STREQUAL "IOS")
+	target_link_libraries (${PROJECT_NAME} ${USED_FRAMEWORKS})
+	
+	message("target_link_libraries LIB IOS")
 elseif()
 	message("target_link_libraries LIB ...")
 endif()
