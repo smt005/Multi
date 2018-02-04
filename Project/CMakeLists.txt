@@ -139,7 +139,9 @@ endforeach(DIR)
 #	Физика -------------------
 
 set(BULLET_NAME_LIB "bullet3")
-set(BULLET_PHYSICS_SOURCE_DIR "X:/Projects/zip/ThirdParty/Physics/${BULLET_NAME_LIB}")
+set(BULLET_PHYSICS_SOURCE_DIR ${THIRD_PARTY_DIR}/${BULLET_NAME_LIB})
+
+message("BULLET_PHYSICS_SOURCE_DIR = ${BULLET_PHYSICS_SOURCE_DIR}")
 
 OPTION(BUILD_UNIT_TESTS "Build Unit Tests"	OFF)
 OPTION(BUILD_BULLET2_DEMOS "Build Unit Tests"	OFF)
@@ -153,7 +155,7 @@ OPTION(BUILD_BULLET2_DEMOS "Set when you want to build the Bullet 2 demos" OFF)
 OPTION(BUILD_EXTRAS "Set when you want to build the extras" OFF)
 OPTION(INSTALL_CMAKE_FILES "Install generated CMake files" OFF)
 
-add_subdirectory(${BULLET_NAME_LIB})
+add_subdirectory(${BULLET_PHYSICS_SOURCE_DIR})
 
 INCLUDE_DIRECTORIES(
 	${BULLET_PHYSICS_SOURCE_DIR}/src
@@ -241,6 +243,21 @@ ENDIF()
 
 if (${BUILD_PALTFORM} STREQUAL "WIN_GLES")
 	add_executable(${PROJECT_NAME} WIN32  ${ALL_HEADERS} ${ALL_SOURCES} ${ALL_RESOURCES} )
+	
+	message("add_executable WIN_GLES")
+elseif(${BUILD_PALTFORM} STREQUAL "WIN_GLFW")
+	add_executable(${PROJECT_NAME} EXCLUDE_FROM_ALL ${ALL_HEADERS} ${ALL_SOURCES} ${ALL_RESOURCES} )
+
+	message("add_executable WIN_GLFW")
+elseif (${BUILD_PALTFORM} STREQUAL "OSX")
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+	add_executable(${PROJECT_NAME} MACOSX_BUNDLE  ${ALL_HEADERS} ${ALL_SOURCES} ${ALL_RESOURCES} )
+	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
+	message("add_executable no OSX")
+endif()
+
+# Подключение библиотеи -----------------------------------------------------------------
 
 	#	Физика -------------------
 	SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES  DEBUG_POSTFIX "_Debug")
@@ -267,20 +284,7 @@ if (${BUILD_PALTFORM} STREQUAL "WIN_GLES")
 
 	#	-------------------
 	
-	message("add_executable WIN_GLES")
-elseif(${BUILD_PALTFORM} STREQUAL "WIN_GLFW")
-	add_executable(${PROJECT_NAME} EXCLUDE_FROM_ALL ${ALL_HEADERS} ${ALL_SOURCES} ${ALL_RESOURCES} )
 
-	message("add_executable WIN_GLFW")
-elseif (${BUILD_PALTFORM} STREQUAL "OSX")
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-	add_executable(${PROJECT_NAME} MACOSX_BUNDLE  ${ALL_HEADERS} ${ALL_SOURCES} ${ALL_RESOURCES} )
-	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-
-	message("add_executable no OSX")
-endif()
-
-# Подключение библиотеи -----------------------------------------------------------------
 target_link_libraries(${PROJECT_NAME}  ${ENGINE_NAME_LIB})
 target_link_libraries(${PROJECT_NAME}  ${EXAMPLE_NAME_LIB})
 target_link_libraries(${PROJECT_NAME}  ${GAME_NAME_LIB})
