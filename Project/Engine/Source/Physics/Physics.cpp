@@ -1,12 +1,14 @@
 #include "Physics.h"
 
+#include "Object/Object.h"
+
 #ifdef WIN32
 	#include <fstream>
 	#include <iostream>
 #endif
 
 #include "btBulletDynamicsCommon.h"
-#include "Bullet3/src/btBulletDynamicsCommon.h"
+//#include "Bullet3/src/btBulletDynamicsCommon.h"
 
 namespace engine
 {
@@ -93,7 +95,7 @@ bool Physics::init()
 
 	dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
 
-	dynamicsWorld->setGravity(btVector3(0, -10, 0));
+	dynamicsWorld->setGravity(btVector3(0, 0, -3));
 
 	return true;
 }
@@ -103,13 +105,14 @@ void Physics::createWorldTest()
 	//the ground is a cube of side 100 at position y = -56.
 	//the sphere will hit it at y = -6, with center at -5
 	{
-		btCollisionShape* groundShape = new btBoxShape(btVector3(btScalar(50.), btScalar(50.), btScalar(50.)));
+		btCollisionShape* groundShape = new btBoxShape(btVector3(btScalar(100.), btScalar(100.), btScalar(1.)));
 
 		collisionShapes.push_back(groundShape);
 
 		btTransform groundTransform;
 		groundTransform.setIdentity();
-		groundTransform.setOrigin(btVector3(0, -56, 0));
+		//groundTransform.setOrigin(btVector3(0, -56, 0));
+		groundTransform.setOrigin(btVector3(0, 0, 0));
 
 		btScalar mass(0.);
 
@@ -149,11 +152,12 @@ void Physics::createWorldTest()
 		if (isDynamic)
 			colShape->calculateLocalInertia(mass, localInertia);
 
-		startTransform.setOrigin(btVector3(2, 10, 0));
+		startTransform.setOrigin(btVector3(0, 0, 10));
 
 		//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
 		btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
 		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+		//rbInfo.m_additionalDamping = -1.0;
 		btRigidBody* body = new btRigidBody(rbInfo);
 
 		dynamicsWorld->addRigidBody(body);
@@ -162,18 +166,34 @@ void Physics::createWorldTest()
 
 void Physics::update()
 {
+	dynamicsWorld->stepSimulation(1.f / 60.f, 10);
+}
+
+void Physics::updateTest(Object *object)
+{
+	// Пример
+	//Object &BoxPhysics = _map->_objects.getByName("BoxPhysics");
+	//physics.update(&BoxPhysics);
+
 #ifdef WIN32
 	std::ofstream _WRITE_LOG("Log.txt", std::ios::app);
 #endif
 
-	dynamicsWorld->stepSimulation(1.f / 60.f, 10);
+	//dynamicsWorld->stepSimulation(1.f / 60.f, 10);
+	int count = dynamicsWorld->getNumCollisionObjects();
+
+#ifdef WIN32
+	_WRITE_LOG << "count = " << count << std::endl;
+#endif
 
 	//print positions of all objects
 	for (int j = dynamicsWorld->getNumCollisionObjects() - 1; j >= 0; j--)
 	{
 		btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[j];
 		btRigidBody* body = btRigidBody::upcast(obj);
+
 		btTransform trans;
+
 		if (body && body->getMotionState())
 		{
 			body->getMotionState()->getWorldTransform(trans);
@@ -183,9 +203,59 @@ void Physics::update()
 			trans = obj->getWorldTransform();
 		}
 
+		int num = 1;
+
+		if (object && j == num)
+		{
+			float mat[16];
+			trans.getOpenGLMatrix(mat);
+			object->setMatrix(mat);
+		}
+
+		if (j == num)
+		{
 #ifdef WIN32
-		 _WRITE_LOG <<  "j = " << j << " [" << float(trans.getOrigin().getX()) << ", " << float(trans.getOrigin().getY()) << ", " << float(trans.getOrigin().getZ()) << "] " << std::endl;
+			_WRITE_LOG << "j = " << j << " [" << float(trans.getOrigin().getX()) << ", " << float(trans.getOrigin().getY()) << ", " << float(trans.getOrigin().getZ()) << "] " << std::endl;
 #endif
-		printf("world pos object %d = %f,%f,%f\n", j, float(trans.getOrigin().getX()), float(trans.getOrigin().getY()), float(trans.getOrigin().getZ()));
+			printf("world pos object %d = %f,%f,%f\n", j, float(trans.getOrigin().getX()), float(trans.getOrigin().getY()), float(trans.getOrigin().getZ()));
+		}
 	}
+}
+
+// static
+
+btCollisionObject* Physics::create(Model& model, const int& type, float* mat)
+{
+	if (type == 0) return nullptr;
+
+	//btCollisionShape* colShape = new btSphereShape(btScalar(0.5));
+
+	btVector3 boxHalfExtents(0.5, 0.5, 0.5);
+	btCollisionShape* colShape = new btBoxShape(boxHalfExtents);
+	collisionShapes.push_back(colShape);
+
+	btScalar mass(1.f);
+	bool isDynamic = (mass != 0.f);
+
+	btVector3 localInertia(0, 0, 0);
+
+	if (isDynamic)
+		colShape->calculateLocalInertia(mass, localInertia);
+
+	btTransform startTransform;
+	startTransform.setIdentity();
+	startTransform.setOrigin(btVector3(0, 0, 10));
+
+	if (mat)
+	{
+		startTransform.setOrigin(btVector3(mat[12], mat[13], mat[14]));
+	}
+
+	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+	btRigidBody* body = new btRigidBody(rbInfo);
+
+	dynamicsWorld->addRigidBody(body);
+
+	return body;
 }

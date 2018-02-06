@@ -28,8 +28,11 @@ public:
 	void initDraw();
 	void initCallback();
 
+	glm::vec3 randomPos(const float& k = 0.5, const int& zBottom = 1, const int& zTop = 1);
+
 private:
 	// Callback
 	bool closeGame(void *data);
 	bool rotateCamera(void *data);
+	bool addObject(void *data);
 };

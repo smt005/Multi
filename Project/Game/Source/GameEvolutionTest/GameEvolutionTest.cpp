@@ -45,13 +45,7 @@ void GameEvolutionTest::tact()
 		_timerTarget = 0.0;
 		if (_map)
 		{
-			int diameter = static_cast<int>(_map->getArea());
-			int radius = static_cast<int>(_map->getArea() * 0.5f);
-			float k = 0.5f;
-			float posX = static_cast<float>((rand() % diameter + 1) - radius) * k;
-			float posY = static_cast<float>((rand() % diameter + 1) - radius) * k;
-			float posZ = 1.0f;
-			glm::mat4x4 matrix = glm::translate(glm::mat4x4(1.0f), glm::vec3(posX, posY, posZ));
+			glm::mat4x4 matrix = glm::translate(glm::mat4x4(1.0f), randomPos());
 
 			Object &target = _map->_objects.getByName("Target");
 			target.setMatrix(matrix);
@@ -81,17 +75,33 @@ void GameEvolutionTest::initDraw()
 
 	_camera = &CameraGLM::getByName("First");
 	_camera->setDefault();
-    _camera->setLookAt(glm::vec3(-5.0f, -5.0f, 5.0f), glm::vec3(0.5f, 0.5f, 1.0f));
+    _camera->setLookAt(glm::vec3(-15.0f, -15.0f, 15.0f), glm::vec3(0.5f, 0.5f, 1.0f));
 	_camera->setSpeed(0.1f);
 	_camera->setCalcFrustum(false);
 }
 
 void GameEvolutionTest::initCallback()
 {
-	this->setCallback(EventCallback::TAP_DOUBLE, UiFunction(closeGame));
+	this->setCallback(EventCallback::TAP_LONG, UiFunction(closeGame));
 	this->setCallback(EventCallback::TAP_PINCH, UiFunction(rotateCamera));
-
+	this->setCallback(EventCallback::TAP_UP, UiFunction(addObject));
+	
 	Callback::_hintObject = this;
+}
+
+glm::vec3 GameEvolutionTest::randomPos(const float& k, const int& zBottom, const int& zTop)
+{
+	int diameter = static_cast<int>(_map->getArea());
+	int radius = static_cast<int>(_map->getArea() * 0.5f);
+	
+	float z = zBottom;
+	if (zBottom != zTop)
+	{
+		int h = zTop - zBottom;
+		z = static_cast<float>(zBottom) + static_cast<float>(rand() % h + 1);
+	}
+
+	return glm::vec3(static_cast<float>((rand() % diameter + 1) - radius) * k, static_cast<float>((rand() % diameter + 1) - radius) * k, z);
 }
 
 bool GameEvolutionTest::closeGame(void *data)
@@ -103,5 +113,11 @@ bool GameEvolutionTest::closeGame(void *data)
 bool GameEvolutionTest::rotateCamera(void *data)
 {
 	CameraGLM::current().rotate(Callback::_vector);
+	return true;
+}
+
+bool  GameEvolutionTest::addObject(void *data)
+{
+	_map->addObjectToPos("Box1", 1, glm::vec3(randomPos(0.01, 2, 20)));
 	return true;
 }

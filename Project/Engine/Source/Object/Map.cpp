@@ -84,3 +84,27 @@ void Map::action()
 	for (int i = 0; i < _objects.count(); ++i) _objects[i].action();
 	for (int i = 0; i < _gliders.count(); ++i) _gliders[i].action();
 }
+
+Object& Map::addObjectToPos(const string& nameModel, const int& type, const glm::vec3& pos)
+{
+	Model& model = Model::getByName(nameModel);
+	Object &object = _objects.add();
+
+	object.set("", nameModel, pos);
+	object.setPhysic(1);
+
+	return object;
+}
+
+Object& Map::addObject(const string& nameModel, const int& type, const glm::mat4x4& mat)
+{
+	Model& model = Model::getByName(nameModel);
+	Object &object = _objects.add();
+
+	// Временно
+	glm::vec3 pos = glm::vec3(mat[3][0], mat[3][1], mat[3][2]);
+	object.set("", nameModel, pos);
+	object.setPhysic(1);
+
+	return object;
+}
