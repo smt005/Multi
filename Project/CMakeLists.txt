@@ -239,13 +239,15 @@ elseif()
 endif()
 
 #------------------------
-if (${BUILD_PALTFORM} STREQUAL "IOS")
-    message("...................................... IOS choise")
-elseif()
+
 
 set(PLATFORM_NAME_LIB Platform)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Platform/${BUILD_PALTFORM}/Source)
 add_subdirectory(${PLATFORM_NAME_LIB})
+
+if (${BUILD_PALTFORM} STREQUAL "IOS")
+    message("...................................... IOS choise")
+elseif()
 
 set(ENGINE_NAME_LIB Engine)
 include_directories(${ENGINE_NAME_LIB}/Source)
@@ -284,6 +286,7 @@ elseif (${BUILD_PALTFORM} STREQUAL "OSX")
 	message("add_executable OSX")
 elseif (${BUILD_PALTFORM} STREQUAL "IOS")
 	set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/Source/IOS" ${CMAKE_MODULE_PATH})
+	set(CMAKE_XCODE_EFFECTIVE_PLATFORMS "-iphoneos;-iphonesimulator")
 
 	add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${ALL_HEADERS} ${ALL_SOURCES} ${ALL_RESOURCES})
 	set(CMAKE_OSX_SYSROOT "iphoneos")
