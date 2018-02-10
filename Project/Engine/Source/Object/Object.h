@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Model.h"
 #include "Common/IncludesMatem.h"
 #include "Common/json.h"
 #include <string>
@@ -10,6 +9,7 @@ using namespace std;
 using json = nlohmann::json;
 using namespace glm;
 
+class Model;
 class btCollisionObject;
 
 enum ObjectType
@@ -53,6 +53,7 @@ public:
 	void setHeight(const float &height);
 	void setVector(const glm::vec3 &vector);
 	void setPhysic(const int& type = 0);
+	void setBoxPhysic(int& id, const int& type = 0);
 
 	// Virtual
 

@@ -1,14 +1,14 @@
 #include "Physics.h"
 
 #include "Object/Object.h"
+#include "Object/Shape.h"
 
 #ifdef WIN32
 	#include <fstream>
 	#include <iostream>
 #endif
 
-#include "btBulletDynamicsCommon.h"
-//#include "Bullet3/src/btBulletDynamicsCommon.h"
+int Physics::idShapeCounter = 0;
 
 namespace engine
 {
@@ -224,15 +224,27 @@ void Physics::updateTest(Object *object)
 
 // static
 
-btCollisionObject* Physics::create(Model& model, const int& type, float* mat)
+btCollisionObject* Physics::create(Shape& shape, const int& type, float* mat)
 {
-	if (type == 0) return nullptr;
+	if (type == 0 || shape._countPhysicVertex == 0)
+	{
+		return nullptr;
+	}
 
-	//btCollisionShape* colShape = new btSphereShape(btScalar(0.5));
+	btCollisionShape* collisionShape = shape.getPhysicShape();
 
-	btVector3 boxHalfExtents(0.5, 0.5, 0.5);
-	btCollisionShape* colShape = new btBoxShape(boxHalfExtents);
-	collisionShapes.push_back(colShape);
+	if (!collisionShape) {
+		collisionShape = new btConvexHullShape();
+		for (int i = 0; i < shape._countPhysicVertex * 3; i = i + 3)
+		{
+			btVector3 btv = btVector3(shape._aPhysicVertex[i], shape._aPhysicVertex[i + 1], shape._aPhysicVertex[i + 2]);
+			((btConvexHullShape*)collisionShape)->addPoint(btv);
+		}
+
+		collisionShape->setMargin(0);
+		collisionShapes.push_back(collisionShape);
+		shape.setPhysicShape(collisionShape);
+	}
 
 	btScalar mass(1.f);
 	bool isDynamic = (mass != 0.f);
@@ -240,7 +252,7 @@ btCollisionObject* Physics::create(Model& model, const int& type, float* mat)
 	btVector3 localInertia(0, 0, 0);
 
 	if (isDynamic)
-		colShape->calculateLocalInertia(mass, localInertia);
+		collisionShape->calculateLocalInertia(mass, localInertia);
 
 	btTransform startTransform;
 	startTransform.setIdentity();
@@ -252,10 +264,113 @@ btCollisionObject* Physics::create(Model& model, const int& type, float* mat)
 	}
 
 	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, collisionShape, localInertia);
 	btRigidBody* body = new btRigidBody(rbInfo);
 
 	dynamicsWorld->addRigidBody(body);
 
 	return body;
+}
+
+btCollisionObject* Physics::createBox(int& idShape, float* size, const int& type, float* mat)
+{
+	if (type == 0)
+	{
+		idShape = -1;
+		return nullptr;
+	}
+
+	btCollisionShape* collisionShape = getShapeById(idShape);
+
+	if (!collisionShape) {
+		btVector3 boxHalfExtents(size[0], size[1], size[2]);
+		collisionShape = new btBoxShape(boxHalfExtents);
+
+		idShape = idShapeCounter += 1;
+		collisionShape->setUserIndex(idShape);
+		collisionShapes.push_back(collisionShape);
+	}
+
+	btScalar mass(1.f);
+	bool isDynamic = (mass != 0.f);
+
+	btVector3 localInertia(0, 0, 0);
+
+	if (isDynamic)
+		collisionShape->calculateLocalInertia(mass, localInertia);
+
+	btTransform startTransform;
+	startTransform.setIdentity();
+	startTransform.setOrigin(btVector3(0, 0, 10));
+
+	if (mat)
+	{
+		startTransform.setOrigin(btVector3(mat[12], mat[13], mat[14]));
+	}
+
+	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, collisionShape, localInertia);
+	btRigidBody* body = new btRigidBody(rbInfo);
+
+	dynamicsWorld->addRigidBody(body);
+
+	return body;
+}
+
+btCollisionObject* Physics::createSphere(int& idShape, float radius, const int& type, float* mat)
+{
+	if (type == 0)
+	{
+		idShape = -1;
+		return nullptr;
+	}
+
+	btCollisionShape* collisionShape = getShapeById(idShape);
+
+	if (!collisionShape) {
+		btCollisionShape* colShape = new btSphereShape(btScalar(radius));
+
+		idShape = idShapeCounter += 1;
+		collisionShape->setUserIndex(idShape);
+		collisionShapes.push_back(collisionShape);
+	}
+
+	btScalar mass(1.f);
+	bool isDynamic = (mass != 0.f);
+
+	btVector3 localInertia(0, 0, 0);
+
+	if (isDynamic)
+		collisionShape->calculateLocalInertia(mass, localInertia);
+
+	btTransform startTransform;
+	startTransform.setIdentity();
+	startTransform.setOrigin(btVector3(0, 0, 10));
+
+	if (mat)
+	{
+		startTransform.setOrigin(btVector3(mat[12], mat[13], mat[14]));
+	}
+
+	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, collisionShape, localInertia);
+	btRigidBody* body = new btRigidBody(rbInfo);
+
+	dynamicsWorld->addRigidBody(body);
+
+	return body;
+}
+
+btCollisionShape* Physics::getShapeById(int idShape)
+{
+	for (int i = 0; i < collisionShapes.size(); i++)
+	{
+		btCollisionShape* shape = collisionShapes[i];
+		if (shape->getUserIndex() == idShape)
+		{
+			return shape;
+		}
+	}
+
+	return nullptr;
 }

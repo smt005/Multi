@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Common/IncludesMatem.h"
+
 #include <string>
 
 #define SHAPE_VERTEX_POS_SIZE	3
@@ -10,6 +11,8 @@
 #define SHAPE_VERTEX_TEX_POS_INDX	1
 
 using namespace std;
+
+class btCollisionShape;
 
 class Shape
 {
@@ -22,6 +25,9 @@ public:
 	float* _aNormal;
 	float* _aTexCoord;
 
+	unsigned short int _countPhysicVertex;
+	float* _aPhysicVertex;
+
 	bool _hasVBO = false;
 	unsigned short int _countIndex;
 	unsigned short* _aIndex;
@@ -31,6 +37,8 @@ public:
 	glm::vec3 _minVectex;
 	float _radius = 0;
 
+	btCollisionShape* _physicShape = nullptr;
+
 	Shape();
 	Shape(const string& name, const bool &needLoad = true);
 	~Shape();
@@ -39,6 +47,9 @@ public:
 	void initVBO();
 	void check();
 	void setScale(float *scale);
+
+	void setPhysicShape(btCollisionShape* physicShape);
+	btCollisionShape* getPhysicShape() { return _physicShape; }
 
 private:
 	void	getVertex(char* charLine, float* aVertex, int count);

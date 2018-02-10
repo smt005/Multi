@@ -14,6 +14,8 @@ private:
 	CameraGLM *_camera = nullptr;
 	double _timerTarget = 0.0;
 	Physics physics;
+	int _idShape = 0;
+	int _countObjects = 0;
 
 public:
 	GameEvolutionTest();

@@ -1,5 +1,7 @@
 
 #include "Object.h"
+#include "Model.h"
+#include "Shape.h"
 #include "Engine/Source/Physics/Physics.h"
 #include "btBulletDynamicsCommon.h"
 
@@ -84,7 +86,18 @@ void Object::setPhysic(const int& type)
 {
 	if (_model)
 	{
-		_physic = Physics::create(*_model, type, value_ptr(_matrix));
+		Shape& shape = _model->shape();
+		_physic = Physics::create(shape, type, value_ptr(_matrix));
+	}
+}
+
+void Object::setBoxPhysic(int& id, const int& type)
+{
+	if (_model)
+	{
+		Shape& shape = _model->shape();
+		float size[] = { shape._minVectex.x, shape._minVectex.y, shape._minVectex.z};
+		_physic = Physics::createBox(id, size, type, value_ptr(_matrix));
 	}
 }
 

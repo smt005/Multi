@@ -76,6 +76,7 @@ void GameEvolutionTest::initDraw()
 	_camera = &CameraGLM::getByName("First");
 	_camera->setDefault();
     _camera->setLookAt(glm::vec3(-15.0f, -15.0f, 15.0f), glm::vec3(0.5f, 0.5f, 1.0f));
+	//_camera->setLookAt(glm::vec3(-5.0f, -5.0f, 5.0f), glm::vec3(0.5f, 0.5f, 1.0f));
 	_camera->setSpeed(0.1f);
 	_camera->setCalcFrustum(false);
 }
@@ -118,6 +119,25 @@ bool GameEvolutionTest::rotateCamera(void *data)
 
 bool  GameEvolutionTest::addObject(void *data)
 {
-	_map->addObjectToPos("Box1", 1, glm::vec3(randomPos(0.01, 2, 20)));
+	auto create = [this]() {
+		_map->addObjectBoxToPos("Box1", _idShape, 1, glm::vec3(randomPos(0.91, 29, 50)));
+		_map->addObjectToPos("Box1", 1, glm::vec3(randomPos(0.91, 29, 50)));
+		_map->addObjectToPos("Sphere_005", 1, glm::vec3(randomPos(0.91, 29, 50)));
+		_map->addObjectToPos("Cylinder_02", 1, glm::vec3(randomPos(0.91, 29, 50)));
+
+		_countObjects += 4;
+		return true;
+	};
+
+	if (_countObjects < 500)
+	{
+		int increase = 100;
+
+		for (int i = 0; i < increase; ++i)
+		{
+			create();
+		}
+	}
+
 	return true;
 }

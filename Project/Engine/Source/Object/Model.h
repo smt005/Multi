@@ -8,7 +8,6 @@
 #include <string>
 using namespace std;
 
-//#include "json.h"
 using json = nlohmann::json;
 
 class Model : public ArrayClass <Model>

@@ -4,6 +4,8 @@
 #include "Shader.h"
 #include "Draw/CameraGLM.h"
 #include "Object/Map.h"
+#include "Object/Object.h"
+#include "Object/Model.h"
 
 #ifdef BUILD_WIN_GLES
 	#define GL_GLEXT_PROTOTYPES

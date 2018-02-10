@@ -1,5 +1,6 @@
 
 #include "Map.h"
+#include "Model.h"
 #include "../Platform/Source/FilesManager.h"
 
 Map::Map()
@@ -85,13 +86,24 @@ void Map::action()
 	for (int i = 0; i < _gliders.count(); ++i) _gliders[i].action();
 }
 
-Object& Map::addObjectToPos(const string& nameModel, const int& type, const glm::vec3& pos)
+Object& Map::addObjectBoxToPos(const string& nameModel, int& id, const int& type, const glm::vec3& pos)
 {
 	Model& model = Model::getByName(nameModel);
 	Object &object = _objects.add();
 
 	object.set("", nameModel, pos);
 	object.setPhysic(1);
+
+	return object;
+}
+
+Object& Map::addObjectToPos(const string& nameModel, const int& type, const glm::vec3& pos)
+{
+	Model& model = Model::getByName(nameModel);
+	Object &object = _objects.add();
+
+	object.set("", nameModel, pos);
+	object.setPhysic(type);
 
 	return object;
 }
@@ -104,7 +116,7 @@ Object& Map::addObject(const string& nameModel, const int& type, const glm::mat4
 	// Временно
 	glm::vec3 pos = glm::vec3(mat[3][0], mat[3][1], mat[3][2]);
 	object.set("", nameModel, pos);
-	object.setPhysic(1);
+	object.setPhysic(type);
 
 	return object;
 }

@@ -23,5 +23,20 @@
 	"shape": "Models/Cell_test.obj",
 	"scale": 0.1,
     "texture": "Textures/Cell_blue_test.png"
-   }
+   },
+  "Sphere_005": {
+    "shape": "Models/Sphere_01.obj",
+    "texture": "Textures/Box.jpg",
+	"scale": 0.5
+  },
+   "Cylinder_02": {
+    "shape": "Models/Cylinder01_10.obj",
+    "texture": "Textures/Box.jpg",
+	"scale": 0.2
+  },
+  "Chain_visible": {
+    "shape": "Models/Chain_visible.obj",
+    "texture": "Textures/Box.jpg",
+	"scale": 0.1
+  }
 }

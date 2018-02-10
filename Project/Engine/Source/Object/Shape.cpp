@@ -25,9 +25,12 @@ Shape::Shape()
 	_id = 0;
 	_name = "NO_NAME";
 	_countVertex = 0;
-	_aVertex = 0;
-	_aNormal = 0;
-	_aTexCoord = 0;
+	_aVertex = nullptr;
+	_aNormal = nullptr;
+	_aTexCoord = nullptr;
+
+	_countPhysicVertex = 0;
+	_aPhysicVertex = nullptr;
 
 	_countIndex = 0;
 	_aIndex = 0;
@@ -55,6 +58,7 @@ Shape::~Shape()
 	delete _aNormal;
 	delete _aTexCoord;
 	delete _aIndex;
+	delete _aPhysicVertex;
 
 	glDeleteBuffers(4, _buffer);
 }
@@ -234,6 +238,10 @@ bool Shape::loadObj(const string& name)
 	float* aTexCoordNew = new float[countIndex * 3 * 2];
 	for (int i = 0; i < (countIndex * 3 * 2); ++i) aTexCoordNew[i] = 100000000000.0f;
 
+
+	_countPhysicVertex = countVertex;
+	_aPhysicVertex = aVertex;
+
 	unsigned short* aIndexNew = new unsigned short[countIndex * 9];
 	for (int i = 0; i < (countIndex * 9); ++i) aIndexNew[i] = -1;
 
@@ -273,7 +281,7 @@ bool Shape::loadObj(const string& name)
 		++iIndex;
 	}
 
-	delete[] aVertex;
+	//delete[] aVertex;
 	delete[] aNormal;
 	delete[] aTexCoord;
 	delete[] aIndex;
@@ -370,6 +378,18 @@ void Shape::setScale(float *scale)
 		_aVertex[i + 1] *= scale[1];
 		_aVertex[i + 2] *= scale[2];
 	}
+
+	for (int i = 0; i < _countPhysicVertex * 3; i = i + 3)
+	{
+		_aPhysicVertex[i] *= scale[0];
+		_aPhysicVertex[i + 1] *= scale[1];
+		_aPhysicVertex[i + 2] *= scale[2];
+	}
+}
+
+void Shape::setPhysicShape(btCollisionShape* physicShape)
+{
+	_physicShape = physicShape;
 }
 
 void Shape::check()

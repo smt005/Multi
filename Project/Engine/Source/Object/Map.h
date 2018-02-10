@@ -25,6 +25,7 @@ public:
 	void getDataJson(json& dataJson);
 	void action();
 
+	Object& addObjectBoxToPos(const string& nameModel, int& id, const int& type = 0, const glm::vec3& pos = glm::vec3(0.0, 0.0, 0.0));
 	Object& addObjectToPos(const string& nameModel, const int& type = 0, const glm::vec3& pos = glm::vec3(0.0, 0.0, 0.0));
 	Object& addObject(const string& nameModel, const int& type = 0, const glm::mat4x4& mat = glm::mat4x4(1.0));
 };

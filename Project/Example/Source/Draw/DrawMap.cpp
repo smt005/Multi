@@ -3,6 +3,8 @@
 #include "../Platform/Source/Application.h"
 #include "Draw/Shader.h"
 #include "Object/Object.h"
+#include "Object/Model.h"
+#include "Object/Shape.h"
 #include "Draw/CameraGLM.h"
 #include "Object/Map.h"
 
