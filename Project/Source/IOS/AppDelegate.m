@@ -28,6 +28,39 @@
     
     [self.window makeKeyAndVisible];
     
+    {
+        NSString *nsfile = [NSString stringWithCString:"Shaders/Base.frag" encoding:NSUTF8StringEncoding];
+        NSString *respath = [[NSBundle mainBundle] resourcePath];
+        NSString *nspath = [respath stringByAppendingPathComponent:nsfile];
+        
+        NSError *error;
+        NSString *str = [NSString stringWithContentsOfFile:nspath
+                                                  encoding:NSUTF8StringEncoding error:&error];
+        if (str != nil)
+        {
+            NSLog(@"file FOUND");
+        }
+        else
+        {
+            NSLog(@"file not found");
+        }
+    }
+    
+    {
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"Shaders/Base" ofType:@"frag"];
+        NSError *error;
+        NSString *str = [NSString stringWithContentsOfFile:path
+                                                  encoding:NSUTF8StringEncoding error:&error];
+        if (str != nil)
+        {
+            NSLog(@"file FOUND");
+        }
+        else
+        {
+            NSLog(@"file not found");
+        }
+    }
+    
     return YES;
 }
 

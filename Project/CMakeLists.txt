@@ -291,6 +291,26 @@ elseif (${BUILD_PALTFORM} STREQUAL "IOS")
 	add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${ALL_HEADERS} ${ALL_SOURCES} ${ALL_RESOURCES})
 	set(CMAKE_OSX_SYSROOT "iphoneos")
 
+	#foreach(DIR ${RESOURCE_DIRS})
+
+	# для каждого заданного пути
+	foreach (DIR ${RESOURCE_DIRS})
+	add_custom_command (
+			TARGET ${PROJECT_NAME}
+			POST_BUILD
+			COMMAND rsync -av ${RES_DIR}/${DIR} \${TARGET_BUILD_DIR}/\${TARGET_NAME}.app
+		)
+	endforeach (DIR)
+
+	# Добавление файла к цели (без пути) №1
+	#set_target_properties(${PROJECT_NAME} PROPERTIES
+	#	MACOSX_BUNDLE TRUE
+	#	RESOURCE "${ALL_RESOURCES}"
+	#)
+
+	# Добавление файла к цели (без пути) №2
+	#set_source_files_properties(${ALL_RESOURCES} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+
 	macro(set_xcode_property targ xc_prop_name xc_prop_val)
 		set_property(TARGET ${targ} PROPERTY XCODE_ATTRIBUTE_${xc_prop_name} ${xc_prop_val})
 	endmacro(set_xcode_property)
