@@ -47,14 +47,10 @@ char* FilesManagerPlatform::loadTextFile(const char* fileName)
 
 char* FilesManagerPlatform::getFullPath(const char* fileName)
 {
-	int lenDir = strlen(_dir);
-	int lenName = strlen(fileName);
-	int sumLen = lenDir + lenName + 1;
-
-	char* fileNameWithDir = new char[sumLen];
-	strcpy(fileNameWithDir, _dir);
-	strncat(fileNameWithDir, fileName, lenName);
-
-	return fileNameWithDir;
+    NSString *nsfile = [NSString stringWithCString:fileName encoding:NSUTF8StringEncoding];
+    NSString *respath = [[NSBundle mainBundle] resourcePath];
+    NSString *nspath = [respath stringByAppendingPathComponent:nsfile];
+    
+    return nspath.c_str();
 }
 

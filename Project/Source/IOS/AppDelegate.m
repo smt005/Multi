@@ -7,60 +7,22 @@
 //
 
 #import "AppDelegate.h"
-#import "ViewController.h"
 
 @implementation AppDelegate
 
 @synthesize window = _window;
+@synthesize glView = _glView;
 
-- (void)dealloc {
-    [_window release];
-    [super dealloc];
-}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-    //self.window.backgroundColor = [UIColor whiteColor];
-    self.window.backgroundColor = [UIColor blueColor];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    ViewController *viewController = [[[ViewController alloc] init] autorelease];
-    self.window.rootViewController = viewController;
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    self.glView = [[GLView alloc] initWithFrame:screenBounds];
+    [self.window addSubview:self.glView];
     
+    self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
-    
-    {
-        NSString *nsfile = [NSString stringWithCString:"Shaders/Base.frag" encoding:NSUTF8StringEncoding];
-        NSString *respath = [[NSBundle mainBundle] resourcePath];
-        NSString *nspath = [respath stringByAppendingPathComponent:nsfile];
-        
-        NSError *error;
-        NSString *str = [NSString stringWithContentsOfFile:nspath
-                                                  encoding:NSUTF8StringEncoding error:&error];
-        if (str != nil)
-        {
-            NSLog(@"file FOUND");
-        }
-        else
-        {
-            NSLog(@"file not found");
-        }
-    }
-    
-    {
-        NSString *path = [[NSBundle mainBundle] pathForResource:@"Shaders/Base" ofType:@"frag"];
-        NSError *error;
-        NSString *str = [NSString stringWithContentsOfFile:path
-                                                  encoding:NSUTF8StringEncoding error:&error];
-        if (str != nil)
-        {
-            NSLog(@"file FOUND");
-        }
-        else
-        {
-            NSLog(@"file not found");
-        }
-    }
-    
     return YES;
 }
 

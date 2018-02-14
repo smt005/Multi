@@ -6,6 +6,6 @@ private:
 	static char *_dir;
 
 public:
-	static char* loadTextFile(const char* fileName);
-	static char* getFullPath(const char* fileName);
+	static char* loadTextFile(char* fileName);
+	static char* getFullPath(char* fileName);
 };
