@@ -24,6 +24,10 @@
     return [CAEAGLLayer class];
 }
 
+- (void)setupDisplayLink {
+    CADisplayLink* displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(render:)];
+    [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+}
 
 - (void)setupLayer
 {
@@ -78,6 +82,20 @@
     [_context presentRenderbuffer:GL_RENDERBUFFER];
 }
 
+// Modify render method to take a parameter
+- (void)render:(CADisplayLink*)displayLink {
+    glClearColor(_red, 0.6, 0.9, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    
+    _red += 0.01;
+    if (_red > 1.0f)
+    {
+        _red = 0.0f;
+    }
+    
+    [_context presentRenderbuffer:GL_RENDERBUFFER];
+}
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -96,7 +114,10 @@
     [self setupRenderBuffer];
     [self setupFrameBuffer];
     
-    [self render];
+    // Remove call to render in initWithFrame and replace it with the following
+    [self setupDisplayLink];
+    
+    //[self render];
 }
 
 @end

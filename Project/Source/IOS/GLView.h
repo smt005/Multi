@@ -17,6 +17,8 @@
     EAGLContext* _context;
     GLuint _colorRenderBuffer;
     GLuint _frameBuffer;
+    
+    float _red;
 }
 
 @end
