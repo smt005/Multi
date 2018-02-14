@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "ViewController.h"
 
 @implementation AppDelegate
 
@@ -23,6 +24,10 @@
     
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    
+    ViewController *viewController = [[[ViewController alloc] init] autorelease];
+    self.window.rootViewController = viewController;
+    
     return YES;
 }
 
