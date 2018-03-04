@@ -2,6 +2,8 @@
 
 class Map;
 class Object;
+class Shape;
+class Mesh;
 
 class DrawEngine
 {
@@ -24,5 +26,8 @@ public:
 	// DrawMap
 	static void initDrawMap();
 	static void drawMap(Map& map);
-	static void drawModel(Object &object);
+	static void drawModel(Object& object);
+	static void drawModelTemp(Object& object);
+	static void drawShape(Shape& shape);
+	static void drawMesh(Mesh& mesh);
 };

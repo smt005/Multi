@@ -394,7 +394,34 @@ void Shape::setPhysicShape(btCollisionShape* physicShape)
 
 void Shape::check()
 {
-/*	LOG_LINE "\nVERTEXS: " << (_aVertex ? "YES" : "NO") << "\t COUNT = " << _countVertex LOG_END
+	std::ofstream _WRITE_LOG("Log.txt", std::ios::app);
+	_WRITE_LOG << "\n\n\n SHAPE" << std::endl;
+
+	_WRITE_LOG << "\t// VERTEX _countVertex: " << _countVertex << " (" << (_countVertex / 3) << ") " << std::endl;
+	for (int i = 0; i < _countVertex * 3; i += 3)
+	{
+		_WRITE_LOG << _aVertex[i] << ' ' << _aVertex[i + 1] << ' ' << _aVertex[i + 2] << std::endl;
+	}
+
+	_WRITE_LOG << "\t// NORMAL _countVertex: " << _countVertex << " (" << (_countVertex / 3) << ") " << std::endl;
+	for (int i = 0; i < _countVertex * 3; i += 3)
+	{
+		_WRITE_LOG << _aNormal[i] << ' ' << _aNormal[i + 1] << ' ' << _aNormal[i + 2] << std::endl;
+	}
+
+	_WRITE_LOG << "\t// TEXTURE _countVertex: " << _countVertex << std::endl;
+	for (int i = 0; i < _countVertex * 2; i += 2)
+	{
+		_WRITE_LOG << _aTexCoord[i] << ' ' << _aTexCoord[i + 1] << std::endl;
+	}
+
+	_WRITE_LOG << "\t// INDEX _countIndex: " << _countIndex << " (" << (_countVertex / 3) << ") " << std::endl;
+	for (int i = 0; i < _countIndex; i += 3)
+	{
+		_WRITE_LOG << _aIndex[i] << ' ' << _aIndex[i + 1] << ' ' << _aIndex[i + 2] << std::endl;
+	}
+
+	/*LOG_LINE "\nVERTEXS: " << (_aVertex ? "YES" : "NO") << "\t COUNT = " << _countVertex LOG_END
 		if (_aVertex)
 		{
 			for (int i = 0; i < _countVertex * 3; i = i + 3)

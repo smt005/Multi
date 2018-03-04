@@ -6,6 +6,8 @@
 
 class Map;
 class CameraGLM;
+class Shape;
+class ShapeUnited;
 
 class GameEvolutionTest: public Game, public Callback
 {
@@ -16,6 +18,9 @@ private:
 	Physics physics;
 	int _idShape = 0;
 	int _countObjects = 0;
+
+	Shape* shape = nullptr;
+	ShapeUnited* shapeUnited = nullptr;
 
 public:
 	GameEvolutionTest();

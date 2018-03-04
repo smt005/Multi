@@ -28,15 +28,5 @@
     "shape": "Models/Sphere_01.obj",
     "texture": "Textures/Box.jpg",
 	"scale": 0.5
-  },
-   "Cylinder_02": {
-    "shape": "Models/Cylinder01_10.obj",
-    "texture": "Textures/Box.jpg",
-	"scale": 0.2
-  },
-  "Chain_visible": {
-    "shape": "Models/Chain_visible.obj",
-    "texture": "Textures/Box.jpg",
-	"scale": 0.1
   }
 }

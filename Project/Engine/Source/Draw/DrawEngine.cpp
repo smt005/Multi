@@ -7,6 +7,8 @@
 #include "Object/Object.h"
 #include "Object/Model.h"
 
+#include "Object/ShapeUnited.h"
+
 #ifdef BUILD_WIN_GLES
 	#define GL_GLEXT_PROTOTYPES
 	#include "GLES2/gl2.h"
@@ -96,6 +98,14 @@ void DrawEngine::drawMap(Map& map)
 
 	for (int i = 0; i < objects.count(); ++i)
 	{
+		/*unsigned int textureId = objects[i].model().textureId();
+		if (textureId != _cuttrentTexture)
+		{
+			_cuttrentTexture = textureId;
+		}
+
+		drawModelTemp(objects[i]);*/
+
 		drawModel(objects[i]);
 	}
 
@@ -103,10 +113,17 @@ void DrawEngine::drawMap(Map& map)
 
 	for (int i = 0; i < gliders.count(); ++i)
 	{
+		/*unsigned int textureId = gliders[i].model().textureId();
+		if (textureId != _cuttrentTexture)
+		{
+			_cuttrentTexture = textureId;
+		}
+
+		drawModel(gliders[i]);*/
+
 		drawModel(gliders[i]);
 	}
 }
-
 
 void DrawEngine::drawModel(Object &object)
 {
@@ -150,4 +167,103 @@ void DrawEngine::drawModel(Object &object)
 	glUniformMatrix4fv(u_matViewModel, 1, GL_FALSE, object.matrixFloat());
 
 	glDrawElements(GL_TRIANGLES, shape._countIndex, GL_UNSIGNED_SHORT, 0);
+}
+
+
+void DrawEngine::drawModelTemp(Object &object)
+{
+	unsigned int textureId = object.model().textureId();
+	Shape &shape = object.model().shape();
+	
+	drawShape(shape);
+}
+
+void DrawEngine::drawShape(Shape& shape)
+{
+	if (!shape._hasVBO) shape.initVBO();
+
+	if (shape._buffer[3] != _cuttrentBufer)
+	{
+		GLuint a_position = glGetAttribLocation(_programBase, "a_position");
+		GLuint a_texCoord = glGetAttribLocation(_programBase, "a_texCoord");
+
+		glBindBuffer(GL_ARRAY_BUFFER, shape._buffer[0]);
+		glEnableVertexAttribArray(a_position);
+		glVertexAttribPointer(a_position, SHAPE_VERTEX_POS_SIZE, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
+
+		glBindBuffer(GL_ARRAY_BUFFER, shape._buffer[1]);
+		glEnableVertexAttribArray(a_texCoord);
+		glVertexAttribPointer(a_texCoord, SHAPE_VERTEX_TEX_SIZE, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, shape._buffer[3]);
+
+		_cuttrentBufer = shape._buffer[3];
+	}
+
+	/*if (textureId != _cuttrentTexture)
+	{
+		GLuint u_color = glGetUniformLocation(_programBase, "u_color");
+		GLuint s_baseMap = glGetUniformLocation(_programBase, "s_baseMap");
+
+		float color[] = { 1.0, 1.0, 1.0, 1.0 };
+		glUniform4fv(u_color, 1, color);
+
+		glUniform1i(s_baseMap, 0);
+		glBindTexture(GL_TEXTURE_2D, textureId);
+
+		_cuttrentTexture = textureId;
+	}*/
+
+	glm::mat4x4 mat(1.0);
+	mat = glm::translate(mat, glm::vec3(0.5, 1.0, 2.0));
+
+	GLuint u_matViewModel = glGetUniformLocation(_programBase, "u_matViewModel");
+	glUniformMatrix4fv(u_matViewModel, 1, GL_FALSE, glm::value_ptr(mat));
+
+	glDrawElements(GL_TRIANGLES, shape._countIndex, GL_UNSIGNED_SHORT, 0);
+}
+
+void DrawEngine::drawMesh(Mesh& mesh)
+{
+	if (!mesh._hasVBO) mesh.initVBO();
+
+	if (mesh._buffer[3] != _cuttrentBufer)
+	{
+		GLuint a_position = glGetAttribLocation(_programBase, "a_position");
+		GLuint a_texCoord = glGetAttribLocation(_programBase, "a_texCoord");
+
+		glBindBuffer(GL_ARRAY_BUFFER, mesh._buffer[0]);
+		glEnableVertexAttribArray(a_position);
+		glVertexAttribPointer(a_position, SHAPE_VERTEX_POS_SIZE, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
+
+		glBindBuffer(GL_ARRAY_BUFFER, mesh._buffer[1]);
+		glEnableVertexAttribArray(a_texCoord);
+		glVertexAttribPointer(a_texCoord, SHAPE_VERTEX_TEX_SIZE, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh._buffer[3]);
+
+		_cuttrentBufer = mesh._buffer[3];
+	}
+
+	/*if (textureId != _cuttrentTexture)
+	{
+		GLuint u_color = glGetUniformLocation(_programBase, "u_color");
+		GLuint s_baseMap = glGetUniformLocation(_programBase, "s_baseMap");
+
+		float color[] = { 1.0, 1.0, 1.0, 1.0 };
+		glUniform4fv(u_color, 1, color);
+
+		glUniform1i(s_baseMap, 0);
+		glBindTexture(GL_TEXTURE_2D, textureId);
+
+		_cuttrentTexture = textureId;
+	}*/
+
+	glm::mat4x4 mat(1.0);
+	mat = glm::translate(mat, glm::vec3(1.0, 0.5, 2.0));
+
+	GLuint u_matViewModel = glGetUniformLocation(_programBase, "u_matViewModel");
+	glUniformMatrix4fv(u_matViewModel, 1, GL_FALSE, glm::value_ptr(mat));
+
+	glDrawElements(GL_TRIANGLES, mesh._countIndex, GL_UNSIGNED_SHORT, 0);
 }

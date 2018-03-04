@@ -7,6 +7,9 @@
 #include "Object/Map.h"
 #include "AI/AIExample.h"
 
+#include "Object/Shape.h"
+#include "Object/ShapeUnited.h"
+
 GameEvolutionTest::GameEvolutionTest()
 {
 }
@@ -32,8 +35,8 @@ void GameEvolutionTest::save()
 		_map->getDataJson(dataJson);
 	}
 
-	std::string dataString = dataJson.dump();
-	FilesManager::saveTextFile("Saves/GameEvolutionTest.sav", dataString.c_str());
+	//std::string dataString = dataJson.dump();
+	//FilesManager::saveTextFile("Saves/GameEvolutionTest.sav", dataString.c_str());
 }
 
 void GameEvolutionTest::tact()
@@ -60,10 +63,34 @@ void GameEvolutionTest::draw()
 {
 	DrawEngine::prepareDraw(true);
 	DrawEngine::drawMap(*_map);
+
+	if (shape)
+	{
+		DrawEngine::drawShape(*shape);
+	}
+
+	if (shapeUnited)
+	{
+		DrawEngine::drawMesh(*shapeUnited);
+	}
 }
 
 void GameEvolutionTest::initMap()
 {
+
+	if (!shapeUnited)
+	{
+		shapeUnited = new ShapeUnited();
+		shapeUnited->load("Models/Microbe_view.obj");
+	}
+
+	if (!shape)
+	{
+		shape = new Shape();
+		shape->loadObj("Models/Glider.obj");
+		shape->check();
+	}
+
 	_map = &Map::getByName("MapGameEvolutionTest");
 	AIExample::findTarget(*_map, "Target");
 }
@@ -83,9 +110,10 @@ void GameEvolutionTest::initDraw()
 
 void GameEvolutionTest::initCallback()
 {
-	this->setCallback(EventCallback::TAP_LONG, UiFunction(closeGame));
+	//this->setCallback(EventCallback::TAP_LONG, UiFunction(closeGame));
+	this->setCallback(EventCallback::TAP_DOUBLE, UiFunction(closeGame));
 	this->setCallback(EventCallback::TAP_PINCH, UiFunction(rotateCamera));
-	this->setCallback(EventCallback::TAP_UP, UiFunction(addObject));
+	//this->setCallback(EventCallback::TAP_UP, UiFunction(addObject));
 	
 	Callback::_hintObject = this;
 }
@@ -129,7 +157,7 @@ bool  GameEvolutionTest::addObject(void *data)
 		return true;
 	};
 
-	if (_countObjects < 500)
+	if (_countObjects < 100)
 	{
 		int increase = 100;
 
