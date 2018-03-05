@@ -323,8 +323,9 @@ elseif(${BUILD_PALTFORM} STREQUAL "WIN_GLFW")
 elseif (${BUILD_PALTFORM} STREQUAL "OSX")
 	target_link_libraries (${PROJECT_NAME} ${USED_FRAMEWORKS})
 	
-	find_library(GLFW_LIBRARY NAMES glfw.3.2.dylib HINTS "${THIRD_PARTY_DIR}/GLFW/OSX")
-	target_link_libraries(${PROJECT_NAME} PUBLIC ${GLFW_LIBRARY})
+	find_library(GLFW_LIBRARY NAMES libglfw.3.dylib HINTS "${THIRD_PARTY_DIR}/GLFW/OSX")
+	target_link_libraries(${PROJECT_NAME} ${GLFW_LIBRARY})
+	file(COPY ${GLFW_LIBRARY} DESTINATION Debug)
 
 	# FreeImage
 	target_link_libraries(${PROJECT_NAME}  ${FREEIMAGE_NAME_LIB})

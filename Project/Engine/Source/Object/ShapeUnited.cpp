@@ -85,7 +85,7 @@ MeshPhysic::~MeshPhysic()
 
 struct BlockTemporary
 {
-	char* _name = '\0';
+	char* _name = nullptr;
 	const int _maxCount = 10240;
 	int _countLine = 0;
 	char** _charLine = nullptr;
@@ -216,10 +216,6 @@ _WRITE_LOG << "\t_countNumber = " << _countNumber << std::endl;
 	static void getMesh(Mesh& mesh, int countIndexTemporary, BlockTemporary* indexTemporarys,
 		BlockTemporary& vertexTemporary, BlockTemporary& normalTemporary, BlockTemporary& textureTemporary)
 	{
-#ifdef WIN32
-		std::ofstream _WRITE_LOG("Log.txt", std::ios::app);
-		_WRITE_LOG << "\n\n\n" << std::endl;
-
 		int countIndexT = 0;
 		
 		for (int iT = 0; iT < countIndexTemporary; ++iT)
@@ -242,7 +238,6 @@ _WRITE_LOG << "\t_countNumber = " << _countNumber << std::endl;
 		for (int iT = 0; iT < countIndexTemporary; ++iT)
 		{
 			BlockTemporary& indexTemporary = indexTemporarys[iT];
-			_WRITE_LOG << "\n\t " << indexTemporary._name << std::endl;
 			unsigned short* aIndexT = indexTemporary._intArray;
 			
 			for (int i = 0; i < indexTemporary._count; i+=3)
@@ -255,8 +250,6 @@ _WRITE_LOG << "\t_countNumber = " << _countNumber << std::endl;
 
 				unsigned short indexN = aIndexT[i + 2];
 				float* normal = &aNormalT[indexN * 3];
-
-				//_WRITE_LOG << indexV << '/' << indexT << '/' << indexN << " [" << vertex [0] << ' ' << vertex[1] << ' ' << vertex[2]  << "] [" << texCoord[0] << ' ' << texCoord[1] << "] [" << normal[0] << ' ' << normal[1] << ' ' << normal[2] << "] " << std::endl;
 
 				int index = foundIndex(vertex, normal, texCoord, aVertexNew, aNormalNew, aTextureNew, indexVertexNew);
 				if (index == -1)
@@ -312,8 +305,6 @@ _WRITE_LOG << "\t_countNumber = " << _countNumber << std::endl;
 		delete[] aNormalNew;
 		delete[] aTextureNew;
 	}
-
-#endif
 };
 
 ShapeUnited::~ShapeUnited()
@@ -327,10 +318,6 @@ ShapeUnited::~ShapeUnited()
 
 void ShapeUnited::load(const string& name)
 {
-#ifdef WIN32
-	std::ofstream _WRITE_LOG("Log.txt");
-//#endif
-
 	char* data = FilesManager::loadTextFile(name.c_str());
 
 	if (!data)
@@ -382,7 +369,7 @@ void ShapeUnited::load(const string& name)
 		{
 			if (!currentIndexTemporary)
 			{
-				char* name = '\0';
+				char* name = nullptr;
 				int iCharTemp = iChar - 1;
 				data[iCharTemp] = '\0';
 
@@ -437,53 +424,7 @@ void ShapeUnited::load(const string& name)
 
 		++iChar;
 	}
-
-
-//#ifdef WIN32
-//	std::ofstream _WRITE_LOG("Log.txt");
-
-	/*_WRITE_LOG << "\n//\tcount vertex = " << vertexTemporary._countLine << std::endl;
-	for (int i = 0; i < vertexTemporary._countLine; ++i)
-	{
-		_WRITE_LOG << vertexTemporary._charLine[i] << std::endl;
-	}
-
-	_WRITE_LOG << "\n//\tcount normal = " << normalTemporary._countLine << std::endl;
-	for (int i = 0; i < normalTemporary._countLine; ++i)
-	{
-		_WRITE_LOG << normalTemporary._charLine[i] << std::endl;
-	}
-
-	_WRITE_LOG << "\n//\tcount texture = " << textureTemporary._countLine << std::endl;
-	for (int i = 0; i < textureTemporary._countLine; ++i)
-	{
-		_WRITE_LOG << textureTemporary._charLine[i] << std::endl;
-	}
-
-	_WRITE_LOG << "\n//\tcount index temp = " << countIndexTemporary << std::endl;
-	for (int iIndexes = 0; iIndexes < countIndexTemporary; ++iIndexes)
-	{
-		BlockTemporary& temporary = indexTemporary[iIndexes];
-
-		_WRITE_LOG << "\n//\tcount index = " << temporary._countLine << " name = " << temporary._name << std::endl;
-		for (int i = 0; i < temporary._countLine; ++i)
-		{
-			_WRITE_LOG << temporary._charLine[i] << std::endl;
-		}
-	}
-
-	_WRITE_LOG << "\n//\tPHYSIC count index temp = " << countIndexPhysicTemporary << std::endl;
-	for (int iIndexes = 0; iIndexes < countIndexPhysicTemporary; ++iIndexes)
-	{
-		BlockTemporary& temporary = indexPhysicTemporary[iIndexes];
-
-		_WRITE_LOG << "\n//\tcount index = " << temporary._countLine << " name = " << temporary._name << std::endl;
-		for (int i = 0; i < temporary._countLine; ++i)
-		{
-			_WRITE_LOG << temporary._charLine[i] << std::endl;
-		}
-	}*/
-
+    
 	vertexTemporary.parse();
 	normalTemporary.parse();
 	textureTemporary.parse();
@@ -512,42 +453,4 @@ void ShapeUnited::load(const string& name)
 			BlockTemporary::getMesh(_physic->_meshes[i], 1, &indexPhysicTemporary[i], vertexTemporary, normalTemporary, textureTemporary);
 		}
 	}
-
-	{
-		/*
-		unsigned short int _countVertex = 0;
-		float* _aVertex = nullptr;
-		float* _aNormal = nullptr;
-		float* _aTexCoord = nullptr;
-
-		unsigned short int _countIndex = 0;
-		unsigned short* _aIndex = nullptr;
-		*/
-
-		_WRITE_LOG << "\t// VERTEX _countVertex: " << _countVertex << " (" << (_countVertex / 3) << ") " << std::endl;
-		for (int i = 0; i < _countVertex * 3; i+=3)
-		{
-			_WRITE_LOG << _aVertex[i] << ' ' << _aVertex[i + 1] << ' ' << _aVertex[i + 2] << std::endl;
-		}
-
-		_WRITE_LOG << "\t// NORMAL _countVertex: " << _countVertex << " (" << (_countVertex / 3) << ") " << std::endl;
-		for (int i = 0; i < _countVertex * 3; i+=3)
-		{
-			_WRITE_LOG << _aNormal[i] << ' ' << _aNormal[i + 1] << ' ' << _aNormal[i + 2] << std::endl;
-		}
-
-		_WRITE_LOG << "\t// TEXTURE _countVertex: " << _countVertex << std::endl;
-		for (int i = 0; i < _countVertex * 2; i += 2)
-		{
-			_WRITE_LOG << _aTexCoord[i] << ' ' << _aTexCoord[i + 1] << std::endl;
-		}
-
-		_WRITE_LOG << "\t// INDEX _countIndex: " << _countIndex << " (" << (_countVertex / 3) << ") " << std::endl;
-		for (int i = 0; i < _countIndex; i += 3)
-		{
-			_WRITE_LOG << _aIndex[i] << ' ' << _aIndex[i + 1] << ' ' << _aIndex[i + 2] << std::endl;
-		}
-	}
-
-#endif
 }

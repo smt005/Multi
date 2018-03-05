@@ -23,7 +23,7 @@ public:
 	~Brain();
 
 	void action();
-	void generateNeuron—onnections();
+	void generateNeuronConnections();
 
 private:
 	unsigned long int _count = 0;

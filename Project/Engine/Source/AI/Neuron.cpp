@@ -43,7 +43,7 @@ void Brain::action()
 	if (_index >= _count) _index = 0;
 }
 
-void Brain::generateNeuron—onnections()
+void Brain::generateNeuronConnections()
 {
 
 }
