@@ -19,7 +19,6 @@ private:
 	int _idShape = 0;
 	int _countObjects = 0;
 
-	Shape* shape = nullptr;
 	ShapeUnited* shapeUnited = nullptr;
 
 public:

@@ -64,11 +64,6 @@ void GameEvolutionTest::draw()
 	DrawEngine::prepareDraw(true);
 	DrawEngine::drawMap(*_map);
 
-	if (shape)
-	{
-		DrawEngine::drawShape(*shape);
-	}
-
 	if (shapeUnited)
 	{
 		DrawEngine::drawMesh(*shapeUnited);
@@ -81,14 +76,10 @@ void GameEvolutionTest::initMap()
 	if (!shapeUnited)
 	{
 		shapeUnited = new ShapeUnited();
-		shapeUnited->load("Models/Microbe_view.obj");
-	}
-
-	if (!shape)
-	{
-		shape = new Shape();
-		shape->loadObj("Models/Glider.obj");
-		shape->check();
+		//shapeUnited->load("Models/Microbe_view.obj");
+		//shapeUnited->load("Models/Terrain.obj");
+		//shapeUnited->load("Models/Terrain_box.obj");
+		shapeUnited->load("Models/Terrain_box_mono.obj");
 	}
 
 	_map = &Map::getByName("MapGameEvolutionTest");
@@ -102,7 +93,8 @@ void GameEvolutionTest::initDraw()
 
 	_camera = &CameraGLM::getByName("First");
 	_camera->setDefault();
-    _camera->setLookAt(glm::vec3(-15.0f, -15.0f, 15.0f), glm::vec3(0.5f, 0.5f, 1.0f));
+	_camera->setLookAt(glm::vec3(-50.0f, 50.0f, 50.0f), glm::vec3(0.5f, 0.5f, 1.0f));
+    //_camera->setLookAt(glm::vec3(-15.0f, -15.0f, 15.0f), glm::vec3(0.5f, 0.5f, 1.0f));
 	//_camera->setLookAt(glm::vec3(-5.0f, -5.0f, 5.0f), glm::vec3(0.5f, 0.5f, 1.0f));
 	_camera->setSpeed(0.1f);
 	_camera->setCalcFrustum(false);
