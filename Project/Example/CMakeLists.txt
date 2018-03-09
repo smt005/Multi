@@ -13,6 +13,7 @@ include_directories(${THIRD_PARTY_DIR})
 set(EXAMPLE_SOURCE_DIR
     .
 	Draw
+	Classes
 )
 
 foreach(DIR ${EXAMPLE_SOURCE_DIR})

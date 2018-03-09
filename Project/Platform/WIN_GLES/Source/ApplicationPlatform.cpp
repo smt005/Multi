@@ -8,6 +8,7 @@
 #define ApplicationWin_NAME	"Multi v.0.0 [" __DATE__"  " __TIME__" ]"
 
 #define EXAMPLE false
+#define EXAMPLE_NUM 5
 
 LRESULT CALLBACK handleWindowMessages(HWND nativeWindow, UINT message, WPARAM windowParameters, LPARAM longWindowParameters);
 
@@ -228,7 +229,7 @@ bool ApplicationPlatform::execution(HINSTANCE& applicationInstance)
 
 	if (EXAMPLE)
 	{
-		Draw::nextDraw(4);
+		Draw::nextDraw(EXAMPLE_NUM);
 	}
 	else
 	{

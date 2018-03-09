@@ -23,6 +23,8 @@ unsigned int DrawEngine::_programBase;
 unsigned int DrawEngine::_cuttrentBufer = 0;
 unsigned int DrawEngine::_cuttrentTexture = 0;
 
+unsigned int DrawEngine::_programLine = 0;
+
 void DrawEngine::setBackgroundColor(const float *color)
 {
 	_backgroundColor[0] = color[0];
@@ -266,4 +268,69 @@ void DrawEngine::drawMesh(Mesh& mesh)
 	glUniformMatrix4fv(u_matViewModel, 1, GL_FALSE, glm::value_ptr(mat));
 
 	glDrawElements(GL_TRIANGLES, mesh._countIndex, GL_UNSIGNED_SHORT, 0);
+}
+
+// DrawLines
+
+void DrawEngine::initDrawLines()
+{
+#ifdef BUILD_OSX
+	Shader::getShaderProgram(_programLine, "Shaders/OSX/LineMatrix.vert", "Shaders/OSX/LineMatrix.frag");
+#else
+	Shader::getShaderProgram(_programLine, "Shaders/LineMatrix.vert", "Shaders/LineMatrix.frag");
+#endif
+}
+
+void DrawEngine::prepareDrawLine()
+{
+	if (!_programLine) return;
+
+	glDepthFunc(GL_LEQUAL);
+	glEnable(GL_DEPTH_TEST);
+
+	glUseProgram(_programLine);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	int a_position = 0;
+	glBindAttribLocation(_programLine, a_position, "a_position");
+
+	glEnableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+
+	glClearColor(0.3f, 0.6f, 0.9f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void DrawEngine::drawLine(float* point0, float* point1, float* color)
+{
+	unsigned int _u_matrix = glGetUniformLocation(_programLine, "u_matrix");
+	unsigned int _u_pointSize = glGetUniformLocation(_programLine, "u_pointSize");
+	unsigned int _u_color = glGetUniformLocation(_programLine, "u_color");
+
+	
+	if (color)
+	{
+		glUniform4fv(_u_color, 1, color);
+
+		float width = color[0] * 3;
+		glLineWidth(width);
+	}
+	else
+	{
+		float _colorRed[] = { 1.0f, 0.0f, 0.0f, 1.0f };
+		glUniform4fv(_u_color, 1, _colorRed);
+
+		glLineWidth(2.0f);
+	}
+
+	
+	//glUniform1f(_u_pointSize, 8.0f);
+
+	glUniformMatrix4fv(_u_matrix, 1, GL_FALSE, CameraGLM::current().matProjectViewFloat());
+	
+	GLfloat line[] = {point0[0], point0[1] , point0[2], point1[0], point1[1] , point1[2]};
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, line);
+	glDrawArrays(GL_LINES, 0, 2);
 }

@@ -4,6 +4,7 @@
 #include "DrawGreed.h"
 #include "DrawLoadOBJ.h"
 #include "DrawMap.h"
+#include "DrawLines.h"
 
 #ifdef BUILD_WIN_GLES
 	#define GL_GLEXT_PROTOTYPES
@@ -95,6 +96,12 @@ bool Draw::nextDraw(int step)
 		_currentDraw = new DrawMap();
 	} break;
 
+	case 5:
+	{
+		delete _currentDraw;
+		_currentDraw = new DrawLines();
+	} break;
+	
 	default: return false;
 	}
 
