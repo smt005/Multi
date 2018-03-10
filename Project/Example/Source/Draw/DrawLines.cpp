@@ -4,7 +4,7 @@
 #include "Draw/Shader.h"
 #include "Draw/CameraGLM.h"
 #include "Draw/DrawEngine.h"
-#include "Object/ShapeUnited.h"
+#include "Object/Shape.h"
 #include "Object/Map.h"
 
 #ifdef BUILD_WIN_GLES
@@ -57,7 +57,6 @@ DrawLines::DrawLines()
 DrawLines::~DrawLines()
 {
     delete _camera;
-    delete _shapeUnited;
 }
 
 void DrawLines::init()
@@ -69,12 +68,6 @@ void DrawLines::init()
     initCallback();
     
     _map = &Map::getByName("MapGameEvolutionTest");
-    
-    /*if (!_shapeUnited)
-    {
-        _shapeUnited = new ShapeUnited();
-        _shapeUnited->load("Models/Microbe_view.obj");
-    }*/
 }
 
 void DrawLines::initDraw()

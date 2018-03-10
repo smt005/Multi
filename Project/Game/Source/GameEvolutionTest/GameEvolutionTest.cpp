@@ -7,8 +7,9 @@
 #include "Object/Map.h"
 #include "AI/AIExample.h"
 
+#include "Object/Object.h"
+#include "Object/Model.h"
 #include "Object/Shape.h"
-#include "Object/ShapeUnited.h"
 
 GameEvolutionTest::GameEvolutionTest()
 {
@@ -50,7 +51,7 @@ void GameEvolutionTest::tact()
 		{
 			glm::mat4x4 matrix = glm::translate(glm::mat4x4(1.0f), randomPos());
 
-			ObjectUnited &target = _map->_objects.getByName("Target");
+			Object& target = _map->_objects.getByName("Target");
 			target.setMatrix(matrix);
 		}
 	}
@@ -63,26 +64,10 @@ void GameEvolutionTest::draw()
 {
 	DrawEngine::prepareDraw(true);
 	DrawEngine::drawMap(*_map);
-
-	if (shapeUnited)
-	{
-		DrawEngine::drawMesh(*shapeUnited);
-	}
 }
 
 void GameEvolutionTest::initMap()
 {
-
-	if (!shapeUnited)
-	{
-		shapeUnited = new ShapeUnited();
-		//shapeUnited->load("Models/Microbe_view.obj");
-		//shapeUnited->load("Models/Terrain.obj");
-		//shapeUnited->load("Models/Terrain_box.obj");
-		//shapeUnited->load("Models/Terrain_box_mono.obj");
-		shapeUnited->load("Models/Box1.obj");
-	}
-
 	_map = &Map::getByName("MapGameEvolutionTest");
 	AIExample::findTarget(*_map, "Target");
 }

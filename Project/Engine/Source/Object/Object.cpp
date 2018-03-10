@@ -22,7 +22,7 @@ Object::~Object()
 void Object::getDataJson(json& dataJson)
 {
 	dataJson["name"] = name();
-	dataJson["model"] = model().name();
+	dataJson["model"] = getModel().name();
 
 	dataJson["pos"].push_back(_matrix[3][0]);
 	dataJson["pos"].push_back(_matrix[3][1]);
@@ -52,7 +52,7 @@ void Object::setMatrix(const float *matrix)
 	_matrix[3][3] = matrix[15];
 }
 
-Model& Object::model()
+Model& Object::getModel()
 {
 	if (!_model) _model = &Model::getByName("default");
 	return *_model;
@@ -86,8 +86,8 @@ void Object::setPhysic(const int& type)
 {
 	if (_model)
 	{
-		Shape& shape = _model->shape();
-		_physic = Physics::create(shape, type, value_ptr(_matrix));
+		Shape& shape = _model->getShape();
+		//_physic = Physics::create(shape, type, value_ptr(_matrix));
 	}
 }
 
@@ -95,9 +95,9 @@ void Object::setBoxPhysic(int& id, const int& type)
 {
 	if (_model)
 	{
-		Shape& shape = _model->shape();
-		float size[] = { shape._minVectex.x, shape._minVectex.y, shape._minVectex.z};
-		_physic = Physics::createBox(id, size, type, value_ptr(_matrix));
+		//ShapeUnited& shape = _model->getShape();
+		//float size[] = { shape._minVectex.x, shape._minVectex.y, shape._minVectex.z};
+		//_physic = Physics::createBox(id, size, type, value_ptr(_matrix));
 	}
 }
 
@@ -109,10 +109,10 @@ void Object::setData(const json &data)
 
 void Object::action()
 {
-	if (!_physic) return;
+	/*if (!_physic) return;
 
 	btTransform trans = _physic->getWorldTransform();
 	float mat[16];
 	trans.getOpenGLMatrix(mat);
-	setMatrix(mat);
+	setMatrix(mat);*/
 }

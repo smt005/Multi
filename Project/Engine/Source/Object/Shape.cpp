@@ -1,5 +1,4 @@
 
-
 #include "Shape.h"
 #include "../Platform/Source/FilesManager.h"
 
@@ -8,79 +7,48 @@
 #include <stdlib.h>
 
 #ifdef BUILD_WIN_GLES
-	#define GL_GLEXT_PROTOTYPES
-	#include "GLES2/gl2.h"
+#define GL_GLEXT_PROTOTYPES
+#include "GLES2/gl2.h"
 #elif BUILD_WIN_GLFW
-    #include <GL/glew.h>
+#include <GL/glew.h>
 #elif BUILD_OSX
-    #include "glfw3.h"
+#include "glfw3.h"
 #endif
 
-#include <iostream>
-#include <algorithm>
-#include <vector>
+//	Mesh
 
-Shape::Shape()
+Mesh::~Mesh()
 {
-	_id = 0;
-	_name = "NO_NAME";
 	_countVertex = 0;
-	_aVertex = nullptr;
-	_aNormal = nullptr;
-	_aTexCoord = nullptr;
-
-	_countPhysicVertex = 0;
-	_aPhysicVertex = nullptr;
-
-	_countIndex = 0;
-	_aIndex = 0;
-}
-
-Shape::Shape(const string& name, const bool &needLoad)
-{
-	_id = 0;
-	_name = name;
-
-	_countVertex = 0;
-	_aVertex = 0;
-	_aNormal = 0;
-	_aTexCoord = 0;
-
-	_countIndex = 0;
-	_aIndex = 0;
-
-	if (needLoad) loadObj(_name);
-}
-
-Shape::~Shape()
-{
-	delete _aVertex;
-	delete _aNormal;
-	delete _aTexCoord;
-	delete _aIndex;
-	delete _aPhysicVertex;
-
-	glDeleteBuffers(4, _buffer);
-}
-
-inline int found(float *vertex, float *normal, float *texCoord,
-				float *aVertex, float *aNormal, float *aTexCoord,
-				int count)
-{
-	for (int index = 0; index < count; ++index)
+	
+	if (_aVertex)
 	{
-		if ((vertex[0] == aVertex[index * 3] && vertex[1] == aVertex[(index * 3) + 1] && vertex[2] == aVertex[(index * 3) + 2]) &&
-			(normal[0] == aNormal[index * 3] && normal[1] == aNormal[(index * 3) + 1] && normal[2] == aNormal[(index * 3) + 2]) &&
-			(texCoord[0] == aTexCoord[index * 2] && texCoord[1] == aTexCoord[(index * 2) + 1]))
-		{
-			return index;
-		}
+		delete[] _aVertex;
+		_aVertex = nullptr;
 	}
 
-	return -1;
+	if (_aNormal)
+	{
+		delete[] _aNormal;
+		_aNormal = nullptr;
+	}
+
+	if (_aTexCoord)
+	{
+		delete[] _aTexCoord;
+		_aTexCoord = nullptr;
+	}
+
+	_countIndex = 0;
+
+	if (_aIndex)
+	{
+		delete[] _aIndex;
+		_aIndex = nullptr;
+	}
 }
 
-void Shape::initVBO()
+void Mesh::initVBO()
 {
 	glDeleteBuffers(4, _buffer);
 
@@ -101,403 +69,393 @@ void Shape::initVBO()
 	_hasVBO = true;
 }
 
-bool Shape::loadObj(const string& name)
+//	MeshPhysic
+
+MeshPhysic::~MeshPhysic()
+{
+	_count = 0;
+	if (_meshes)
+	{
+		delete[] _meshes;
+		_meshes = nullptr;
+	}
+}
+
+//	Shape
+
+struct BlockTemporary
+{
+	char* _name = nullptr;
+	const int _maxCount = 10240;
+	int _countLine = 0;
+	char** _charLine = nullptr;
+
+	int _countNumber = 9;
+
+	int _count = 0;
+	float* _floatArray = nullptr;
+	unsigned short int* _intArray = nullptr;
+
+	BlockTemporary()
+	{
+		_charLine = new char*[_maxCount];
+	}
+
+	BlockTemporary(int countNumber)
+	{
+		_countNumber = countNumber;
+		_charLine = new char*[_maxCount];
+	}
+
+	~BlockTemporary()
+	{
+		delete[] _charLine;
+	}
+
+	void parse()
+	{
+		_count = _countLine * _countNumber;
+
+		if (_countNumber == 2 || _countNumber == 3)
+		{
+			_floatArray = new float[_count];
+
+			for (int i = 0; i < _countLine; ++i)
+			{
+				int index = i * _countNumber;
+
+				if (_countNumber == 2)
+				{
+					sscanf(_charLine[i], "%f %f", &_floatArray[index], &_floatArray[index + 1]);
+				}
+				else if (_countNumber == 3)
+				{
+					sscanf(_charLine[i], "%f %f %f", &_floatArray[index], &_floatArray[index + 1], &_floatArray[index + 2]);
+				}
+			}
+		}
+		else if (_countNumber == 9)
+		{
+			_intArray = new unsigned short int[_count];
+
+			for (int i = 0; i < _countLine; ++i)
+			{
+				int intTemp[9];
+
+				sscanf(_charLine[i], "%d/%d/%d %d/%d/%d %d/%d/%d",
+					&intTemp[0],
+					&intTemp[1],
+					&intTemp[2],
+					&intTemp[3],
+					&intTemp[4],
+					&intTemp[5],
+					&intTemp[6],
+					&intTemp[7],
+					&intTemp[8]);
+
+				int index = i * _countNumber;
+
+				for (int i2 = 0; i2 < 9; ++i2)
+				{
+					_intArray[index + i2] = static_cast<unsigned short int>(intTemp[i2] - 1);
+				}
+			}
+		}
+
+		/*{
+#ifdef WIN32
+std::ofstream _WRITE_LOG("Log.txt", std::ios::app);
+_WRITE_LOG << "\t_countNumber = " << _countNumber << std::endl;
+
+			if (_countNumber == 2)
+			{
+				for (int i = 0; i < _count; i += _countNumber)
+				{
+					_WRITE_LOG  << _floatArray[i] << ' ' << _floatArray[i + 1] << std::endl;
+					
+				}
+				
+			}
+			else if (_countNumber == 3)
+			{
+				for (int i = 0; i < _count; i += _countNumber)
+				{
+					_WRITE_LOG << _floatArray[i] << ' ' << _floatArray[i + 1] << ' ' << _floatArray[i + 2] << std::endl;
+
+				}
+
+			}
+			else if (_countNumber == 9)
+			{
+				for (int i = 0; i < _count; i += _countNumber)
+				{
+					_WRITE_LOG << _intArray[i] << '/' << _intArray[i + 1] << '/' << _intArray[i + 2] << ' ' << _intArray[i + 3] << '/' << _intArray[i + 4] << '/' << _intArray[i + 5] << ' ' << _intArray[i + 6] << '/' << _intArray[i + 7] << '/' << _intArray[i + 8] << "\t//\t" << _name << std::endl;
+				}
+			}
+#endif
+		}*/
+	}
+
+	static int foundIndex(float *vertex, float *normal, float *texCoord,
+		float *aVertex, float *aNormal, float *aTexCoord,
+		int count)
+	{
+		for (int index = 0; index < count; ++index)
+		{
+			if ((vertex[0] == aVertex[index * 3] && vertex[1] == aVertex[(index * 3) + 1] && vertex[2] == aVertex[(index * 3) + 2]) &&
+				(normal[0] == aNormal[index * 3] && normal[1] == aNormal[(index * 3) + 1] && normal[2] == aNormal[(index * 3) + 2]) &&
+				(texCoord[0] == aTexCoord[index * 2] && texCoord[1] == aTexCoord[(index * 2) + 1]))
+			{
+				return index;
+			}
+		}
+
+		return -1;
+	};
+
+	static void getMesh(Mesh& mesh, int countIndexTemporary, BlockTemporary* indexTemporarys,
+		BlockTemporary& vertexTemporary, BlockTemporary& normalTemporary, BlockTemporary& textureTemporary)
+	{
+		int countIndexT = 0;
+		
+		for (int iT = 0; iT < countIndexTemporary; ++iT)
+		{
+			countIndexT += indexTemporarys[iT]._count;
+		}
+
+		unsigned short* aIndexNew = new unsigned short[countIndexT * 3];
+		float* aVertexNew = new float[countIndexT * 3];
+		float* aNormalNew = new float[countIndexT * 3];
+		float* aTextureNew = new float[countIndexT * 2];
+		
+		int indexVertexNew = 0;
+		int iIndexNew = 0;
+
+		float* aVertexT = vertexTemporary._floatArray;
+		float* aTextureT = textureTemporary._floatArray;
+		float* aNormalT = normalTemporary._floatArray;
+
+		for (int iT = 0; iT < countIndexTemporary; ++iT)
+		{
+			BlockTemporary& indexTemporary = indexTemporarys[iT];
+			unsigned short* aIndexT = indexTemporary._intArray;
+			
+			for (int i = 0; i < indexTemporary._count; i+=3)
+			{
+				unsigned short indexV = aIndexT[i];
+				float* vertex = &aVertexT[indexV * 3];
+
+				unsigned short indexT = aIndexT[i + 1];
+				float* texCoord = &aTextureT[indexT * 2];
+
+				unsigned short indexN = aIndexT[i + 2];
+				float* normal = &aNormalT[indexN * 3];
+
+				int index = foundIndex(vertex, normal, texCoord, aVertexNew, aNormalNew, aTextureNew, indexVertexNew);
+				if (index == -1)
+				{
+					index = indexVertexNew;
+
+					aVertexNew[index * 3] = vertex[0];
+					aVertexNew[index * 3 + 1] = vertex[1];
+					aVertexNew[index * 3 + 2] = vertex[2];
+
+					aNormalNew[index * 3] = normal[0];
+					aNormalNew[index * 3 + 1] = normal[1];
+					aNormalNew[index * 3 + 2] = normal[2];
+
+					aTextureNew[index * 2] = texCoord[0];
+					aTextureNew[index * 2 + 1] = texCoord[1];
+
+					++indexVertexNew;
+				}
+
+				aIndexNew[iIndexNew] = index;
+				++iIndexNew;
+			}
+		}
+
+		mesh._countIndex = iIndexNew;
+		mesh._aIndex = aIndexNew;
+
+		mesh._countVertex = indexVertexNew;
+		mesh._aVertex = new float[indexVertexNew * 3];
+		mesh._aNormal = new float[indexVertexNew * 3];
+		mesh._aTexCoord = new float[indexVertexNew * 2];
+
+		for (int i = 0; i < indexVertexNew; ++i)
+		{
+			int indexV = i * 3;
+
+			mesh._aVertex[indexV] = aVertexNew[indexV];
+			mesh._aVertex[indexV + 1] = aVertexNew[indexV + 1];
+			mesh._aVertex[indexV + 2] = aVertexNew[indexV + 2];
+
+			mesh._aNormal[indexV] = aNormalNew[indexV];
+			mesh._aNormal[indexV + 1] = aNormalNew[indexV + 1];
+			mesh._aNormal[indexV + 2] = aNormalNew[indexV + 2];
+
+			int indexT = i * 2;
+
+			mesh._aTexCoord[indexT] = aTextureNew[indexT];
+			mesh._aTexCoord[indexT + 1] = aTextureNew[indexT + 1];
+		}
+
+		delete[] aVertexNew;
+		delete[] aNormalNew;
+		delete[] aTextureNew;
+	}
+};
+
+Shape::~Shape()
+{
+	if (_physic)
+	{
+		delete _physic;
+		_physic = nullptr;
+	}
+}
+
+void Shape::create(const string &name)
+{
+	load(_name);
+}
+
+void Shape::load(const string& name)
 {
 	char* data = FilesManager::loadTextFile(name.c_str());
 
 	if (!data)
 	{
-		return false;
+		return;
 	}
 
 	int len = strlen(data);
 	int iChar = 0;
 
-	char* charTemp2 = 0;
-	char* line = 0;
+	BlockTemporary vertexTemporary(3);
+	BlockTemporary normalTemporary(3);
+	BlockTemporary textureTemporary(2);
 
-	unsigned short int countVertex = 0;
-	float* aVertex = 0;
+	const int maxCountIndexTemporary = 10;
+	BlockTemporary* currentIndexTemporary = nullptr;
+
+	int countIndexTemporary = 0;
+	BlockTemporary indexTemporary[maxCountIndexTemporary];
+
+	int countIndexPhysicTemporary = 0;
+	BlockTemporary indexPhysicTemporary[maxCountIndexTemporary];
 	
-	unsigned short int countNormal = 0;
-	float* aNormal = 0;
-
-	unsigned short int countTexCoord = 0;
-	float* aTexCoord = 0;
-
-	unsigned short int countIndex = 0;
-	unsigned short* aIndex = 0;
-
-	int indexVertex = 0;
-	int indexNormal = 0;
-	int indexTexture = 0;
-	int indexFace = 0;
-
+	// Разделение данных на блоки
 	while (iChar < len)
 	{
-		// VERTEXES
-		if (data[iChar] == 'v' && data[iChar + 1] != 'n' && data[iChar + 1] != 't' && data[iChar + 1] == ' ')
+		if (data[iChar] == 'v' && data[iChar + 1] == ' ' && data[iChar + 2] == ' ')
 		{
-			if (!aVertex)
-			{
-				countVertex = getCount(&data[iChar]);
-				if (countVertex > 0)aVertex = new float[countVertex * 3];
-			}
-
-			if (aVertex)
-			{
-				++iChar;
-				while (data[iChar] == ' ') ++iChar;
-				char* pointToChar = &data[iChar];
-				while (data[iChar] != '\n') ++iChar;
-				data[iChar] = '\0';
-
-				getVertex(pointToChar, &aVertex[indexVertex * 3], 3);
-				++indexVertex;
-			}
+			vertexTemporary._charLine[vertexTemporary._countLine] = &data[iChar + 3];
+			++vertexTemporary._countLine;
+			iChar += 3;
 		}
 
-		// NORMALS
 		if (data[iChar] == 'v' && data[iChar + 1] == 'n' && data[iChar + 2] == ' ')
 		{
-			if (!aNormal)
-			{
-				countNormal = getCount(&data[iChar]);
-				if (countNormal > 0)aNormal = new float[countNormal * 3];
-			}
-
-			if (aNormal)
-			{
-				++iChar;
-				++iChar;
-				while (data[iChar] == ' ') ++iChar;
-				char* pointToChar = &data[iChar];
-				while (data[iChar] != '\n') ++iChar;
-				data[iChar] = '\0';
-
-				getVertex(pointToChar, &aNormal[indexNormal * 3], 3);
-				++indexNormal;
-			}
+			normalTemporary._charLine[normalTemporary._countLine] = &data[iChar + 3];
+			++normalTemporary._countLine;
+			iChar += 3;
 		}
 
-		// TEXTURES
 		if (data[iChar] == 'v' && data[iChar + 1] == 't' && data[iChar + 2] == ' ')
 		{
-			if (!aTexCoord)
-			{
-				countTexCoord = getCount(&data[iChar]);
-				if (countTexCoord > 0)aTexCoord = new float[countTexCoord * 2];
-			}
-
-			if (aTexCoord)
-			{
-				++iChar;
-				++iChar;
-				while (data[iChar] == ' ') ++iChar;
-				char* pointToChar = &data[iChar];
-				while (data[iChar] != '\n') ++iChar;
-				data[iChar] = '\0';
-
-				getVertex(pointToChar, &aTexCoord[indexTexture * 2], 2);
-				++indexTexture;
-			}
+			textureTemporary._charLine[textureTemporary._countLine] = &data[iChar + 3];
+			++textureTemporary._countLine;
+			iChar += 3;
 		}
 
-		// INDEXES
 		if (data[iChar] == 'f' && data[iChar + 1] == ' ')
 		{
-			if (!aIndex)
+			if (!currentIndexTemporary)
 			{
-				countIndex = getCount(&data[iChar]);
-				if (countIndex > 0) aIndex = new unsigned short[countIndex * 9];
+				char* name = nullptr;
+				int iCharTemp = iChar - 1;
+				data[iCharTemp] = '\0';
+
+				while (iCharTemp >= 0 && data[iCharTemp] != ' ')
+				{
+					--iCharTemp;
+				}
+
+				name = &data[iCharTemp + 1];
+
+				if (name[0] == '_')
+				{
+					currentIndexTemporary = &indexPhysicTemporary[countIndexPhysicTemporary];
+					++countIndexPhysicTemporary;
+
+					if (countIndexPhysicTemporary >= maxCountIndexTemporary)
+					{
+						break;
+						// LOG
+					}
+				}
+				else
+				{
+					currentIndexTemporary = &indexTemporary[countIndexTemporary];
+					++countIndexTemporary;
+
+					if (countIndexPhysicTemporary >= maxCountIndexTemporary)
+					{
+						break;
+						// LOG
+					}
+				}
+				
+				currentIndexTemporary->_name = name;
 			}
 
-			if (aIndex)
-			{
-				++iChar;
-				while (data[iChar] == ' ') ++iChar;
-				char* pointToChar = &data[iChar];
-				while (data[iChar] != '\n') ++iChar;
-				data[iChar] = '\0';
+			currentIndexTemporary->_charLine[currentIndexTemporary->_countLine] = &data[iChar + 2];
+			++currentIndexTemporary->_countLine;
+			iChar += 2;
+		}
 
-				gatFace(pointToChar, &aIndex[indexFace * 9], 9);
-				++indexFace;
-			}
+		if (currentIndexTemporary && (data[iChar] == '#' && data[iChar + 1] == ' '))
+		{
+			currentIndexTemporary = nullptr;
+			iChar += 2;
+		}
+
+		if (data[iChar] == '\n')
+		{
+			data[iChar] = '\0';
 		}
 
 		++iChar;
 	}
+    
+	vertexTemporary.parse();
+	normalTemporary.parse();
+	textureTemporary.parse();
 
-	int countVertexNew = 0;
-	float* aVertexNew = new float[countIndex * 3 * 3];
-	for (int i = 0; i < (countIndex * 3 * 3); ++i) aVertexNew[i] = 100000000000.0f;
-
-	float* aNormalNew = new float[countIndex * 3 * 3];
-	for (int i = 0; i < (countIndex * 3 * 3); ++i) aNormalNew[i] = 100000000000.0f;
-
-	float* aTexCoordNew = new float[countIndex * 3 * 2];
-	for (int i = 0; i < (countIndex * 3 * 2); ++i) aTexCoordNew[i] = 100000000000.0f;
-
-
-	_countPhysicVertex = countVertex;
-	_aPhysicVertex = aVertex;
-
-	unsigned short* aIndexNew = new unsigned short[countIndex * 9];
-	for (int i = 0; i < (countIndex * 9); ++i) aIndexNew[i] = -1;
-
-	int iIndex = 0;
-
-	for (int i = 0; i < countIndex * 9; i+=3)
+	for (int i = 0; i < countIndexTemporary; ++i)
 	{
-		int indexV = aIndex[i];
-		float *vertex = &aVertex[indexV * 3];
-		
-		int indexT = aIndex[i + 1];
-		float *texCoord = &aTexCoord[indexT * 2];
+		indexTemporary[i].parse();
+	}
 
-		int indexN = aIndex[i + 2];
-		float *normal = &aNormal[indexN * 3];
+	for (int i = 0; i < countIndexPhysicTemporary; ++i)
+	{
+		indexPhysicTemporary[i].parse();
+	}
 
-		int index = found(vertex, normal, texCoord, aVertexNew, aNormalNew, aTexCoordNew, countVertexNew);
-		if (index == -1)
+	BlockTemporary::getMesh(*this, countIndexTemporary, indexTemporary, vertexTemporary, normalTemporary, textureTemporary);
+
+	if (countIndexPhysicTemporary > 0)
+	{
+		_physic = new MeshPhysic();
+
+		_physic->_count = countIndexPhysicTemporary;
+		_physic->_meshes = new Mesh[countIndexPhysicTemporary];
+
+		for (int i = 0; i < countIndexPhysicTemporary; ++i)
 		{
-			index = countVertexNew;
-
-			aVertexNew[index * 3	] = vertex[0];
-			aVertexNew[index * 3 + 1] = vertex[1];
-			aVertexNew[index * 3 + 2] = vertex[2];
-
-			aNormalNew[index * 3	] = normal[0];
-			aNormalNew[index * 3 + 1] = normal[1];
-			aNormalNew[index * 3 + 2] = normal[2];
-
-			aTexCoordNew[index * 2	  ] = texCoord[0];
-			aTexCoordNew[index * 2 + 1] = texCoord[1];
-
-			++countVertexNew;
-		}
-
-		aIndexNew[iIndex] = index;
-		++iIndex;
-	}
-
-	//delete[] aVertex;
-	delete[] aNormal;
-	delete[] aTexCoord;
-	delete[] aIndex;
-
-	_aIndex = aIndexNew;
-	_countVertex = countVertexNew;
-	_countIndex = countIndex * 3;
-
-	_aVertex = new float[_countVertex * 3];
-	_aNormal = new float[_countVertex * 3];
-	_aTexCoord = new float[_countVertex * 2];
-
-	for (int i = 0; i < _countVertex * 3; ++i) _aVertex = aVertexNew;
-	for (int i = 0; i < _countVertex * 3; ++i) _aNormal = aNormalNew;
-	for (int i = 0; i < _countVertex * 2; ++i) _aTexCoord = aTexCoordNew;
-
-	_maxVectex = glm::vec3(FLT_MIN, FLT_MIN, FLT_MIN);
-	_minVectex = glm::vec3(FLT_MAX, FLT_MAX, FLT_MAX);
-
-	for (int i = 0; i < _countVertex * 3; i += 3)
-	{
-		float x = _aVertex[i];
-		if (x > _maxVectex.x) _maxVectex.x = x;
-		if (x < _minVectex.x) _minVectex.x = x;
-
-		float y = _aVertex[i + 1];
-		if (y > _maxVectex.y) _maxVectex.y = y;
-		if (y < _minVectex.y) _minVectex.y = y;
-
-		float z = _aVertex[i + 2];
-		if (z > _maxVectex.z) _maxVectex.z = z;
-		if (z < _minVectex.z) _minVectex.z = z;
-	}
-
-	float rMax = glm::length(_maxVectex);
-	float rMin = glm::length(_minVectex);
-	_radius = max(rMax, rMin);
-
-	return true;
-}
-
-
-void Shape::getVertex(char* charLine, float* aVertex, int count)
-{
-	int iChar = 0;
-	for (int i = 0; i < count; ++i)
-	{
-		char* charVar = &charLine[iChar];
-		while (charLine[iChar] != ' ' && charLine[iChar] != '/' && charLine[iChar] != '\0') ++iChar;
-		charLine[iChar] = '\0';
-		aVertex[i] = (float)atof(charVar);
-		++iChar;
-		while (charLine[iChar] == ' ' && charLine[iChar] != '\0') ++iChar;
-	}
-}
-
-//	f 1/1/1 2/2/1 3/3/1
-void Shape::gatFace(char* charLine, unsigned short* aVertex, int count)
-{
-	int iChar = 0;
-	for (int i = 0; i < count; ++i)
-	{
-		char* charVar = &charLine[iChar];
-		while (charLine[iChar] != ' ' && charLine[iChar] != '/' && charLine[iChar] != '\0') ++iChar;
-		charLine[iChar] = '\0';
-		aVertex[i] = (unsigned short)atoi(charVar) - 1;
-
-		++iChar;
-		while (charLine[iChar] == ' ' && charLine[iChar] != '\0') ++iChar;
-	}
-}
-
-int Shape::getCount(char* pointToChar)
-{
-	int iChar = 0;
-	while (pointToChar[iChar] != '#') ++iChar;
-
-	iChar = iChar + 2;
-	char* line = &pointToChar[iChar];
-
-	while (pointToChar[iChar] != ' ') ++iChar;
-	pointToChar[iChar] = '\0';
-
-	return atoi(line);
-}
-
-void Shape::setScale(float *scale)
-{
-	if (!scale) return;
-
-	for (int i = 0; i < _countVertex * 3; i = i + 3)
-	{
-		_aVertex[i]     *= scale[0];
-		_aVertex[i + 1] *= scale[1];
-		_aVertex[i + 2] *= scale[2];
-	}
-
-	for (int i = 0; i < _countPhysicVertex * 3; i = i + 3)
-	{
-		_aPhysicVertex[i] *= scale[0];
-		_aPhysicVertex[i + 1] *= scale[1];
-		_aPhysicVertex[i + 2] *= scale[2];
-	}
-}
-
-void Shape::setPhysicShape(btCollisionShape* physicShape)
-{
-	_physicShape = physicShape;
-}
-
-void Shape::check()
-{
-	std::ofstream _WRITE_LOG("Log.txt", std::ios::app);
-	_WRITE_LOG << "\n\n\n SHAPE" << std::endl;
-
-	_WRITE_LOG << "\t// VERTEX _countVertex: " << _countVertex << " (" << (_countVertex / 3) << ") " << std::endl;
-	for (int i = 0; i < _countVertex * 3; i += 3)
-	{
-		_WRITE_LOG << _aVertex[i] << ' ' << _aVertex[i + 1] << ' ' << _aVertex[i + 2] << std::endl;
-	}
-
-	_WRITE_LOG << "\t// NORMAL _countVertex: " << _countVertex << " (" << (_countVertex / 3) << ") " << std::endl;
-	for (int i = 0; i < _countVertex * 3; i += 3)
-	{
-		_WRITE_LOG << _aNormal[i] << ' ' << _aNormal[i + 1] << ' ' << _aNormal[i + 2] << std::endl;
-	}
-
-	_WRITE_LOG << "\t// TEXTURE _countVertex: " << _countVertex << std::endl;
-	for (int i = 0; i < _countVertex * 2; i += 2)
-	{
-		_WRITE_LOG << _aTexCoord[i] << ' ' << _aTexCoord[i + 1] << std::endl;
-	}
-
-	_WRITE_LOG << "\t// INDEX _countIndex: " << _countIndex << " (" << (_countVertex / 3) << ") " << std::endl;
-	for (int i = 0; i < _countIndex; i += 3)
-	{
-		_WRITE_LOG << _aIndex[i] << ' ' << _aIndex[i + 1] << ' ' << _aIndex[i + 2] << std::endl;
-	}
-
-	/*LOG_LINE "\nVERTEXS: " << (_aVertex ? "YES" : "NO") << "\t COUNT = " << _countVertex LOG_END
-		if (_aVertex)
-		{
-			for (int i = 0; i < _countVertex * 3; i = i + 3)
-			{
-				LOG_LINE '\t' << '[' << _aVertex[i] TAB _aVertex[i + 1] TAB _aVertex[i + 2] << ']' LOG_END
-			}
-		}
-
-	LOG_LINE "\nNORMALS: " << (_aNormal ? "YES" : "NO") LOG_END
-		if (_aNormal)
-		{
-			for (int i = 0; i < _countVertex * 3; i = i + 3)
-			{
-				LOG_LINE '\t' << '[' << _aNormal[i] TAB _aNormal[i + 1] TAB _aNormal[i + 2] << ']' LOG_END
-			}
-		}
-
-	LOG_LINE "\nTEXCOORDS: " << (_aVertex ? "YES" : "NO") LOG_END
-		if (_aTexCoord)
-		{
-			for (int i = 0; i < _countVertex * 2; i = i + 2)
-			{
-				LOG_LINE '\t' << '[' << _aTexCoord[i] TAB _aTexCoord[i + 1] << ']' LOG_END
-			}
-		}
-
-	LOG_LINE "\nINDEXES: " << (_aIndex ? "YES" : "NO") << "\t COUNT = " << _countIndex LOG_END
-		if (_aIndex)
-		{
-			for (int i = 0; i < _countIndex; i = i + 3)
-			{
-				LOG_LINE '\t' << '[' << _aIndex[i] TAB _aIndex[i + 1] TAB _aIndex[i + 2] << ']' LOG_END
-			}
-		}*/
-}
-
-//	static
-Shape Shape::_defaultShape;
-unsigned int Shape::_count = 0;
-unsigned int Shape::_maxCount = 0;
-Shape** Shape::_shapes = 0;
-
-Shape* Shape::getShape(const string& name)
-{
-	for (unsigned int index = 0; index < _count; ++index)
-	{
-		Shape* shape = _shapes[index];
-		if (shape->_name == name)
-		{
-			return shape;
+			BlockTemporary::getMesh(_physic->_meshes[i], 1, &indexPhysicTemporary[i], vertexTemporary, normalTemporary, textureTemporary);
 		}
 	}
-
-	if (name.empty()) return &_defaultShape;
-
-	Shape* shapeNew = new Shape(name);
-	addShape(shapeNew);
-	return shapeNew;
-}
-
-unsigned int Shape::addShape(Shape* shape)
-{
-	if (_count >= _maxCount)
-	{
-		_maxCount = _maxCount + 10;
-		Shape** _shapesNew = new Shape*[_maxCount];
-
-		for (static unsigned int i = 0; i < _count; ++i) _shapesNew[i] = _shapes[i];
-
-		delete[] _shapes;
-		_shapes = _shapesNew;
-	}
-
-	shape->_id = _count;
-	_shapes[_count] = shape;
-	++_count;
-
-	return _count;
 }

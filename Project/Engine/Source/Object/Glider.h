@@ -1,9 +1,8 @@
 #pragma once
 
-#include "Object/ObjectUnited.h"
+#include "Object/Object.h"
 
 class AIInterface;
-//#include "AI/AIExample.h"
 
 struct GliderTemplate
 {
@@ -16,7 +15,7 @@ struct GliderTemplate
 	float _speed = 0.05f;
 };
 
-class Glider : public ObjectUnited
+class Glider : public Object
 {
 private:
 	GliderTemplate *_template = nullptr;

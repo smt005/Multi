@@ -5,13 +5,20 @@
 #define FILE_NAME_SHAPE_FILE	"Models/Box1.obj"
 #define FILE_NAME_TEXTURE_FILE	"Textures/BlackWhite.png"
 
-Shape& Model::shape()
+Shape& Model::getShape()
 {
 	if (_shape) return *_shape;
 
-	// TODO:
-	_shape = new Shape();
-	Shape::addShape(_shape);
+	_shape = &Shape::getByName(_name);
+
+	return *_shape;
+}
+
+Mesh& Model::getMesh()
+{
+	if (_shape) return *_shape;
+
+	_shape = &Shape::getByName(_name);
 
 	return *_shape;
 }
@@ -67,10 +74,10 @@ void Model::create(const string &newName)
 	}
 
 	// TODO:
-	_shape = Shape::getShape(shape);
+	_shape = &Shape::getByName(shape);
 	_texture = &Texture::getByName(texture);
 
-	if (hasScalling)
+	/*if (hasScalling)
 	{
 		_shape->setScale(_scale);
 		
@@ -84,7 +91,7 @@ void Model::create(const string &newName)
 		endName += "]";
 
 		_shape->_name = _shape->_name + endName;
-	}
+	}*/
 }
 
 // STATIC

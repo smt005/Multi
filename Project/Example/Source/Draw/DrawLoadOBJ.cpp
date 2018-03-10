@@ -200,7 +200,7 @@ int DrawLoadOBJ::initModelVBO()
 	glDeleteBuffers(3, _buffer);
 
 	Shape mesh;
-	mesh.loadObj("Models/Glider.obj");
+	mesh.load("Models/Glider.obj");
 	//mesh.check();
 
 	glGenBuffers(3, _buffer);

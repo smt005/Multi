@@ -1,8 +1,10 @@
 #pragma once
 
+#include "Common/ArrayClass.h"
 #include "Common/IncludesMatem.h"
-
 #include <string>
+
+using namespace std;
 
 #define SHAPE_VERTEX_POS_SIZE	3
 #define SHAPE_VERTEX_TEX_SIZE   2
@@ -10,60 +12,53 @@
 #define SHAPE_VERTEX_POS_INDX		0
 #define SHAPE_VERTEX_TEX_POS_INDX	1
 
-using namespace std;
+enum class PhysicType
+{
+	NONE,
+	CONVEX,
+	TERRAIN
+};
 
-class btCollisionShape;
+struct MeshTemporary;
 
-class Shape
+class Mesh
 {
 public:
-	unsigned int _id;
-	string _name;
+	unsigned short int _countVertex = 0;
+	float* _aVertex = nullptr;
+	float* _aNormal = nullptr;
+	float* _aTexCoord = nullptr;
 
-	unsigned short int _countVertex;
-	float* _aVertex;
-	float* _aNormal;
-	float* _aTexCoord;
-
-	unsigned short int _countPhysicVertex;
-	float* _aPhysicVertex;
+	unsigned short int _countIndex = 0;
+	unsigned short* _aIndex = nullptr;
 
 	bool _hasVBO = false;
-	unsigned short int _countIndex;
-	unsigned short* _aIndex;
 	unsigned int _buffer[4];
 
-	glm::vec3 _maxVectex;
-	glm::vec3 _minVectex;
-	float _radius = 0;
-
-	btCollisionShape* _physicShape = nullptr;
-
-	Shape();
-	Shape(const string& name, const bool &needLoad = true);
-	~Shape();
-
-	bool loadObj(const string& name);
+public:
+	~Mesh();
 	void initVBO();
-	void check();
-	void setScale(float *scale);
+};
 
-	void setPhysicShape(btCollisionShape* physicShape);
-	btCollisionShape* getPhysicShape() { return _physicShape; }
-
-private:
-	void	getVertex(char* charLine, float* aVertex, int count);
-	void	gatFace(char* charLine, unsigned short* aVertex, int count);
-	int		getCount(char* pointToChar);
-
-private:
-	static Shape _defaultShape;
-	static unsigned int _count;
-	static unsigned int _maxCount;
-	static Shape** _shapes;
+class MeshPhysic
+{
+public:
+	PhysicType _type = PhysicType::NONE;
+	unsigned short int _count = 0;
+	Mesh* _meshes = nullptr;
 
 public:
-	static unsigned int shapeCount() { _count; };
-	static Shape* getShape(const string& name);
-	static unsigned int addShape(Shape* shape);
+	~MeshPhysic();
+};
+
+class Shape: public Mesh, public ArrayClass <Shape>
+{
+private:
+	MeshPhysic* _physic = nullptr;
+
+public:
+	~Shape();
+
+	void create(const string &name);
+	void load(const string& name);
 };

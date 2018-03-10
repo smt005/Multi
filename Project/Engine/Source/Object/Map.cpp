@@ -1,5 +1,7 @@
 
 #include "Map.h"
+#include "Object.h"
+#include "Glider.h"
 #include "Model.h"
 #include "../Platform/Source/FilesManager.h"
 
@@ -37,7 +39,7 @@ void Map::create(const string &newName)
 			++index;
 		}
 
-		ObjectUnited &object = _objects.add();
+		Object& object = _objects.add();
 		object.set(name, modelName, pos);
 	}
 
@@ -86,10 +88,10 @@ void Map::action()
 	for (int i = 0; i < _gliders.count(); ++i) _gliders[i].action();
 }
 
-ObjectUnited& Map::addObjectBoxToPos(const string& nameModel, int& id, const int& type, const glm::vec3& pos)
+Object& Map::addObjectBoxToPos(const string& nameModel, int& id, const int& type, const glm::vec3& pos)
 {
 	Model& model = Model::getByName(nameModel);
-	ObjectUnited &object = _objects.add();
+	Object& object = _objects.add();
 
 	object.set("", nameModel, pos);
 	object.setPhysic(1);
@@ -97,10 +99,10 @@ ObjectUnited& Map::addObjectBoxToPos(const string& nameModel, int& id, const int
 	return object;
 }
 
-ObjectUnited& Map::addObjectToPos(const string& nameModel, const int& type, const glm::vec3& pos)
+Object& Map::addObjectToPos(const string& nameModel, const int& type, const glm::vec3& pos)
 {
 	Model& model = Model::getByName(nameModel);
-	ObjectUnited &object = _objects.add();
+	Object &object = _objects.add();
 
 	object.set("", nameModel, pos);
 	object.setPhysic(type);
@@ -108,10 +110,10 @@ ObjectUnited& Map::addObjectToPos(const string& nameModel, const int& type, cons
 	return object;
 }
 
-ObjectUnited& Map::addObject(const string& nameModel, const int& type, const glm::mat4x4& mat)
+Object& Map::addObject(const string& nameModel, const int& type, const glm::mat4x4& mat)
 {
 	Model& model = Model::getByName(nameModel);
-	ObjectUnited &object = _objects.add();
+	Object& object = _objects.add();
 
 	// Временно
 	glm::vec3 pos = glm::vec3(mat[3][0], mat[3][1], mat[3][2]);

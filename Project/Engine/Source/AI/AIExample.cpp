@@ -1,8 +1,11 @@
 
 #include "AIExample.h"
 #include "Object/Map.h"
+#include "Object/Object.h"
+#include "Object/Glider.h"
+#include "Common/IncludesMatem.h"
 
-ObjectUnited *AIExample::_targetObject = nullptr;
+Object* AIExample::_targetObject = nullptr;
 
 AIExample::AIExample(Glider &glider)
 {
@@ -13,7 +16,7 @@ void AIExample::action()
 {
 	if (!_targetObject) return;
 
-	glm:vec3 vector;
+	glm::vec3 vector;
 	vector.x = _targetObject->getMatrix()[3][0] - _glider->getMatrix()[3][0];
 	vector.y = _targetObject->getMatrix()[3][1] - _glider->getMatrix()[3][1];
 	vector.z = 0.0;
@@ -33,7 +36,7 @@ void AIExample::action()
 
 void AIExample::findTarget(Map& map, const char* nameTarget)
 {
-	ArrayTemplate <ObjectUnited> &objects = map._objects;
+	ArrayTemplate <Object> &objects = map._objects;
 	_targetObject = &objects.getByName(nameTarget);
 
 	int i = 0;

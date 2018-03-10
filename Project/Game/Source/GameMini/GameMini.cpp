@@ -4,8 +4,10 @@
 
 #include "Draw/DrawEngine.h"
 #include "Draw/CameraGLM.h"
-#include "Object/Map.h"
 #include "AI/AIExample.h"
+
+#include "Object/Map.h"
+#include "Object/Object.h"
 
 GameMini::GameMini()
 {
@@ -50,7 +52,7 @@ void GameMini::tact()
 			float posZ = 1.0f;
 			glm::mat4x4 matrix = glm::translate(glm::mat4x4(1.0f), glm::vec3(posX, posY, posZ));
 
-			ObjectUnited &target = _map->_objects.getByName("Target");
+			Object& target = _map->_objects.getByName("Target");
 			target.setMatrix(matrix);
 		}
 	}

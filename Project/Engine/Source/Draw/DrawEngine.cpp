@@ -6,10 +6,7 @@
 #include "Object/Map.h"
 #include "Object/Object.h"
 #include "Object/Model.h"
-
-#include "Object/ShapeUnited.h"
-#include "Object/ModelUnited.h"
-#include "Object/ObjectUnited.h"
+#include "Object/Shape.h"
 
 #ifdef BUILD_WIN_GLES
 	#define GL_GLEXT_PROTOTYPES
@@ -98,22 +95,21 @@ void DrawEngine::drawMap(Map& map)
 	GLuint u_matProjectionView = glGetUniformLocation(_programBase, "u_matProjectionView");
 	glUniformMatrix4fv(u_matProjectionView, 1, GL_FALSE, CameraGLM::current().matPV());
 
-	ArrayTemplate <ObjectUnited> &objects = map._objects;
+	ArrayTemplate <Object>& objects = map._objects;
 
 	for (int i = 0; i < objects.count(); ++i)
 	{
 		drawObject(objects[i]);
 	}
 
-	ArrayTemplate <Glider> &gliders = map._gliders;
+	ArrayTemplate <Glider>& gliders = map._gliders;
 
 	for (int i = 0; i < gliders.count(); ++i)
 	{
-		drawObject(gliders[i]);
+		//drawObject(gliders[i]);
 	}
 }
-
-void DrawEngine::drawModel(Object &object)
+/*void DrawEngine::drawModel(Object &object)
 {
 	unsigned int textureId = object.model().textureId();
 	Shape &shape = object.model().shape();
@@ -155,18 +151,18 @@ void DrawEngine::drawModel(Object &object)
 	//glUniformMatrix4fv(u_matViewModel, 1, GL_FALSE, object.matrixFloat());
 
 	//glDrawElements(GL_TRIANGLES, shape._countIndex, GL_UNSIGNED_SHORT, 0);
-}
+}*/
 
 
-void DrawEngine::drawModelTemp(Object &object)
+/*void DrawEngine::drawModelTemp(Object &object)
 {
 	unsigned int textureId = object.model().textureId();
 	Shape &shape = object.model().shape();
 	
 	drawShape(shape);
-}
+}*/
 
-void DrawEngine::drawShape(Shape& shape)
+/*void DrawEngine::drawShape(Shape& shape)
 {
 	if (!shape._hasVBO) shape.initVBO();
 
@@ -188,7 +184,7 @@ void DrawEngine::drawShape(Shape& shape)
 		_cuttrentBufer = shape._buffer[3];
 	}
 
-	/*if (textureId != _cuttrentTexture)
+	if (textureId != _cuttrentTexture)
 	{
 		GLuint u_color = glGetUniformLocation(_programBase, "u_color");
 		GLuint s_baseMap = glGetUniformLocation(_programBase, "s_baseMap");
@@ -200,7 +196,7 @@ void DrawEngine::drawShape(Shape& shape)
 		glBindTexture(GL_TEXTURE_2D, textureId);
 
 		_cuttrentTexture = textureId;
-	}*/
+	}
 
 	glm::mat4x4 mat(1.0);
 	mat = glm::translate(mat, glm::vec3(0.5, 1.0, 2.0));
@@ -209,14 +205,14 @@ void DrawEngine::drawShape(Shape& shape)
 	glUniformMatrix4fv(u_matViewModel, 1, GL_FALSE, glm::value_ptr(mat));
 
 	glDrawElements(GL_TRIANGLES, shape._countIndex, GL_UNSIGNED_SHORT, 0);
-}
+}*/
 
-void DrawEngine::drawObject(ObjectUnited& object)
+void DrawEngine::drawObject(Object& object)
 {
 	drawModel(object.getModel(), object.matrixFloat());
 }
 
-void DrawEngine::drawModel(ModelUnited& model, const float* matrix)
+void DrawEngine::drawModel(Model& model, const float* matrix)
 {
 	unsigned int textureId = model.textureId();
 	Mesh& mesh = model.getMesh();

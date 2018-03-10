@@ -105,7 +105,7 @@ void DrawMap::draw(bool clear)
 	}
 }
 
-void DrawMap::drawModel(Object &object)
+/*void DrawMap::drawModel(Object &object)
 {
 	unsigned int textureId = object.model().textureId();
 	Shape &shape = object.model().shape();
@@ -147,4 +147,4 @@ void DrawMap::drawModel(Object &object)
 	glUniformMatrix4fv(u_matViewModel, 1, GL_FALSE, object.matrixFloat());
 
 	glDrawElements(GL_TRIANGLES, shape._countIndex, GL_UNSIGNED_SHORT, 0);
-}
+}*/

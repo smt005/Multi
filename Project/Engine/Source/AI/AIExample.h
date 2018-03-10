@@ -4,14 +4,13 @@
 
 class Map;
 class Glider;
-class ObjectUnited;
+class Object;
 
 class AIExample: public AIInterface
 {
 private:
-	Glider * _glider = nullptr;
-
-	static ObjectUnited *_targetObject;
+	Glider* _glider = nullptr;
+	static Object* _targetObject;
 
 public:
 	AIExample(Glider &glider);

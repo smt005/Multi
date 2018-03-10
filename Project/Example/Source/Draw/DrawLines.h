@@ -5,14 +5,12 @@
 #include "Classes/RandomLines.h"
 
 class CameraGLM;
-class ShapeUnited;
 class Map;
 
 class DrawLines : public Draw, public Callback
 {
 private:
     CameraGLM *_camera = nullptr;
-    ShapeUnited* _shapeUnited = nullptr;
     Map *_map = nullptr;
 	RandomLines _lines;
 

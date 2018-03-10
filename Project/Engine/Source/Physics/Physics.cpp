@@ -226,7 +226,7 @@ void Physics::updateTest(Object *object)
 
 btCollisionObject* Physics::create(Shape& shape, const int& type, float* mat)
 {
-	if (type == 0 || shape._countPhysicVertex == 0)
+	/*if (type == 0 || shape._countPhysicVertex == 0)
 	{
 		return nullptr;
 	}
@@ -269,7 +269,9 @@ btCollisionObject* Physics::create(Shape& shape, const int& type, float* mat)
 
 	dynamicsWorld->addRigidBody(body);
 
-	return body;
+	return body;*/
+
+	return 0;
 }
 
 btCollisionObject* Physics::createBox(int& idShape, float* size, const int& type, float* mat)

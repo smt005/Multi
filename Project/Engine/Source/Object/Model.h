@@ -13,12 +13,13 @@ using json = nlohmann::json;
 class Model : public ArrayClass <Model>
 {
 private:
-	Shape *_shape;
+	Shape* _shape;
 	Texture *_texture;
 	float _scale[3];
 
 public:
-	Shape& shape();
+	Shape& getShape();
+	Mesh& getMesh();
 	Texture& texture();
 	const unsigned int& textureId();
 
