@@ -1,8 +1,8 @@
 {
-  "width": 1500,
-  "height": 1000,
+  "width": 1280,
+  "height": 1024,
   "example": {
-    "state": true,
+    "state": false,
     "number": 5
   }
 }

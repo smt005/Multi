@@ -79,7 +79,8 @@ void GameEvolutionTest::initMap()
 		//shapeUnited->load("Models/Microbe_view.obj");
 		//shapeUnited->load("Models/Terrain.obj");
 		//shapeUnited->load("Models/Terrain_box.obj");
-		shapeUnited->load("Models/Terrain_box_mono.obj");
+		//shapeUnited->load("Models/Terrain_box_mono.obj");
+		shapeUnited->load("Models/Box1.obj");
 	}
 
 	_map = &Map::getByName("MapGameEvolutionTest");

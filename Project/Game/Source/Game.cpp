@@ -1,14 +1,14 @@
 #include "Game.h"
 #include "GameMini/GameMini.h"
 #include "GameEvolutionTest/GameEvolutionTest.h"
+#include "GameTerrain/GameTerrain.h"
 
 Game *Game::_game = nullptr;
-
+#define GAME_CLASS GameTerrain
 
 void Game::gameInit()
 {
-	//GameMini *game = new GameMini();
-	GameEvolutionTest *game = new GameEvolutionTest();
+	GAME_CLASS *game = new GAME_CLASS();
 	game->setCurrent();
 	game->init();
 }

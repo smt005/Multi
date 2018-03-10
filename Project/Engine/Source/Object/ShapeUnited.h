@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Common/ArrayClass.h"
 #include "Common/IncludesMatem.h"
 #include <string>
 
@@ -44,7 +45,7 @@ public:
 	~MeshPhysic();
 };
 
-class ShapeUnited: public Mesh
+class ShapeUnited: public Mesh, public ArrayClass <ShapeUnited>
 {
 private:
 	MeshPhysic* _physic = nullptr;

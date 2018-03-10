@@ -16,6 +16,8 @@ set(GAME_SOURCE_DIR
 	GameMini
 	GameEvolutionTest
 	GameEvolutionTest/Brain
+	GameTerrain
+
 )
 
 foreach(DIR ${GAME_SOURCE_DIR})
