@@ -3,6 +3,8 @@
 class Map;
 class Object;
 class Shape;
+
+class ModelUnited;
 class Mesh;
 
 class DrawEngine
@@ -31,6 +33,8 @@ public:
 	static void drawModel(Object& object);
 	static void drawModelTemp(Object& object);
 	static void drawShape(Shape& shape);
+
+	static void drawModel(ModelUnited& model, float* matrix);
 	static void drawMesh(Mesh& mesh);
 
 	// DrawLines

@@ -6,6 +6,7 @@
 #include "Draw/CameraGLM.h"
 #include "Object/Map.h"
 #include "Object/ShapeUnited.h"
+#include "Object/ModelUnited.h"
 
 GameTerrain::GameTerrain()
 {
@@ -46,18 +47,32 @@ void GameTerrain::draw()
 
 	if (_shapeUnited)
 	{
-		DrawEngine::drawMesh(*_shapeUnited);
+		//DrawEngine::drawMesh(*_shapeUnited);
+	}
+
+	if (_modelUnited)
+	{
+		glm::mat4x4 mat(1.0f);
+		mat = glm::translate(mat, glm::vec3(0.f, 0.0f, 2.0f));
+		DrawEngine::drawModel(*_modelUnited, glm::value_ptr(mat));
 	}
 }
 
 void GameTerrain::initMap()
 {
-	_map = &Map::getByName("Map");
+	_map = &Map::getByName("MapGameTerrain");
 
 	if (!_shapeUnited)
 	{
 		_shapeUnited = new ShapeUnited();
-		_shapeUnited->load("Models/Terrain.obj");
+		_shapeUnited->load("Models/Glider.obj");
+	}
+
+	if (!_modelUnited)
+	{
+		_modelUnited = &ModelUnited::getByName("First");
+
+		int i = 0;
 	}
 }
 
@@ -68,7 +83,8 @@ void GameTerrain::initDraw()
 
 	_camera = &CameraGLM::getByName("First");
 	_camera->setDefault();
-	_camera->setLookAt(glm::vec3(-50.0f, -50.0f, 50.0f), glm::vec3(0.5f, 0.5f, 1.0f));
+	//_camera->setLookAt(glm::vec3(-50.0f, -50.0f, 50.0f), glm::vec3(0.5f, 0.5f, 1.0f));
+	_camera->setLookAt(glm::vec3(-5.0f, -5.0f, 5.0f), glm::vec3(0.5f, 0.5f, 1.0f));
 	_camera->setSpeed(0.1f);
 	_camera->setCalcFrustum(false);
 }

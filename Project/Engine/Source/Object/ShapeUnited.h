@@ -53,5 +53,6 @@ private:
 public:
 	~ShapeUnited();
 
+	void create(const string &name);
 	void load(const string& name);
 };

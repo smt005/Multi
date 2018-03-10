@@ -1,0 +1,96 @@
+{
+  "area": 100,
+  "objects": [
+    {
+      "name": "Plane",
+      "model": "Plane100",
+      "pos": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "First_01",
+      "model": "First",
+      "type": 2,
+      "pos": [
+        0,
+        5,
+        1
+      ]
+    },
+    {
+      "name": "First_02",
+      "model": "First",
+      "type": 2,
+      "pos": [
+        5,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "First_03",
+      "model": "First",
+      "type": 2,
+      "pos": [
+        0,
+        -5,
+        1
+      ]
+    },
+    {
+      "name": "First_04",
+      "model": "First",
+      "type": 2,
+      "pos": [
+        -5,
+        0,
+        1
+      ]
+    }
+  ],
+  "gliders": [
+    {
+      "name": "Glider_00",
+      "model": "Car",
+      "type": 2,
+      "pos": [
+        10,
+        10,
+        0.4
+      ]
+    },
+    {
+      "name": "Glider_01",
+      "model": "Car",
+      "type": 2,
+      "pos": [
+        -10,
+        10,
+        0.3
+      ]
+    },
+    {
+      "name": "Glider_02",
+      "model": "Car",
+      "type": 2,
+      "pos": [
+        10,
+        -10,
+        0.2
+      ]
+    },
+    {
+      "name": "Glider_03",
+      "model": "Car",
+      "type": 2,
+      "pos": [
+        -10,
+        -10,
+        0.1
+      ]
+    }
+  ]
+}

@@ -316,6 +316,11 @@ ShapeUnited::~ShapeUnited()
 	}
 }
 
+void ShapeUnited::create(const string &name)
+{
+	load(_name);
+}
+
 void ShapeUnited::load(const string& name)
 {
 	char* data = FilesManager::loadTextFile(name.c_str());

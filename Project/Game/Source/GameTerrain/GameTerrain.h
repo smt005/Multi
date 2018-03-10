@@ -6,15 +6,16 @@
 class Map;
 class CameraGLM;
 class ShapeUnited;
+class ModelUnited;
 
 class GameTerrain : public Game, public Callback
 {
 private:
 	Map * _map = nullptr;
 	CameraGLM *_camera = nullptr;
+	
 	ShapeUnited* _shapeUnited = nullptr;
-
-	double _timerTarget = 0.0;
+	ModelUnited* _modelUnited = nullptr;
 
 public:
 	GameTerrain();

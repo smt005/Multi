@@ -8,7 +8,7 @@ template <class Tarray>
 
 class ArrayClass
 {
-private:
+protected:
 	string _name;
 
 public:
@@ -204,6 +204,7 @@ Tarray& ArrayClass<Tarray>::getByName(const string &name)
 	}
 
 	Tarray *newItem = new Tarray();
+	newItem->setName(name);
 	newItem->create(name);
 	return add(newItem);
 }

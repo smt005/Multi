@@ -8,6 +8,7 @@
 #include "Object/Model.h"
 
 #include "Object/ShapeUnited.h"
+#include "Object/ModelUnited.h"
 
 #ifdef BUILD_WIN_GLES
 	#define GL_GLEXT_PROTOTYPES
@@ -223,6 +224,50 @@ void DrawEngine::drawShape(Shape& shape)
 	glUniformMatrix4fv(u_matViewModel, 1, GL_FALSE, glm::value_ptr(mat));
 
 	glDrawElements(GL_TRIANGLES, shape._countIndex, GL_UNSIGNED_SHORT, 0);
+}
+
+void DrawEngine::drawModel(ModelUnited& model, float* matrix)
+{
+	unsigned int textureId = model.textureId();
+	Mesh& mesh = model.getMesh();
+	if (!mesh._hasVBO) mesh.initVBO();
+
+	if (mesh._buffer[3] != _cuttrentBufer)
+	{
+		GLuint a_position = glGetAttribLocation(_programBase, "a_position");
+		GLuint a_texCoord = glGetAttribLocation(_programBase, "a_texCoord");
+
+		glBindBuffer(GL_ARRAY_BUFFER, mesh._buffer[0]);
+		glEnableVertexAttribArray(a_position);
+		glVertexAttribPointer(a_position, SHAPE_VERTEX_POS_SIZE, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
+
+		glBindBuffer(GL_ARRAY_BUFFER, mesh._buffer[1]);
+		glEnableVertexAttribArray(a_texCoord);
+		glVertexAttribPointer(a_texCoord, SHAPE_VERTEX_TEX_SIZE, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh._buffer[3]);
+
+		_cuttrentBufer = mesh._buffer[3];
+	}
+
+	if (textureId != _cuttrentTexture)
+	{
+		GLuint u_color = glGetUniformLocation(_programBase, "u_color");
+		GLuint s_baseMap = glGetUniformLocation(_programBase, "s_baseMap");
+
+		float color[] = { 1.0, 1.0, 1.0, 1.0 };
+		glUniform4fv(u_color, 1, color);
+
+		glUniform1i(s_baseMap, 0);
+		glBindTexture(GL_TEXTURE_2D, textureId);
+
+		_cuttrentTexture = textureId;
+	}
+
+	GLuint u_matViewModel = glGetUniformLocation(_programBase, "u_matViewModel");
+	glUniformMatrix4fv(u_matViewModel, 1, GL_FALSE, matrix);
+
+	glDrawElements(GL_TRIANGLES, mesh._countIndex, GL_UNSIGNED_SHORT, 0);
 }
 
 void DrawEngine::drawMesh(Mesh& mesh)
