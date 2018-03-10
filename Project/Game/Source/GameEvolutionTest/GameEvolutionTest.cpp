@@ -50,7 +50,7 @@ void GameEvolutionTest::tact()
 		{
 			glm::mat4x4 matrix = glm::translate(glm::mat4x4(1.0f), randomPos());
 
-			Object &target = _map->_objects.getByName("Target");
+			ObjectUnited &target = _map->_objects.getByName("Target");
 			target.setMatrix(matrix);
 		}
 	}

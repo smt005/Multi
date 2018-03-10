@@ -30,11 +30,12 @@ public:
 
 	// DrawMap
 	static void initDrawMap();
-	static void drawMap(Map& map);
+	//static void drawMap(Map& map);
 	static void drawModel(Object& object);
 	static void drawModelTemp(Object& object);
 	static void drawShape(Shape& shape);
 
+	static void drawMap(Map& map);
 	static void drawObject(ObjectUnited& object);
 	static void drawModel(ModelUnited& model, const float* matrix);
 	static void drawMesh(Mesh& mesh);

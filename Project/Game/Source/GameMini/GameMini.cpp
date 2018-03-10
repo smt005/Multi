@@ -50,7 +50,7 @@ void GameMini::tact()
 			float posZ = 1.0f;
 			glm::mat4x4 matrix = glm::translate(glm::mat4x4(1.0f), glm::vec3(posX, posY, posZ));
 
-			Object &target = _map->_objects.getByName("Target");
+			ObjectUnited &target = _map->_objects.getByName("Target");
 			target.setMatrix(matrix);
 		}
 	}

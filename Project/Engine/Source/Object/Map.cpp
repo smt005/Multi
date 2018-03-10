@@ -37,7 +37,7 @@ void Map::create(const string &newName)
 			++index;
 		}
 
-		Object &object = _objects.add();
+		ObjectUnited &object = _objects.add();
 		object.set(name, modelName, pos);
 	}
 
@@ -86,10 +86,10 @@ void Map::action()
 	for (int i = 0; i < _gliders.count(); ++i) _gliders[i].action();
 }
 
-Object& Map::addObjectBoxToPos(const string& nameModel, int& id, const int& type, const glm::vec3& pos)
+ObjectUnited& Map::addObjectBoxToPos(const string& nameModel, int& id, const int& type, const glm::vec3& pos)
 {
 	Model& model = Model::getByName(nameModel);
-	Object &object = _objects.add();
+	ObjectUnited &object = _objects.add();
 
 	object.set("", nameModel, pos);
 	object.setPhysic(1);
@@ -97,10 +97,10 @@ Object& Map::addObjectBoxToPos(const string& nameModel, int& id, const int& type
 	return object;
 }
 
-Object& Map::addObjectToPos(const string& nameModel, const int& type, const glm::vec3& pos)
+ObjectUnited& Map::addObjectToPos(const string& nameModel, const int& type, const glm::vec3& pos)
 {
 	Model& model = Model::getByName(nameModel);
-	Object &object = _objects.add();
+	ObjectUnited &object = _objects.add();
 
 	object.set("", nameModel, pos);
 	object.setPhysic(type);
@@ -108,10 +108,10 @@ Object& Map::addObjectToPos(const string& nameModel, const int& type, const glm:
 	return object;
 }
 
-Object& Map::addObject(const string& nameModel, const int& type, const glm::mat4x4& mat)
+ObjectUnited& Map::addObject(const string& nameModel, const int& type, const glm::mat4x4& mat)
 {
 	Model& model = Model::getByName(nameModel);
-	Object &object = _objects.add();
+	ObjectUnited &object = _objects.add();
 
 	// Временно
 	glm::vec3 pos = glm::vec3(mat[3][0], mat[3][1], mat[3][2]);

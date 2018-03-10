@@ -3,7 +3,6 @@
 #include "DrawHelloTriangle.h"
 #include "DrawGreed.h"
 #include "DrawLoadOBJ.h"
-#include "DrawMap.h"
 #include "DrawLines.h"
 
 #ifdef BUILD_WIN_GLES
@@ -93,7 +92,7 @@ bool Draw::nextDraw(int step)
 	case 4:
 	{
 		delete _currentDraw;
-		_currentDraw = new DrawMap();
+		_currentDraw = new DrawLines();
 	} break;
 
 	case 5:

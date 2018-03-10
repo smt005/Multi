@@ -2,7 +2,7 @@
 #include "AIExample.h"
 #include "Object/Map.h"
 
-Object *AIExample::_targetObject = nullptr;
+ObjectUnited *AIExample::_targetObject = nullptr;
 
 AIExample::AIExample(Glider &glider)
 {
@@ -33,7 +33,7 @@ void AIExample::action()
 
 void AIExample::findTarget(Map& map, const char* nameTarget)
 {
-	ArrayTemplate <Object> &objects = map._objects;
+	ArrayTemplate <ObjectUnited> &objects = map._objects;
 	_targetObject = &objects.getByName(nameTarget);
 
 	int i = 0;

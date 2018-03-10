@@ -98,34 +98,18 @@ void DrawEngine::drawMap(Map& map)
 	GLuint u_matProjectionView = glGetUniformLocation(_programBase, "u_matProjectionView");
 	glUniformMatrix4fv(u_matProjectionView, 1, GL_FALSE, CameraGLM::current().matPV());
 
-	ArrayTemplate <Object> &objects = map._objects;
+	ArrayTemplate <ObjectUnited> &objects = map._objects;
 
 	for (int i = 0; i < objects.count(); ++i)
 	{
-		/*unsigned int textureId = objects[i].model().textureId();
-		if (textureId != _cuttrentTexture)
-		{
-			_cuttrentTexture = textureId;
-		}
-
-		drawModelTemp(objects[i]);*/
-
-		drawModel(objects[i]);
+		drawObject(objects[i]);
 	}
 
 	ArrayTemplate <Glider> &gliders = map._gliders;
 
 	for (int i = 0; i < gliders.count(); ++i)
 	{
-		/*unsigned int textureId = gliders[i].model().textureId();
-		if (textureId != _cuttrentTexture)
-		{
-			_cuttrentTexture = textureId;
-		}
-
-		drawModel(gliders[i]);*/
-
-		drawModel(gliders[i]);
+		drawObject(gliders[i]);
 	}
 }
 
@@ -168,9 +152,9 @@ void DrawEngine::drawModel(Object &object)
 	}
 
 	GLuint u_matViewModel = glGetUniformLocation(_programBase, "u_matViewModel");
-	glUniformMatrix4fv(u_matViewModel, 1, GL_FALSE, object.matrixFloat());
+	//glUniformMatrix4fv(u_matViewModel, 1, GL_FALSE, object.matrixFloat());
 
-	glDrawElements(GL_TRIANGLES, shape._countIndex, GL_UNSIGNED_SHORT, 0);
+	//glDrawElements(GL_TRIANGLES, shape._countIndex, GL_UNSIGNED_SHORT, 0);
 }
 
 

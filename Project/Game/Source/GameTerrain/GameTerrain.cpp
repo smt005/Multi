@@ -46,10 +46,10 @@ void GameTerrain::draw()
 	DrawEngine::prepareDraw(true);
 	DrawEngine::drawMap(*_map);
 
-	if (_shapeUnited)
+	/*if (_shapeUnited)
 	{
-		//DrawEngine::drawMesh(*_shapeUnited);
-	}
+		DrawEngine::drawMesh(*_shapeUnited);
+	}*/
 
 	/*if (_modelUnited)
 	{
@@ -58,10 +58,10 @@ void GameTerrain::draw()
 		DrawEngine::drawModel(*_modelUnited, glm::value_ptr(mat));
 	}*/
 
-	if (_objectUnited)
+	/*if (_objectUnited)
 	{
 		DrawEngine::drawObject(*_objectUnited);
-	}
+	}*/
 }
 
 void GameTerrain::initMap()
@@ -79,14 +79,14 @@ void GameTerrain::initMap()
 		_modelUnited = &ModelUnited::getByName("First");
 	}*/
 
-	if (!_objectUnited)
+	/*if (!_objectUnited)
 	{
 		//object.set(name, modelName, pos);
 		
 		_objectUnited = new ObjectUnited();
 		vec3 pos = vec3(-2.0f, -2.0f, 3.0f);
 		_objectUnited->set("First", "First", pos);
-	}
+	}*/
 }
 
 void GameTerrain::initDraw()
