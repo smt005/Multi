@@ -9,6 +9,7 @@
 
 #include "Object/ShapeUnited.h"
 #include "Object/ModelUnited.h"
+#include "Object/ObjectUnited.h"
 
 #ifdef BUILD_WIN_GLES
 	#define GL_GLEXT_PROTOTYPES
@@ -226,7 +227,12 @@ void DrawEngine::drawShape(Shape& shape)
 	glDrawElements(GL_TRIANGLES, shape._countIndex, GL_UNSIGNED_SHORT, 0);
 }
 
-void DrawEngine::drawModel(ModelUnited& model, float* matrix)
+void DrawEngine::drawObject(ObjectUnited& object)
+{
+	drawModel(object.getModel(), object.matrixFloat());
+}
+
+void DrawEngine::drawModel(ModelUnited& model, const float* matrix)
 {
 	unsigned int textureId = model.textureId();
 	Mesh& mesh = model.getMesh();

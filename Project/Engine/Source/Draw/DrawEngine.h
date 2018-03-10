@@ -4,6 +4,7 @@ class Map;
 class Object;
 class Shape;
 
+class ObjectUnited;
 class ModelUnited;
 class Mesh;
 
@@ -34,7 +35,8 @@ public:
 	static void drawModelTemp(Object& object);
 	static void drawShape(Shape& shape);
 
-	static void drawModel(ModelUnited& model, float* matrix);
+	static void drawObject(ObjectUnited& object);
+	static void drawModel(ModelUnited& model, const float* matrix);
 	static void drawMesh(Mesh& mesh);
 
 	// DrawLines

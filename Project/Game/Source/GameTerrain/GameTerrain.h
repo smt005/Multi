@@ -7,6 +7,7 @@ class Map;
 class CameraGLM;
 class ShapeUnited;
 class ModelUnited;
+class ObjectUnited;
 
 class GameTerrain : public Game, public Callback
 {
@@ -16,6 +17,7 @@ private:
 	
 	ShapeUnited* _shapeUnited = nullptr;
 	ModelUnited* _modelUnited = nullptr;
+	ObjectUnited* _objectUnited = nullptr;
 
 public:
 	GameTerrain();
