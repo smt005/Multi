@@ -1,4 +1,5 @@
 
+#include "Application.h"
 #include "ApplicationPlatform.h"
 #include "Game/Source/Game.h"
 #include "Example/Source/Draw/Draw.h"
@@ -6,9 +7,6 @@
 
 #define	WINDOW_CLASS_NAME	"MultiClass"
 #define ApplicationWin_NAME	"Multi v.0.0 [" __DATE__"  " __TIME__" ]"
-
-#define EXAMPLE false
-#define EXAMPLE_NUM 5
 
 LRESULT CALLBACK handleWindowMessages(HWND nativeWindow, UINT message, WPARAM windowParameters, LPARAM longWindowParameters);
 
@@ -21,6 +19,8 @@ EGLContext ApplicationPlatform::_eglContext = nullptr;
 
 int ApplicationPlatform::WindowWidth = 1500;
 int ApplicationPlatform::WindowHeight = 1000;
+
+AppConfig appConfig;
 
 bool ApplicationPlatform::initGLES()
 {
@@ -224,12 +224,14 @@ bool ApplicationPlatform::testEGLError(const char* functionLastCalled)
 
 bool ApplicationPlatform::execution(HINSTANCE& applicationInstance)
 {
+	appConfig.load();
+
 	if (!ApplicationPlatform::createWindow(applicationInstance, ApplicationPlatform::_nativeWindow, ApplicationPlatform::_deviceContext)) exit(true);
 	if (!ApplicationPlatform::initGLES()) exit(1);
 
-	if (EXAMPLE)
+	if (appConfig.getExample())
 	{
-		Draw::nextDraw(EXAMPLE_NUM);
+		Draw::nextDraw(appConfig.getExampleNumber());
 	}
 	else
 	{
@@ -240,7 +242,7 @@ bool ApplicationPlatform::execution(HINSTANCE& applicationInstance)
 	{
 		ApplicationPlatform::actionOnFrame();
 
-		if (EXAMPLE)
+		if (appConfig.getExample())
 		{
 			Draw::draws();
 		}
@@ -284,6 +286,9 @@ bool ApplicationPlatform::createWindow(HINSTANCE applicationInstance, HWND& nati
 		MessageBox(0, "Failed to register the window class", "ERROR", MB_OK | MB_ICONEXCLAMATION);
 		return false;
 	}
+
+	WindowWidth = appConfig.getWidth();
+	WindowHeight = appConfig.getHeight();
 
 	// Create a rectangle describing the area of the window
 	RECT windowRectangle;

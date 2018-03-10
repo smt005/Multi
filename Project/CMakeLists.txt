@@ -59,6 +59,7 @@ set(RESOURCE_DIRS
 	Models
 	Shaders
 	Textures
+	Data
 )
 
 foreach(DIR ${RESOURCE_DIRS})
