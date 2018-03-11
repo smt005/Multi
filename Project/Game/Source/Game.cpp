@@ -2,15 +2,34 @@
 #include "GameMini/GameMini.h"
 #include "GameEvolutionTest/GameEvolutionTest.h"
 #include "GameTerrain/GameTerrain.h"
+#include "Platform/Source/Application.h"
+#include <string>
 
 Game *Game::_game = nullptr;
-#define GAME_CLASS GameTerrain
 
 void Game::gameInit()
 {
-	GAME_CLASS *game = new GAME_CLASS();
-	game->setCurrent();
-	game->init();
+	const std::string& nameGame = App::getAppConfig().getNameGame();
+	if (nameGame == "GameMini")
+	{
+		GameMini *game = new GameMini();
+		game->setCurrent();
+	}
+	else if (nameGame == "GameEvolutionTest")
+	{
+		GameEvolutionTest *game = new GameEvolutionTest();
+		game->setCurrent();
+	}
+	else if (nameGame == "GameTerrain")
+	{
+		GameTerrain *game = new GameTerrain();
+		game->setCurrent();
+	}
+	else
+	{
+		Game *game = new Game();
+		game->setCurrent();
+	}
 }
 
 void Game::gameSave()
@@ -42,6 +61,7 @@ void Game::setCurrent()
 	}
 
 	_game = this;
+	_game->init();
 }
 
 void Game::init()

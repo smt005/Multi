@@ -20,7 +20,7 @@ EGLContext ApplicationPlatform::_eglContext = nullptr;
 int ApplicationPlatform::WindowWidth = 1500;
 int ApplicationPlatform::WindowHeight = 1000;
 
-AppConfig appConfig;
+AppConfig _appConfig;
 
 bool ApplicationPlatform::initGLES()
 {
@@ -73,6 +73,11 @@ void ApplicationPlatform::actionOnFrame()
 	float pos[] = { static_cast<float>(mousePos.x), static_cast<float>(mousePos.y) };
 	Callback::move(pos);
 	Callback::tap_pinch();
+}
+
+AppConfig& ApplicationPlatform::getAppConfig()
+{
+	return _appConfig;
 }
 
 int ApplicationPlatform::width()
@@ -224,14 +229,14 @@ bool ApplicationPlatform::testEGLError(const char* functionLastCalled)
 
 bool ApplicationPlatform::execution(HINSTANCE& applicationInstance)
 {
-	appConfig.load();
+	_appConfig.load();
 
 	if (!ApplicationPlatform::createWindow(applicationInstance, ApplicationPlatform::_nativeWindow, ApplicationPlatform::_deviceContext)) exit(true);
 	if (!ApplicationPlatform::initGLES()) exit(1);
 
-	if (appConfig.getExample())
+	if (_appConfig.getExample())
 	{
-		Draw::nextDraw(appConfig.getExampleNumber());
+		Draw::nextDraw(_appConfig.getExampleNumber());
 	}
 	else
 	{
@@ -242,7 +247,7 @@ bool ApplicationPlatform::execution(HINSTANCE& applicationInstance)
 	{
 		ApplicationPlatform::actionOnFrame();
 
-		if (appConfig.getExample())
+		if (_appConfig.getExample())
 		{
 			Draw::draws();
 		}
@@ -287,8 +292,8 @@ bool ApplicationPlatform::createWindow(HINSTANCE applicationInstance, HWND& nati
 		return false;
 	}
 
-	WindowWidth = appConfig.getWidth();
-	WindowHeight = appConfig.getHeight();
+	WindowWidth = _appConfig.getWidth();
+	WindowHeight = _appConfig.getHeight();
 
 	// Create a rectangle describing the area of the window
 	RECT windowRectangle;

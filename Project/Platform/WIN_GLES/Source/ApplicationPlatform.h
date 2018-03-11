@@ -6,6 +6,8 @@
 #define GL_GLEXT_PROTOTYPES
 #include <GLES2/gl2.h>
 
+class AppConfig;
+
 class ApplicationPlatform
 {
 public:
@@ -27,6 +29,7 @@ public:
 public:
 	static void actionOnFrame();
 
+	static AppConfig& getAppConfig();
 	static int width();
 	static int height();
 	static float aspect();

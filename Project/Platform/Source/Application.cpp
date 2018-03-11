@@ -17,10 +17,15 @@ void AppConfig::load()
 
 	/*
 	{
-		"width": 1000,
-		"height": 800,
-		"example": {
-			"state": true,
+		"width": 1920,
+		"height": 1080,
+		"game":
+		{
+			"name": "GameMini"
+		},
+		"example":
+		{
+			"state": false,
 			"number": 5
 		}
 	}
@@ -34,6 +39,12 @@ void AppConfig::load()
 		_example = data["example"]["state"].is_boolean() ? data["example"]["state"].get<bool>() : false;
 		_exampleNumber = data["example"]["number"].is_number_integer() ? data["example"]["number"].get<int>() : 0;
 	}
+
+	if (!data["game"].is_null())
+	{
+		const string& nameGame = data["game"]["name"].is_string() ? data["game"]["name"] : "Game";
+		_nameGame = nameGame;
+	}
 }
 
 void AppConfig::save()
@@ -42,6 +53,10 @@ void AppConfig::save()
 }
 
 //---
+AppConfig& App::getAppConfig()
+{
+	return ApplicationPlatform::getAppConfig();
+}
 
 int App::width()
 {

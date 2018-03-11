@@ -1,6 +1,12 @@
 {
-  "width": 1280,
-  "height": 1024,
+  "width": 1920,
+  "height": 1080,
+  "game": {
+	"_name": "GameMini",
+	"__name": "GameEvolutionTest",
+	"___name": "GameTerrain",
+	"name": "GameTerrain"
+  },
   "example": {
     "state": false,
     "number": 5
