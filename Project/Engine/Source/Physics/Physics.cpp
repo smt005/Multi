@@ -235,21 +235,20 @@ btCollisionObject* Physics::create(Shape& shape, const PhysicType& type, float* 
 	{
 		if (meshPhysic->_count == 1)
 		{
-			return createCollisionShape(&meshPhysic->_meshes[0], meshPhysic->_collisionShape);
+			return createCollisionShape(&meshPhysic->_meshes[0], meshPhysic->_collisionShape, mat);
 		}
 		else
 		{
-			return createCollisionShape(&meshPhysic->_meshes[0], meshPhysic->_collisionShape);
-			//createCollisionShape(meshPhysic->_meshes, meshPhysic->_count, meshPhysic->_collisionShape);
+			return createCollisionShape(meshPhysic->_meshes, meshPhysic->_count, meshPhysic->_collisionShape, mat);
 		}
 	}
-	else if(type == PhysicType::TERRAIN)
+	else if (type == PhysicType::TERRAIN)
 	{
 
 	}
 }
 
-btCollisionObject* Physics::createCollisionShape(Mesh* mesh, btCollisionShape*& collisionShape)
+btCollisionObject* Physics::createCollisionShape(Mesh* mesh, btCollisionShape*& collisionShape, float* mat)
 {
 	if (!collisionShape) {
 		collisionShape = new btConvexHullShape();
@@ -273,9 +272,11 @@ btCollisionObject* Physics::createCollisionShape(Mesh* mesh, btCollisionShape*& 
 
 	btTransform startTransform;
 	startTransform.setIdentity();
-	startTransform.setOrigin(btVector3(0, 0, 10));
 
-	startTransform.setOrigin(btVector3(0.0, 0.0, 10.0));
+	if (mat)
+	{
+		startTransform.setFromOpenGLMatrix(mat);
+	}
 	
 	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, collisionShape, localInertia);
@@ -286,9 +287,54 @@ btCollisionObject* Physics::createCollisionShape(Mesh* mesh, btCollisionShape*& 
 	return body;
 }
 
-btCollisionObject* Physics::createCollisionShape(Mesh* mesh, int count, btCollisionShape*& collisionShape)
+btCollisionObject* Physics::createCollisionShape(Mesh* meshes, int count, btCollisionShape*& collisionShape, float* mat)
 {
-	return 0;
+	if (!collisionShape) {
+		btCompoundShape* pCompound = new btCompoundShape();
+
+		for (int iMesh = 0; iMesh < count; ++iMesh)
+		{
+			Mesh* mesh = &meshes[iMesh];
+			btConvexHullShape* shape = new btConvexHullShape();
+
+			for (int i = 0; i < mesh->_countVertex * 3; i = i + 3)
+			{
+				btVector3 btv = btVector3(mesh->_aVertex[i], mesh->_aVertex[i + 1], mesh->_aVertex[i + 2]);
+				((btConvexHullShape*)shape)->addPoint(btv);
+			}
+			btTransform trans;
+			trans.setIdentity();
+			pCompound->addChildShape(trans, shape);
+		}
+
+		collisionShape = pCompound;
+		collisionShape->setMargin(0);
+		collisionShapes.push_back(collisionShape);
+	}
+
+	btScalar mass(1.f);
+	bool isDynamic = (mass != 0.f);
+
+	btVector3 localInertia(0, 0, 0);
+
+	if (isDynamic)
+		collisionShape->calculateLocalInertia(mass, localInertia);
+
+	btTransform startTransform;
+	startTransform.setIdentity();
+
+	if (mat)
+	{
+		startTransform.setFromOpenGLMatrix(mat);
+	}
+
+	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, collisionShape, localInertia);
+	btRigidBody* body = new btRigidBody(rbInfo);
+
+	dynamicsWorld->addRigidBody(body);
+
+	return body;
 }
 
 btCollisionObject* Physics::createBox(int& idShape, float* size, const int& type, float* mat)

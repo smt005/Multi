@@ -39,8 +39,8 @@ public:
 public:
 	static btCollisionObject* create(Shape& shape, const PhysicType& type, float* mat = nullptr);
 
-	static btCollisionObject* createCollisionShape(Mesh* mesh, btCollisionShape*& collisionShape);
-	static btCollisionObject* createCollisionShape(Mesh* mesh, int count, btCollisionShape*& collisionShape);
+	static btCollisionObject* createCollisionShape(Mesh* mesh, btCollisionShape*& collisionShape, float* mat = nullptr);
+	static btCollisionObject* createCollisionShape(Mesh* meshes, int count, btCollisionShape*& collisionShape, float* mat = nullptr);
 
 	static btCollisionObject* createBox(int& idShape, float* size, const int& type, float* mat = nullptr);
 	static btCollisionObject* createSphere(int& idShape, float radius, const int& type, float* mat = nullptr);

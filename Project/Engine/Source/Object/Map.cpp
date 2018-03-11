@@ -89,6 +89,16 @@ void Map::create(const string &newName)
 	}
 }
 
+void Map::setPhysic()
+{
+	for (int i = 0; i < _objects.count(); ++i)
+	{
+		_objects[i].setPhysic();
+	}
+
+	//for (int i = 0; i < _gliders.count(); ++i) _gliders[i].action();
+}
+
 void Map::getDataJson(json& dataJson)
 {
 	dataJson["name"] = name();
@@ -132,7 +142,7 @@ Object& Map::addObjectToPos(const string& nameModel, const PhysicType& type, con
 	Object &object = _objects.add();
 
 	object.set("", nameModel, type, pos);
-	object.setPhysic(type);
+	object.setPhysic();
 
 	return object;
 }
@@ -145,7 +155,7 @@ Object& Map::addObject(const string& nameModel, const PhysicType& type, const gl
 	// Временно
 	glm::vec3 pos = glm::vec3(mat[3][0], mat[3][1], mat[3][2]);
 	object.set("", nameModel, type, pos);
-	object.setPhysic(type);
+	object.setPhysic();
 
 	return object;
 }

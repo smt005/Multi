@@ -83,7 +83,7 @@ void Object::setVector(const glm::vec3 &vector)
 
 }
 
-void Object::setPhysic(const PhysicType& type)
+void Object::setPhysic()
 {
 	if (_model)
 	{

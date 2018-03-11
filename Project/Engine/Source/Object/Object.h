@@ -53,7 +53,7 @@ public:
 	void set(const string &name, const string &modelName, PhysicType physicType, const vec3 &pos = vec3(0.0f), const json &data = json::basic_json());
 	void setHeight(const float &height);
 	void setVector(const glm::vec3 &vector);
-	void setPhysic(const PhysicType& type = PhysicType::NONE);
+	void setPhysic();
 	void setBoxPhysic(int& id, const int& type = 0);
 
 	// Virtual

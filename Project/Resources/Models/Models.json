@@ -41,7 +41,20 @@
   },
   "Chain": {
     "shape": "Models/Chain.obj",
-    "texture": "Textures/Box.png",
+    "texture": "Textures/Box.jpg",
+	"scale": 0.25
+  },
+  "Chain_degree_00": {
+    "shape": "Models/Chain_degree_00.obj",
+    "texture": "Textures/Box.jpg"
+  },
+  "Chain_degree_90": {
+    "shape": "Models/Chain_degree_90.obj",
+    "texture": "Textures/Box.jpg"
+  },
+  "Dumbbell": {
+    "shape": "Models/Dumbbell.obj",
+    "texture": "Textures/Box.jpg",
 	"scale": 0.25
   }
 }

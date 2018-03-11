@@ -44,6 +44,7 @@ void GameTerrain::draw()
 void GameTerrain::initMap()
 {
 	_map = &Map::getByName("MapGameTerrain");
+	_map->setPhysic();
 }
 
 void GameTerrain::initDraw()
@@ -53,8 +54,7 @@ void GameTerrain::initDraw()
 
 	_camera = &CameraGLM::getByName("First");
 	_camera->setDefault();
-	_camera->setLookAt(glm::vec3(-50.0f, -50.0f, 50.0f), glm::vec3(0.5f, 0.5f, 1.0f));
-	//_camera->setLookAt(glm::vec3(-5.0f, -5.0f, 5.0f), glm::vec3(0.5f, 0.5f, 1.0f));
+	_camera->setLookAt(glm::vec3(-25.0f, -25.0f, 25.0f), glm::vec3(0.5f, 0.5f, 1.0f));
 	_camera->setSpeed(0.1f);
 	_camera->setCalcFrustum(false);
 }
