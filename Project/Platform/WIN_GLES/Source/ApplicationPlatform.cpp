@@ -345,12 +345,22 @@ LRESULT CALLBACK handleWindowMessages(HWND nativeWindow, UINT message, WPARAM wi
 	case WM_KEYDOWN:
 	{
 		Callback::buttonDown(windowParameters);
+		Callback::_key[windowParameters] = true;
 	} break;
 
 	case WM_KEYUP:
 	{
 		Callback::buttonUp(windowParameters);
+		Callback::_key[windowParameters] = false;
 	} break;
+
+	case WM_COMMAND:
+		if (HIWORD(windowParameters) == EN_KILLFOCUS)
+		{
+			Callback::reset();
+		}
+		break;
+
 
 	}
 

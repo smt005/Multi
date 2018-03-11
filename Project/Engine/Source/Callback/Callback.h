@@ -17,6 +17,7 @@ enum EventCallback
 	HINT,
 
 	BUTTON_DOWN,
+	BUTTON_PINCH,
 	BUTTON_UP
 };
 
@@ -34,6 +35,7 @@ private:
 	CallbackFunction _hint = 0;
 
 	CallbackFunction _buttonDown = 0;
+	CallbackFunction _buttonPinch = 0;
 	CallbackFunction _buttonUp = 0;
 
 	static bool _wasLongTap;
@@ -47,6 +49,7 @@ public:
 	static glm::vec2 _pos;
 	static glm::vec2 _vector;
 
+	static bool _key[256];
 	static char _charButtonDown;
 	static char _charButtonUp;
 
@@ -57,6 +60,7 @@ public:
 public:
 	static bool tap() { return _tap; }
 	static double time() { return _time; }
+	static void reset();
 
 	static void tap_down();
 	static void tap_pinch();
@@ -67,5 +71,6 @@ public:
 	static void hint();
 
 	static void buttonDown(char charVar);
+	static void buttonPinch();
 	static void buttonUp(char charVar);
 };

@@ -12,6 +12,7 @@ double Callback::_currentTime = 0;
 glm::vec2 Callback::_pos;
 glm::vec2 Callback::_vector;
 
+bool Callback::_key[256];
 char Callback::_charButtonDown;
 char Callback::_charButtonUp;
 
@@ -45,12 +46,28 @@ void Callback::setCallback(const EventCallback &event, const CallbackFunction &f
 	case BUTTON_DOWN:
 		_buttonDown = function;
 		break;
+	case BUTTON_PINCH:
+		_buttonPinch = function;
+		break;
 	case BUTTON_UP:
 		_buttonUp = function;
 		
 	}
 
 	_hasCallback = true;
+}
+
+void Callback::reset()
+{
+	for (int i = 0; i < 256; ++i)
+	{
+		_key[i] = false;
+	}
+
+	_charButtonDown = '\0';
+	_charButtonUp = '\0';
+
+	buttonUp('\0');
 }
 
 void Callback::tap_down()
@@ -158,8 +175,9 @@ void Callback::hint()
 
 void Callback::buttonDown(char charVar)
 {
+	if (_key[charVar] == true) return;
 	_charButtonDown = charVar;
-
+	
 	if (_hintObject && _hintObject->_buttonDown)
 	{
 		_hintObject->_buttonDown(_hintObject);
@@ -168,8 +186,17 @@ void Callback::buttonDown(char charVar)
 	_charButtonDown = '\0';
 }
 
+void Callback::buttonPinch()
+{
+	if (_hintObject && _hintObject->_buttonPinch)
+	{
+		_hintObject->_buttonPinch(_hintObject);
+	}
+}
+
 void Callback::buttonUp(char charVar)
 {
+	if (_key[charVar] == false) return;
 	_charButtonUp = charVar;
 
 	if (_hintObject && _hintObject->_buttonUp)

@@ -5,6 +5,7 @@
 #include "Draw/DrawEngine.h"
 #include "Draw/CameraGLM.h"
 #include "Object/Map.h"
+#include "Common/Help.h"
 
 GameTerrain::GameTerrain()
 {
@@ -56,23 +57,57 @@ void GameTerrain::initDraw()
 
 void GameTerrain::initCallback()
 {
-	//this->setCallback(EventCallback::TAP_DOUBLE, UiFunction(closeGame));
-	this->setCallback(EventCallback::BUTTON_UP, UiFunction(closeGame));
 	this->setCallback(EventCallback::TAP_PINCH, UiFunction(rotateCamera));
-
+	this->setCallback(EventCallback::BUTTON_UP, UiFunction(pressButton));
+	this->setCallback(EventCallback::BUTTON_DOWN, UiFunction(pressButtonDown));
+	
 	Callback::_hintObject = this;
-}
-
-bool GameTerrain::closeGame(void *data)
-{
-	if (_charButtonUp != 'Q') return false;
-
-	App::close();
-	return true;
 }
 
 bool GameTerrain::rotateCamera(void *data)
 {
 	CameraGLM::current().rotate(Callback::_vector);
 	return true;
+}
+
+bool GameTerrain::pressButton(void *data)
+{
+	if (_charButtonUp == 'Q')
+	{
+		App::close();
+		return true;
+	}
+
+	if (_charButtonUp == 'A')
+	{
+		addObject("Cylinder");
+		return true;
+	}
+
+	return false;
+}
+
+bool GameTerrain::pressButtonDown(void *data)
+{
+	if (_charButtonDown == 'A')
+	{
+		addObject("Cylinder_025");
+		return true;
+	}
+
+	return false;
+}
+
+void GameTerrain::addObject(char* name)
+{
+	glm::vec3 randomPos;
+	randomPos.x = help::random_f(10.0f, 50.0f);
+	randomPos.y = help::random_f(10.0f, 50.0f);
+	randomPos.z = help::random_f(1.0f, 10.0f);
+
+#ifdef BUILD_WIN_GLES
+	_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, "addObject %s [%f %f %f]\n", name, randomPos.x, randomPos.y, randomPos.z);
+#endif
+
+	_map->addObjectToPos(name, 1, randomPos);
 }

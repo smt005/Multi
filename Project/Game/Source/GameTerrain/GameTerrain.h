@@ -26,6 +26,8 @@ public:
 	void initCallback();
 
 private:
-	bool closeGame(void *data);
 	bool rotateCamera(void *data);
+	bool pressButton(void *data);
+	bool pressButtonDown(void *data);
+	void addObject(char* name);
 };
