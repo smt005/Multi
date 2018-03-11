@@ -2,6 +2,7 @@
 #include "Help.h"
 
 #include <stdlib.h>
+//#include <functional>
 
 using namespace glm;
 
@@ -36,17 +37,30 @@ bool help::intersection(vec3 start1, vec3 end1, vec3 start2, vec3 end2, vec3* ou
 	return true;
 }
 
-float help::random_f(const float& min, const float& max, const float& accuracy)
+/*
+	v1 = rand() % 100;         // v1 in the range 0 to 99
+	v2 = rand() % 100 + 1;     // v2 in the range 1 to 100
+	v3 = rand() % 30 + 1985;   // v3 in the range 1985-2014
+*/
+
+float help::random_f(const float& min, const float& max, const int& accuracy)
 {
-	int maxVar = (static_cast<int>(max) - static_cast<int>(min)) + 1;
-	maxVar *= static_cast<int>(accuracy);
-	int var = rand() % maxVar;
-	return min + (static_cast<float>(var) / accuracy);
+	int var = rand() % accuracy;
+	float k = static_cast<float>(var) / static_cast<float>(accuracy);
+
+	float range = max- min;
+	float value = min + range * k;
+
+	return value;
 }
 
 int help::random_i(const int& min, const int& max)
 {
-	int maxVar = (static_cast<int>(max) - static_cast<int>(min)) + 1;
-	int var = rand() % maxVar;
-	return min + static_cast<float>(var);
+	const int range = max - min;
+	int var = rand() % range;
+	float k = static_cast<float>(var) / static_cast<float>(range);
+
+	float value = min + range * k;
+
+	return value;
 }
