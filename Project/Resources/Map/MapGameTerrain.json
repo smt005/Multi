@@ -11,6 +11,16 @@
       ]
     },
     {
+      "name": "Cylinder_00",
+      "model": "Cylinder",
+      "type": 2,
+      "pos": [
+        0,
+        0,
+        3
+      ]
+    },
+    {
       "name": "First_00",
       "model": "First",
       "type": 2,

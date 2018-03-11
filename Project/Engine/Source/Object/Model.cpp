@@ -46,16 +46,20 @@ void Model::create(const string &newName)
 	json dataModel = data(newName);
 	if (dataModel.empty()) return;
 
-	const string &shape = dataModel["shape"].is_string() ? dataModel["shape"] : FILE_NAME_SHAPE_FILE;
+	const string &nameShape = dataModel["shape"].is_string() ? dataModel["shape"] : FILE_NAME_SHAPE_FILE;
 	const string &texture = dataModel["texture"].is_string() ? dataModel["texture"] : FILE_NAME_TEXTURE_FILE;
 
 	bool hasScalling = false;
+	string suffixScale;
+
 	if (dataModel["scale"].is_number_float())
 	{
 		float value = dataModel["scale"].get<float>();
 		_scale[0] = value;
 		_scale[1] = value;
 		_scale[2] = value;
+
+		suffixScale = std::to_string(value);
 
 		hasScalling = true;
 	}
@@ -68,30 +72,42 @@ void Model::create(const string &newName)
 
 			if (index >= 2) break;
 			++index;
+
+			string scaleString = std::to_string(value);
+			if (suffixScale.empty())
+			{
+				suffixScale += scaleString;
+			}
+			else
+			{
+				suffixScale = suffixScale + "," + scaleString;
+			}
 		}
 
 		hasScalling = true;
 	}
 
-	// TODO:
-	_shape = &Shape::getByName(shape);
-	_texture = &Texture::getByName(texture);
-
-	/*if (hasScalling)
+	if (!hasScalling)
 	{
-		_shape->setScale(_scale);
-		
-		// Временно
-		string endName = "_[";
-		endName += "0.1";
-		endName += ",";
-		endName += "0.1";
-		endName += ",";
-		endName += "0.1";
-		endName += "]";
+		_shape = &Shape::getByName(nameShape);
+	}
+	else
+	{
+		string nameWithSuffixScale = nameShape + "_[" + suffixScale + "]";
 
-		_shape->_name = _shape->_name + endName;
-	}*/
+		if (Shape::hasByName(nameWithSuffixScale))
+		{
+			_shape = &Shape::getByName(nameShape);
+		}
+		else
+		{
+			_shape = &Shape::getByName(nameShape);
+			_shape->setScale(_scale);
+			_shape->setName(nameWithSuffixScale);
+		}
+	}
+	
+	_texture = &Texture::getByName(texture);
 }
 
 // STATIC

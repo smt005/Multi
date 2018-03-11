@@ -19,6 +19,8 @@ enum class PhysicType
 	TERRAIN
 };
 
+class btCollisionShape;
+
 struct MeshTemporary;
 
 class Mesh
@@ -47,6 +49,8 @@ public:
 	unsigned short int _count = 0;
 	Mesh* _meshes = nullptr;
 
+	btCollisionShape* _collisionShape;
+
 public:
 	~MeshPhysic();
 };
@@ -61,4 +65,7 @@ public:
 
 	void create(const string &name);
 	void load(const string& name);
+
+	MeshPhysic* getPhysic() { return _physic; };
+	void setScale(float* scale);
 };

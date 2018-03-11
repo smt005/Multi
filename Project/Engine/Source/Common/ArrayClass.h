@@ -38,6 +38,7 @@ public:
 	static Tarray& add();
 	static Tarray& add(Tarray *newItem);
 
+	static bool hasByName(const string &name);
 	static Tarray& getByName(const string &name);
 	static Tarray& getByIndex(const unsigned int &index);
 
@@ -193,6 +194,18 @@ Tarray& ArrayClass<Tarray>::add(Tarray *newItem)
 }
 
 //---
+
+template <class Tarray>
+bool ArrayClass<Tarray>::hasByName(const string &name)
+{
+	for (int i = 0; i < _count; ++i)
+	{
+		Tarray *item = _array[i];
+		if (item->_name == name) return true;
+	}
+
+	return false;
+}
 
 template <class Tarray>
 Tarray& ArrayClass<Tarray>::getByName(const string &name)

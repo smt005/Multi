@@ -28,5 +28,15 @@
     "shape": "Models/Sphere_01.obj",
     "texture": "Textures/Box.jpg",
 	"scale": 0.5
+  },
+  "Cylinder": {
+    "shape": "Models/Cylinder01_10.obj",
+    "texture": "Textures/Box.jpg",
+	"scale": 0.25
+  },
+  "Cylinder_025": {
+    "shape": "Models/Cylinder01_10.obj",
+    "texture": "Textures/Food_128.png",
+	"scale": 0.25
   }
 }

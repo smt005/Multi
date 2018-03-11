@@ -459,3 +459,13 @@ void Shape::load(const string& name)
 		}
 	}
 }
+
+void Shape::setScale(float* scale)
+{
+	for (int i = 0; i < _countVertex * 3; i+=3)
+	{
+		_aVertex[i    ] = _aVertex[i    ] * scale[0];
+		_aVertex[i + 1] = _aVertex[i + 1] * scale[1];
+		_aVertex[i + 2] = _aVertex[i + 2] * scale[2];
+	}
+}
