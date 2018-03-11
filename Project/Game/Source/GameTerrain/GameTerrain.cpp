@@ -23,12 +23,6 @@ void GameTerrain::init()
 
 void GameTerrain::save()
 {
-	json dataJson;
-
-	if (_map)
-	{
-		_map->getDataJson(dataJson);
-	}
 }
 
 void GameTerrain::tact()
@@ -62,7 +56,8 @@ void GameTerrain::initDraw()
 
 void GameTerrain::initCallback()
 {
-	this->setCallback(EventCallback::TAP_DOUBLE, UiFunction(closeGame));
+	//this->setCallback(EventCallback::TAP_DOUBLE, UiFunction(closeGame));
+	this->setCallback(EventCallback::BUTTON_UP, UiFunction(closeGame));
 	this->setCallback(EventCallback::TAP_PINCH, UiFunction(rotateCamera));
 
 	Callback::_hintObject = this;
@@ -70,6 +65,8 @@ void GameTerrain::initCallback()
 
 bool GameTerrain::closeGame(void *data)
 {
+	if (_charButtonUp != 'Q') return false;
+
 	App::close();
 	return true;
 }

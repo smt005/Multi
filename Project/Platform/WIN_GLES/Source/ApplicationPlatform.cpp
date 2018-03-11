@@ -342,6 +342,16 @@ LRESULT CALLBACK handleWindowMessages(HWND nativeWindow, UINT message, WPARAM wi
 		Callback::tap_up();
 	} break;
 
+	case WM_KEYDOWN:
+	{
+		Callback::buttonDown(windowParameters);
+	} break;
+
+	case WM_KEYUP:
+	{
+		Callback::buttonUp(windowParameters);
+	} break;
+
 	}
 
 	return DefWindowProc(nativeWindow, message, windowParameters, longWindowParameters);

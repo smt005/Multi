@@ -12,10 +12,14 @@ double Callback::_currentTime = 0;
 glm::vec2 Callback::_pos;
 glm::vec2 Callback::_vector;
 
+char Callback::_charButtonDown;
+char Callback::_charButtonUp;
+
 void Callback::setCallback(const EventCallback &event, const CallbackFunction &function)
 {
 	switch (event)
 	{
+
 	case TAP_DOWN:
 		_tap_down = function;
 		break;
@@ -36,6 +40,14 @@ void Callback::setCallback(const EventCallback &event, const CallbackFunction &f
 		break;
 	case HINT:
 		_hint = function;
+		break;
+
+	case BUTTON_DOWN:
+		_buttonDown = function;
+		break;
+	case BUTTON_UP:
+		_buttonUp = function;
+		
 	}
 
 	_hasCallback = true;
@@ -142,4 +154,28 @@ void Callback::hint()
 	{
 		_hintObject->_hint(_hintObject);
 	}*/
+}
+
+void Callback::buttonDown(char charVar)
+{
+	_charButtonDown = charVar;
+
+	if (_hintObject && _hintObject->_buttonDown)
+	{
+		_hintObject->_buttonDown(_hintObject);
+	}
+
+	_charButtonDown = '\0';
+}
+
+void Callback::buttonUp(char charVar)
+{
+	_charButtonUp = charVar;
+
+	if (_hintObject && _hintObject->_buttonUp)
+	{
+		_hintObject->_buttonUp(_hintObject);
+	}
+
+	_charButtonUp = '\0';
 }

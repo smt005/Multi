@@ -14,7 +14,10 @@ enum EventCallback
 	TAP_LONG,
 	TAP_DOUBLE,
 	MOVE,
-	HINT
+	HINT,
+
+	BUTTON_DOWN,
+	BUTTON_UP
 };
 
 class Callback
@@ -30,6 +33,9 @@ private:
 	CallbackFunction _move = 0;
 	CallbackFunction _hint = 0;
 
+	CallbackFunction _buttonDown = 0;
+	CallbackFunction _buttonUp = 0;
+
 	static bool _wasLongTap;
 	static double _currentTime;
 
@@ -40,6 +46,9 @@ public:
 	static double _time;
 	static glm::vec2 _pos;
 	static glm::vec2 _vector;
+
+	static char _charButtonDown;
+	static char _charButtonUp;
 
 public:
 	const bool &hasCallback() { return _hasCallback; };
@@ -56,4 +65,7 @@ public:
 	static void tap_double();
 	static void move(const float *pos);
 	static void hint();
+
+	static void buttonDown(char charVar);
+	static void buttonUp(char charVar);
 };
