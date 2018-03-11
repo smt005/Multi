@@ -3,6 +3,7 @@
 #include "Object.h"
 #include "Glider.h"
 #include "Model.h"
+#include "Physics/Physics.h"
 #include "../Platform/Source/FilesManager.h"
 
 Map::Map()
@@ -31,6 +32,19 @@ void Map::create(const string &newName)
 		const string &modelName = element["model"].is_string() ? element["model"] : "default";
 		unsigned int type = element["type"].is_number_unsigned() ? element["type"].get<unsigned int>()  : 0;
 
+		PhysicType physicType = PhysicType::NONE;
+		const string& physicTypeString = element["physicType"].is_string() ? element["physicType"] : "none";
+
+		if (physicTypeString == "convex")
+		{
+			physicType = PhysicType::CONVEX;
+				
+		}
+		else if (physicTypeString == "terrain")
+		{
+			physicType = PhysicType::TERRAIN;
+		}
+
 		vec3 pos(0.0f);
 		int index = 0;
 		for (float elementPos : element["pos"])
@@ -40,7 +54,7 @@ void Map::create(const string &newName)
 		}
 
 		Object& object = _objects.add();
-		object.set(name, modelName, pos);
+		object.set(name, modelName, physicType, pos);
 	}
 
 	for (auto element : data["gliders"])
@@ -48,6 +62,19 @@ void Map::create(const string &newName)
 		const string &name = element["name"].is_string() ? element["name"] : "";
 		const string &modelName = element["model"].is_string() ? element["model"] : "default";
 		unsigned int type = element["type"].is_number_unsigned() ? element["type"].get<unsigned int>()  : 0;
+
+		PhysicType physicType = PhysicType::NONE;
+		const string& physicTypeString = element["physicType"].is_string() ? element["physicType"] : "none";
+
+		if (physicTypeString == "convex")
+		{
+			physicType = PhysicType::CONVEX;
+
+		}
+		else if (physicTypeString == "terrain")
+		{
+			physicType = PhysicType::TERRAIN;
+		}
 
 		vec3 pos(0.0f);
 		int index = 0;
@@ -58,7 +85,7 @@ void Map::create(const string &newName)
 		}
 
 		Glider &object = _gliders.add();
-		object.set(name, modelName, pos);
+		object.set(name, modelName, physicType, pos);
 	}
 }
 
@@ -88,7 +115,7 @@ void Map::action()
 	for (int i = 0; i < _gliders.count(); ++i) _gliders[i].action();
 }
 
-Object& Map::addObjectBoxToPos(const string& nameModel, int& id, const int& type, const glm::vec3& pos)
+/*Object& Map::addObjectBoxToPos(const string& nameModel, int& id, const int& type, const glm::vec3& pos)
 {
 	Model& model = Model::getByName(nameModel);
 	Object& object = _objects.add();
@@ -97,27 +124,27 @@ Object& Map::addObjectBoxToPos(const string& nameModel, int& id, const int& type
 	object.setPhysic(1);
 
 	return object;
-}
+}*/
 
-Object& Map::addObjectToPos(const string& nameModel, const int& type, const glm::vec3& pos)
+Object& Map::addObjectToPos(const string& nameModel, const PhysicType& type, const glm::vec3& pos)
 {
-	Model& model = Model::getByName(nameModel);
+	//Model& model = Model::getByName(nameModel);
 	Object &object = _objects.add();
 
-	object.set("", nameModel, pos);
+	object.set("", nameModel, type, pos);
 	object.setPhysic(type);
 
 	return object;
 }
 
-Object& Map::addObject(const string& nameModel, const int& type, const glm::mat4x4& mat)
+Object& Map::addObject(const string& nameModel, const PhysicType& type, const glm::mat4x4& mat)
 {
 	Model& model = Model::getByName(nameModel);
 	Object& object = _objects.add();
 
 	// Временно
 	glm::vec3 pos = glm::vec3(mat[3][0], mat[3][1], mat[3][2]);
-	object.set("", nameModel, pos);
+	object.set("", nameModel, type, pos);
 	object.setPhysic(type);
 
 	return object;

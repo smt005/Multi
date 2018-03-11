@@ -2,8 +2,16 @@
 
 #include "btBulletDynamicsCommon.h"
 
+class Mesh;
 class Shape;
 class Object;
+
+enum class PhysicType
+{
+	NONE,
+	CONVEX,
+	TERRAIN
+};
 
 class Physics
 {
@@ -13,14 +21,14 @@ public:
 	Physics();
 	~Physics();
 
-	bool init();
-	void clean();
+	static bool init();
+	static void clean();
 
-	void createWorldTest();
-	void update();
+	static void createWorldTest();
+	static void update();
 
 public:
-	void updateTest(Object *object = nullptr);
+	static void updateTest(Object *object = nullptr);
 
 public:
 	//static btCollisionShape *_lastColShape;
@@ -29,7 +37,11 @@ public:
 	static int idShapeCounter;
 
 public:
-	static btCollisionObject* create(Shape& shape, const int& type, float* mat = nullptr);
+	static btCollisionObject* create(Shape& shape, const PhysicType& type, float* mat = nullptr);
+
+	static btCollisionObject* createCollisionShape(Mesh* mesh, btCollisionShape*& collisionShape);
+	static btCollisionObject* createCollisionShape(Mesh* mesh, int count, btCollisionShape*& collisionShape);
+
 	static btCollisionObject* createBox(int& idShape, float* size, const int& type, float* mat = nullptr);
 	static btCollisionObject* createSphere(int& idShape, float radius, const int& type, float* mat = nullptr);
 

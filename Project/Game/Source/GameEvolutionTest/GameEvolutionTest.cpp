@@ -24,7 +24,7 @@ void GameEvolutionTest::init()
 	initMap();
 	initDraw();
 	initCallback();
-	physics.createWorldTest();
+	Physics::init();
 }
 
 void GameEvolutionTest::save()
@@ -42,7 +42,7 @@ void GameEvolutionTest::save()
 
 void GameEvolutionTest::tact()
 {
-	physics.update();
+	Physics::update();
 
 	if (_timerTarget > 300)
 	{
@@ -126,10 +126,9 @@ bool GameEvolutionTest::rotateCamera(void *data)
 bool  GameEvolutionTest::addObject(void *data)
 {
 	auto create = [this]() {
-		_map->addObjectBoxToPos("Box1", _idShape, 1, glm::vec3(randomPos(0.91, 29, 50)));
-		_map->addObjectToPos("Box1", 1, glm::vec3(randomPos(0.91, 29, 50)));
-		_map->addObjectToPos("Sphere_005", 1, glm::vec3(randomPos(0.91, 29, 50)));
-		_map->addObjectToPos("Cylinder_02", 1, glm::vec3(randomPos(0.91, 29, 50)));
+		_map->addObjectToPos("Box1", PhysicType::CONVEX, glm::vec3(randomPos(0.91, 29, 50)));
+		_map->addObjectToPos("Sphere_005", PhysicType::CONVEX, glm::vec3(randomPos(0.91, 29, 50)));
+		_map->addObjectToPos("Cylinder_02", PhysicType::CONVEX, glm::vec3(randomPos(0.91, 29, 50)));
 
 		_countObjects += 4;
 		return true;

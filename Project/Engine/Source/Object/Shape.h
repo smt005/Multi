@@ -12,13 +12,6 @@ using namespace std;
 #define SHAPE_VERTEX_POS_INDX		0
 #define SHAPE_VERTEX_TEX_POS_INDX	1
 
-enum class PhysicType
-{
-	NONE,
-	CONVEX,
-	TERRAIN
-};
-
 class btCollisionShape;
 
 struct MeshTemporary;
@@ -45,11 +38,10 @@ public:
 class MeshPhysic
 {
 public:
-	PhysicType _type = PhysicType::NONE;
 	unsigned short int _count = 0;
 	Mesh* _meshes = nullptr;
 
-	btCollisionShape* _collisionShape;
+	btCollisionShape* _collisionShape = nullptr;
 
 public:
 	~MeshPhysic();

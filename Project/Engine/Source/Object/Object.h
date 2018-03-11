@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Physics/Physics.h"
 #include "Common/IncludesMatem.h"
 #include "Common/json.h"
 #include <string>
@@ -26,11 +27,13 @@ protected:
 	string _name;
 	mat4x4 _matrix = mat4x4(1.0f);
 	Model*_model = 0;
+
+	PhysicType _physicType = PhysicType::NONE;
 	btCollisionObject *_physic = nullptr;
 
 public:
 	Object();
-	Object(const string &name, const string &modelName, const vec3 &pos = vec3(0.0f), const json &data = json::basic_json());
+	Object(const string &name, const string &modelName, PhysicType physicType = PhysicType::NONE, const vec3 &pos = vec3(0.0f), const json &data = json::basic_json());
 	~Object();
 
 	void setName(const string& name) { _name = name; };
@@ -47,10 +50,10 @@ public:
 	Model& getModel();
 	const float& getHeight();
 
-	void set(const string &name, const string &modelName, const vec3 &pos = vec3(0.0f), const json &data = json::basic_json());
+	void set(const string &name, const string &modelName, PhysicType physicType, const vec3 &pos = vec3(0.0f), const json &data = json::basic_json());
 	void setHeight(const float &height);
 	void setVector(const glm::vec3 &vector);
-	void setPhysic(const int& type = 0);
+	void setPhysic(const PhysicType& type = PhysicType::NONE);
 	void setBoxPhysic(int& id, const int& type = 0);
 
 	// Virtual

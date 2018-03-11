@@ -10,9 +10,9 @@ Object::Object()
 
 }
 
-Object::Object(const string &name, const string &modelName, const vec3 &pos, const json &data)
+Object::Object(const string &name, const string &modelName, PhysicType physicType, const vec3 &pos, const json &data)
 {
-	set(name, modelName, pos, data);
+	set(name, modelName, physicType, pos, data);
 }
 
 Object::~Object()
@@ -63,10 +63,11 @@ const float& Object::getHeight()
 	return _matrix[3][2];
 }
 
-void Object::set(const string &name, const string &modelName, const vec3 &pos, const json &data)
+void Object::set(const string &name, const string &modelName, PhysicType physicType, const vec3 &pos, const json &data)
 {
 	_name = name;
 	_model = &Model::getByName(modelName);
+	_physicType = physicType;
 
 	if (length(pos) > 0.0f) _matrix = translate(_matrix, pos);
 	if (!data.empty()) setData(data);
@@ -82,12 +83,12 @@ void Object::setVector(const glm::vec3 &vector)
 
 }
 
-void Object::setPhysic(const int& type)
+void Object::setPhysic(const PhysicType& type)
 {
 	if (_model)
 	{
 		Shape& shape = _model->getShape();
-		//_physic = Physics::create(shape, type, value_ptr(_matrix));
+		_physic = Physics::create(shape, _physicType, value_ptr(_matrix));
 	}
 }
 
@@ -109,10 +110,10 @@ void Object::setData(const json &data)
 
 void Object::action()
 {
-	/*if (!_physic) return;
+	if (!_physic) return;
 
 	btTransform trans = _physic->getWorldTransform();
 	float mat[16];
 	trans.getOpenGLMatrix(mat);
-	setMatrix(mat);*/
+	setMatrix(mat);
 }

@@ -468,4 +468,19 @@ void Shape::setScale(float* scale)
 		_aVertex[i + 1] = _aVertex[i + 1] * scale[1];
 		_aVertex[i + 2] = _aVertex[i + 2] * scale[2];
 	}
+
+	if (_physic)
+	{
+		for (int i = 0; i < _physic->_count; ++i)
+		{
+			Mesh& mesh = _physic->_meshes[i];
+
+			for (int i = 0; i < mesh._countVertex * 3; i += 3)
+			{
+				mesh._aVertex[i    ] = mesh._aVertex[i    ] * scale[0];
+				mesh._aVertex[i + 1] = mesh._aVertex[i + 1] * scale[1];
+				mesh._aVertex[i + 2] = mesh._aVertex[i + 2] * scale[2];
+			}
+		}
+	}
 }

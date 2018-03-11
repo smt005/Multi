@@ -38,5 +38,12 @@
     "shape": "Models/Cylinder01_10.obj",
     "texture": "Textures/Food_128.png",
 	"scale": 0.25
+  },
+  "Chain": {
+    "shape": "Models/Chain.obj",
+    "texture": "Textures/Box.png",
+	"scale": 0.25
   }
 }
+
+

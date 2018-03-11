@@ -179,7 +179,6 @@ void Physics::updateTest(Object *object)
 	std::ofstream _WRITE_LOG("Log.txt", std::ios::app);
 #endif
 
-	//dynamicsWorld->stepSimulation(1.f / 60.f, 10);
 	int count = dynamicsWorld->getNumCollisionObjects();
 
 #ifdef WIN32
@@ -224,26 +223,44 @@ void Physics::updateTest(Object *object)
 
 // static
 
-btCollisionObject* Physics::create(Shape& shape, const int& type, float* mat)
+btCollisionObject* Physics::create(Shape& shape, const PhysicType& type, float* mat)
 {
-	/*if (type == 0 || shape._countPhysicVertex == 0)
+	if (type == PhysicType::NONE) return nullptr;
+
+	MeshPhysic* meshPhysic = shape.getPhysic();
+	if (meshPhysic == nullptr) return nullptr;
+	if (meshPhysic->_count == 0) return nullptr;
+
+	if (type == PhysicType::CONVEX)
 	{
-		return nullptr;
+		if (meshPhysic->_count == 1)
+		{
+			return createCollisionShape(&meshPhysic->_meshes[0], meshPhysic->_collisionShape);
+		}
+		else
+		{
+			return createCollisionShape(&meshPhysic->_meshes[0], meshPhysic->_collisionShape);
+			//createCollisionShape(meshPhysic->_meshes, meshPhysic->_count, meshPhysic->_collisionShape);
+		}
 	}
+	else if(type == PhysicType::TERRAIN)
+	{
 
-	btCollisionShape* collisionShape = shape.getPhysicShape();
+	}
+}
 
+btCollisionObject* Physics::createCollisionShape(Mesh* mesh, btCollisionShape*& collisionShape)
+{
 	if (!collisionShape) {
 		collisionShape = new btConvexHullShape();
-		for (int i = 0; i < shape._countPhysicVertex * 3; i = i + 3)
+		for (int i = 0; i < mesh->_countVertex * 3; i = i + 3)
 		{
-			btVector3 btv = btVector3(shape._aPhysicVertex[i], shape._aPhysicVertex[i + 1], shape._aPhysicVertex[i + 2]);
+			btVector3 btv = btVector3(mesh->_aVertex[i], mesh->_aVertex[i + 1], mesh->_aVertex[i + 2]);
 			((btConvexHullShape*)collisionShape)->addPoint(btv);
 		}
 
 		collisionShape->setMargin(0);
 		collisionShapes.push_back(collisionShape);
-		shape.setPhysicShape(collisionShape);
 	}
 
 	btScalar mass(1.f);
@@ -258,19 +275,19 @@ btCollisionObject* Physics::create(Shape& shape, const int& type, float* mat)
 	startTransform.setIdentity();
 	startTransform.setOrigin(btVector3(0, 0, 10));
 
-	if (mat)
-	{
-		startTransform.setOrigin(btVector3(mat[12], mat[13], mat[14]));
-	}
-
+	startTransform.setOrigin(btVector3(0.0, 0.0, 10.0));
+	
 	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, collisionShape, localInertia);
 	btRigidBody* body = new btRigidBody(rbInfo);
 
 	dynamicsWorld->addRigidBody(body);
 
-	return body;*/
+	return body;
+}
 
+btCollisionObject* Physics::createCollisionShape(Mesh* mesh, int count, btCollisionShape*& collisionShape)
+{
 	return 0;
 }
 
