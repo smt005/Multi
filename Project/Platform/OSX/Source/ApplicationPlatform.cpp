@@ -191,14 +191,12 @@ void ApplicationPlatform::keyCallback(GLFWwindow* Window, int Key, int Scancode,
         case GLFW_PRESS:
         {
             Callback::buttonDown(Key);
-            Callback::_key[Key] = true;
         }
             break;
             
         case GLFW_RELEASE:
         {
             Callback::buttonUp(Key);
-            Callback::_key[Key] = false;
         }
             break;
     }

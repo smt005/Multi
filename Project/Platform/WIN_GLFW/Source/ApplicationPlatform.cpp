@@ -178,5 +178,18 @@ void ApplicationPlatform::mouseButtonCallback(GLFWwindow* Window, int Button, in
 
 void ApplicationPlatform::keyCallback(GLFWwindow* Window, int Key, int Scancode, int Action, int Mods)
 {
-
+    switch (Action)
+    {
+        case GLFW_PRESS:
+        {
+            Callback::buttonDown(Key);
+        }
+            break;
+            
+        case GLFW_RELEASE:
+        {
+            Callback::buttonUp(Key);
+        }
+            break;
+    }
 }
