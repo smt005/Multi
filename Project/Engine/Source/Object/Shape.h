@@ -13,6 +13,7 @@ using namespace std;
 #define SHAPE_VERTEX_TEX_POS_INDX	1
 
 class btCollisionShape;
+class btBvhTriangleMeshShape;
 
 struct MeshTemporary;
 
@@ -42,6 +43,7 @@ public:
 	Mesh* _meshes = nullptr;
 
 	btCollisionShape* _collisionShape = nullptr;
+	btBvhTriangleMeshShape* _triangleMeshShape = nullptr;
 
 public:
 	~MeshPhysic();

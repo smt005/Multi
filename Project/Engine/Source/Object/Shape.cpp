@@ -15,6 +15,8 @@
 #include "glfw3.h"
 #endif
 
+#include "btBulletDynamicsCommon.h"
+
 //	Mesh
 
 Mesh::~Mesh()
@@ -223,8 +225,9 @@ _WRITE_LOG << "\t_countNumber = " << _countNumber << std::endl;
 			countIndexT += indexTemporarys[iT]._count;
 		}
 
-		unsigned short* aIndexNew = new unsigned short[countIndexT * 3];
-		float* aVertexNew = new float[countIndexT * 3];
+		// TODO
+		unsigned short* aIndexNew = new unsigned short[countIndexT * 3 + 1000];
+		float* aVertexNew = new float[countIndexT * 3 + 1000];
 		float* aNormalNew = new float[countIndexT * 3];
 		float* aTextureNew = new float[countIndexT * 2];
 		
@@ -279,9 +282,9 @@ _WRITE_LOG << "\t_countNumber = " << _countNumber << std::endl;
 		mesh._aIndex = aIndexNew;
 
 		mesh._countVertex = indexVertexNew;
-		mesh._aVertex = new float[indexVertexNew * 3];
-		mesh._aNormal = new float[indexVertexNew * 3];
-		mesh._aTexCoord = new float[indexVertexNew * 2];
+		mesh._aVertex = new float[indexVertexNew * 3 + 1000];
+		mesh._aNormal = new float[indexVertexNew * 3 + 1000];
+		mesh._aTexCoord = new float[indexVertexNew * 2 + 1000];
 
 		for (int i = 0; i < indexVertexNew; ++i)
 		{
@@ -458,6 +461,88 @@ void Shape::load(const string& name)
 			BlockTemporary::getMesh(_physic->_meshes[i], 1, &indexPhysicTemporary[i], vertexTemporary, normalTemporary, textureTemporary);
 		}
 	}
+
+	/*if (name != "Models/Plane_with_box_100.obj") return;
+
+	if (!_physic || _physic->_count == 0) return;
+	Mesh* mesh = &_physic->_meshes[0];
+
+	_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, "\nVERTEX %d (%d)\n", mesh->_countVertex, (mesh->_countVertex * 3));
+	for (int i = 0; i < mesh->_countVertex * 3; i+=3)
+	{
+		_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, " [%f, %f, %f]\n", mesh->_aVertex[i], mesh->_aVertex[i + 1], mesh->_aVertex[i + 2]);
+	}
+
+	_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, "\nINDEX [3] %d (%d)\n", mesh->_countIndex, (mesh->_countIndex * 3));
+	for (int i = 0; i < mesh->_countIndex; i += 3)
+	{
+		_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, " [%d, %d, %d]\n", (int)mesh->_aIndex[i], (int)mesh->_aIndex[(i + 1)], (int)mesh->_aIndex[(i + 2)]);
+	}
+
+	_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, "\nINDEX [9] %d (%d)\n", mesh->_countIndex, (mesh->_countIndex * 3));
+	for (int i = 0; i < mesh->_countIndex; i += 9)
+	{
+		//_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, " [%d, \n", mesh->_aIndex[i]);
+		_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, " [%d, %d, %d] [%d, %d, %d] [%d, %d, %d]\n", (int)mesh->_aIndex[i], (int)mesh->_aIndex[(i + 1)], (int)mesh->_aIndex[(i + 2)], (int)mesh->_aIndex[i + 3], (int)mesh->_aIndex[(i + 4)], (int)mesh->_aIndex[(i + 5)], (int)mesh->_aIndex[i + 6], (int)mesh->_aIndex[(i + 7)], (int)mesh->_aIndex[(i + 8)]);
+	}
+
+	_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, "\nDATA\n");
+
+	unsigned short* indices = mesh->_aIndex;
+	float* vertices = mesh->_aVertex;
+
+	btVector3    vertexPos[3];
+	for (unsigned int i = 0; i < mesh->_countIndex; i+=3)
+	{
+		{
+			unsigned short index = indices[i];
+
+			int a = index * 3;
+			int b = index * 3 + 1;
+			int c = index * 3 + 2;
+
+			_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, "TERRAIN A %d [%d, %d, %d]\n", (int)index, a, b, c);
+			
+
+			vertexPos[0][0] = vertices[a];
+			vertexPos[0][1] = vertices[b];
+			vertexPos[0][2] = vertices[c];
+
+			_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, " [%f, %f, %f]\n", (float)vertexPos[0][0], (float)vertexPos[0][1], (float)vertexPos[0][2]);
+		}
+
+		{
+			unsigned short index = indices[i + 1];
+
+			int a = index * 3;
+			int b = index * 3 + 1;
+			int c = index * 3 + 2;
+
+			_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, "TERRAIN A %d [%d, %d, %d]\n", (int)index, a, b, c);
+
+			vertexPos[1][0] = vertices[a];
+			vertexPos[1][1] = vertices[b];
+			vertexPos[1][2] = vertices[c];
+
+			_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, " [%f, %f, %f]\n", (float)vertexPos[1][0], (float)vertexPos[1][1], (float)vertexPos[1][2]);
+		}
+
+		{
+			unsigned short index = indices[i + 2];
+			
+			int a = index * 3;
+			int b = index * 3 + 1;
+			int c = index * 3 + 2;
+
+			_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, "TERRAIN A %d [%d, %d, %d]\n", (int)index, a, b, c);
+
+			vertexPos[2][0] = vertices[a];
+			vertexPos[2][1] = vertices[b];
+			vertexPos[2][2] = vertices[c];
+
+			_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, " [%f, %f, %f]\n\n", (float)vertexPos[2][0], (float)vertexPos[2][1], (float)vertexPos[2][2]);
+		}
+	}*/
 }
 
 void Shape::setScale(float* scale)

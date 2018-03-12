@@ -5,6 +5,7 @@ class Object;
 class Model;
 class Shape;
 class Mesh;
+class Texture;
 
 class DrawEngine
 {
@@ -13,6 +14,7 @@ private:
 	static unsigned int _programBase;
 	static unsigned int _cuttrentBufer;
 	static unsigned int _cuttrentTexture;
+	static Texture* _textureTemp;
 
 	static unsigned int _programLine;
 
@@ -28,14 +30,13 @@ public:
 
 	// DrawMap
 	static void initDrawMap();
-	//static void drawModel(Object& object);
-	//static void drawModelTemp(Object& object);
-	//static void drawShape(Shape& shape);
 
 	static void drawMap(Map& map);
+	static void drawMapPhysic(Map& map);
+
 	static void drawObject(Object& object);
 	static void drawModel(Model& model, const float* matrix);
-	static void drawMesh(Mesh& mesh);
+	static void drawMesh(Mesh& mesh, Texture* texture);
 
 	// DrawLines
 	static void initDrawLines();

@@ -11,6 +11,7 @@ class GameTerrain : public Game, public Callback
 private:
 	Map * _map = nullptr;
 	CameraGLM *_camera = nullptr;
+	bool _visiblePhysic = true;
 
 public:
 	GameTerrain();

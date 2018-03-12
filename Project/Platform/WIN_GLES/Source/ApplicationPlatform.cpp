@@ -230,6 +230,7 @@ bool ApplicationPlatform::testEGLError(const char* functionLastCalled)
 bool ApplicationPlatform::execution(HINSTANCE& applicationInstance)
 {
 	_appConfig.load();
+	Callback::reset();
 
 	if (!ApplicationPlatform::createWindow(applicationInstance, ApplicationPlatform::_nativeWindow, ApplicationPlatform::_deviceContext)) exit(true);
 	if (!ApplicationPlatform::initGLES()) exit(1);
@@ -345,13 +346,11 @@ LRESULT CALLBACK handleWindowMessages(HWND nativeWindow, UINT message, WPARAM wi
 	case WM_KEYDOWN:
 	{
 		Callback::buttonDown(windowParameters);
-		Callback::_key[windowParameters] = true;
 	} break;
 
 	case WM_KEYUP:
 	{
 		Callback::buttonUp(windowParameters);
-		Callback::_key[windowParameters] = false;
 	} break;
 
 	case WM_COMMAND:

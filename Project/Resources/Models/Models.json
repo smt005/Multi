@@ -1,4 +1,19 @@
 {
+  "Terrain_box_mono": {
+    "shape": "Models/Terrain_box_mono.obj",
+    "texture": "Textures/Simple_Metal.jpg",
+	"scale": 0.5
+  },
+  "Plane_with_box_100": {
+    "shape": "Models/Plane_with_box_100.obj",
+    "texture": "Textures/Ambient.png",
+	"scale": 2.0
+  },
+  "Terrain": {
+    "shape": "Models/Terrain.obj",
+    "texture": "Textures/Rock.jpg",
+	"scale": 2.0
+  },
   "First": {
     "shape": "Models/Glider.obj",
     "texture": "Textures/GLD_BASE_EFFECT.png"

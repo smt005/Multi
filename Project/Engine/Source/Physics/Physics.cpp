@@ -19,6 +19,8 @@ namespace engine
 	btDiscreteDynamicsWorld* dynamicsWorld = nullptr;
 
 	btAlignedObjectArray<btCollisionShape*> collisionShapes;
+	btAlignedObjectArray<btBvhTriangleMeshShape*> triangleShapes;
+	
 }
 
 using engine::collisionConfiguration;
@@ -28,6 +30,7 @@ using engine::overlappingPairCache;
 using engine::solver;
 using engine::dynamicsWorld;
 using engine::collisionShapes;
+using engine::triangleShapes;
 
 Physics::Physics()
 {
@@ -62,6 +65,13 @@ void Physics::clean()
 		delete shape;
 	}
 
+	for (int j = 0; j < triangleShapes.size(); j++)
+	{
+		btBvhTriangleMeshShape* shape = triangleShapes[j];
+		triangleShapes[j] = 0;
+		delete shape;
+	}
+
 	//delete dynamics world
 	delete dynamicsWorld;
 
@@ -78,6 +88,7 @@ void Physics::clean()
 
 	//next line is optional: it will be cleared by the destructor when the array goes out of scope
 	collisionShapes.clear();
+	triangleShapes.clear();
 }
 
 bool Physics::init()
@@ -95,7 +106,7 @@ bool Physics::init()
 
 	dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
 
-	dynamicsWorld->setGravity(btVector3(0, 0, -3));
+	dynamicsWorld->setGravity(btVector3(0, 0, -9.8));
 
 	return true;
 }
@@ -244,7 +255,15 @@ btCollisionObject* Physics::create(Shape& shape, const PhysicType& type, float* 
 	}
 	else if (type == PhysicType::TERRAIN)
 	{
-
+		if (meshPhysic->_count == 1)
+		{
+			return createTrimeshShape(&meshPhysic->_meshes[0], meshPhysic->_triangleMeshShape, mat);
+		}
+		else
+		{
+			//return createTrimeshShape(meshPhysic->_meshes, meshPhysic->_count, meshPhysic->_triangleMeshShape, mat);
+			return createTrimeshShape(&meshPhysic->_meshes[0], meshPhysic->_triangleMeshShape, mat);
+		}
 	}
 }
 
@@ -335,6 +354,92 @@ btCollisionObject* Physics::createCollisionShape(Mesh* meshes, int count, btColl
 	dynamicsWorld->addRigidBody(body);
 
 	return body;
+}
+
+btCollisionObject* Physics::createTrimeshShape(Mesh* mesh, btBvhTriangleMeshShape*& triangleMeshShape, float* mat)
+{
+	if (!triangleMeshShape) {
+		btTriangleMesh *trimesh = new btTriangleMesh();
+
+		unsigned short* indices = mesh->_aIndex;
+		float* vertices = mesh->_aVertex;
+
+		btVector3    vertexPos[3];
+		for (unsigned int i = 0; i < mesh->_countIndex; i += 3)
+		{
+			{
+				unsigned short index = indices[i];
+
+				int a = index * 3;
+				int b = index * 3 + 1;
+				int c = index * 3 + 2;
+
+				vertexPos[0][0] = vertices[a];
+				vertexPos[0][1] = vertices[b];
+				vertexPos[0][2] = vertices[c];
+			}
+
+			{
+				unsigned short index = indices[i + 1];
+
+				int a = index * 3;
+				int b = index * 3 + 1;
+				int c = index * 3 + 2;
+
+				vertexPos[1][0] = vertices[a];
+				vertexPos[1][1] = vertices[b];
+				vertexPos[1][2] = vertices[c];
+			}
+
+			{
+				unsigned short index = indices[i + 2];
+
+				int a = index * 3;
+				int b = index * 3 + 1;
+				int c = index * 3 + 2;
+
+				vertexPos[2][0] = vertices[a];
+				vertexPos[2][1] = vertices[b];
+				vertexPos[2][2] = vertices[c];
+			}
+
+			trimesh->addTriangle(vertexPos[0], vertexPos[1], vertexPos[2]);
+		}
+
+		const bool useQuantizedAABB = true;
+		triangleMeshShape = new btBvhTriangleMeshShape(trimesh, useQuantizedAABB);
+
+		triangleShapes.push_back(triangleMeshShape);
+	}
+
+	btScalar mass(1.f);
+	bool isDynamic = (mass != 0.f);
+
+	btVector3 localInertia(0, 0, 0);
+
+	//if (isDynamic)
+		//triangleMeshShape->calculateLocalInertia(mass, localInertia);
+
+	btTransform startTransform;
+	startTransform.setIdentity();
+
+	if (mat)
+	{
+		startTransform.setFromOpenGLMatrix(mat);
+	}
+
+	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(0.0, myMotionState, triangleMeshShape, localInertia);
+	btRigidBody* body = new btRigidBody(rbInfo);
+
+	dynamicsWorld->addRigidBody(body);
+
+	return body;
+}
+
+btCollisionObject* Physics::createTrimeshShape(Mesh* meshes, int count, btBvhTriangleMeshShape*& triangleMeshShape, float* mat)
+{
+	return nullptr;
 }
 
 btCollisionObject* Physics::createBox(int& idShape, float* size, const int& type, float* mat)

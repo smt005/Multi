@@ -3,11 +3,22 @@
   "objects": [
     {
       "name": "Plane",
-      "model": "Plane100",
+      "model": "Terrain_box_mono",
+	  "physicType": "terrain",
       "pos": [
         0,
         0,
         0
+      ]
+    },
+    {
+      "name": "Terrain_down",
+      "model": "Terrain",
+	  "physicType": "terrain",
+      "pos": [
+        0,
+        0,
+        -100
       ]
     },
     {
@@ -17,7 +28,7 @@
       "pos": [
         0,
         0,
-        10
+        20
       ]
     },
     {
@@ -27,7 +38,7 @@
       "pos": [
         0,
         0,
-        15
+        25
       ]
     },
     {
@@ -37,7 +48,7 @@
       "pos": [
         0,
         0,
-        20
+        30
       ]
     },
     {
@@ -47,7 +58,7 @@
       "pos": [
         0,
         0,
-        25
+        35
       ]
     },
     {
@@ -57,7 +68,7 @@
       "pos": [
         0,
         0,
-        30
+        40
       ]
     },
     {
@@ -65,9 +76,9 @@
       "model": "Chain_degree_90",
       "physicType": "convex",
       "pos": [
+        1,
         0,
-        0,
-        35
+        45
       ]
     },
     {
@@ -75,9 +86,9 @@
       "model": "Chain_degree_00",
       "physicType": "convex",
       "pos": [
+        2,
         0,
-        0,
-        40
+        50
       ]
     },
     {
@@ -85,9 +96,9 @@
       "model": "Chain_degree_90",
       "physicType": "convex",
       "pos": [
-        0.5,
+        3,
         0,
-        45
+        55
       ]
     },
     {
@@ -95,8 +106,8 @@
       "model": "Dumbbell",
       "physicType": "convex",
       "pos": [
-        0,
-        0,
+        10,
+        -15,
         50
       ]
     },
@@ -105,8 +116,8 @@
       "model": "Dumbbell",
       "physicType": "convex",
       "pos": [
-        0,
-        0,
+        10,
+        -15,
         60
       ]
     },
@@ -115,8 +126,8 @@
       "model": "Dumbbell",
       "physicType": "convex",
       "pos": [
-        0,
-        0,
+        10,
+        -15,
         70
       ]
     },
@@ -125,8 +136,8 @@
       "model": "Dumbbell",
       "physicType": "convex",
       "pos": [
-        0,
-        0,
+        10,
+        -15,
         80
       ]
     },

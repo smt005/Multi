@@ -176,6 +176,7 @@ void Callback::hint()
 void Callback::buttonDown(char charVar)
 {
 	if (_key[charVar] == true) return;
+	Callback::_key[charVar] = true;
 	_charButtonDown = charVar;
 	
 	if (_hintObject && _hintObject->_buttonDown)
@@ -197,6 +198,7 @@ void Callback::buttonPinch()
 void Callback::buttonUp(char charVar)
 {
 	if (_key[charVar] == false) return;
+	Callback::_key[charVar] = false;
 	_charButtonUp = charVar;
 
 	if (_hintObject && _hintObject->_buttonUp)

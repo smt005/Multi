@@ -18,7 +18,7 @@ GameTerrain::~GameTerrain()
 void GameTerrain::init()
 {
 	Physics::init();
-	Physics::createWorldTest();
+	//Physics::createWorldTest();
 
 	initMap();
 	initDraw();
@@ -38,7 +38,15 @@ void GameTerrain::tact()
 void GameTerrain::draw()
 {
 	DrawEngine::prepareDraw(true);
-	DrawEngine::drawMap(*_map);
+
+	if (_visiblePhysic)
+	{
+		DrawEngine::drawMap(*_map);
+	}
+	else
+	{
+		DrawEngine::drawMapPhysic(*_map);
+	}
 }
 
 void GameTerrain::initMap()
@@ -54,7 +62,7 @@ void GameTerrain::initDraw()
 
 	_camera = &CameraGLM::getByName("First");
 	_camera->setDefault();
-	_camera->setLookAt(glm::vec3(-25.0f, -25.0f, 25.0f), glm::vec3(0.5f, 0.5f, 1.0f));
+	_camera->setLookAt(glm::vec3(-50.0f, -50.0f, 50.0f), glm::vec3(0.5f, 0.5f, 1.0f));
 	_camera->setSpeed(0.1f);
 	_camera->setCalcFrustum(false);
 }
@@ -97,6 +105,12 @@ bool GameTerrain::pressButtonDown(void *data)
 	{
 		addObject("Chain");
 		return true;
+	}
+
+
+	if (Callback::_key['Z'] && Callback::_key['P'])
+	{
+		_visiblePhysic = !_visiblePhysic;
 	}
 
 	return false;

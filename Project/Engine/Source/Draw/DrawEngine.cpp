@@ -5,6 +5,7 @@
 #include "Draw/CameraGLM.h"
 #include "Object/Map.h"
 #include "Object/Object.h"
+#include "Object/Glider.h"
 #include "Object/Model.h"
 #include "Object/Shape.h"
 
@@ -21,6 +22,7 @@ float DrawEngine::_backgroundColor[4] = {0.3f, 0.6f, 0.9f, 1.0f};
 unsigned int DrawEngine::_programBase;
 unsigned int DrawEngine::_cuttrentBufer = 0;
 unsigned int DrawEngine::_cuttrentTexture = 0;
+Texture* DrawEngine::_textureTemp = nullptr;
 
 unsigned int DrawEngine::_programLine = 0;
 
@@ -106,106 +108,63 @@ void DrawEngine::drawMap(Map& map)
 
 	for (int i = 0; i < gliders.count(); ++i)
 	{
-		//drawObject(gliders[i]);
+		drawObject(gliders[i]);
 	}
 }
-/*void DrawEngine::drawModel(Object &object)
+
+void DrawEngine::drawMapPhysic(Map& map)
 {
-	unsigned int textureId = object.model().textureId();
-	Shape &shape = object.model().shape();
-	if (!shape._hasVBO) shape.initVBO();
+	if (!_programBase) return;
 
-	if (shape._buffer[3] != _cuttrentBufer)
+	if (!_textureTemp)
 	{
-		GLuint a_position = glGetAttribLocation(_programBase, "a_position");
-		GLuint a_texCoord = glGetAttribLocation(_programBase, "a_texCoord");
-
-		glBindBuffer(GL_ARRAY_BUFFER, shape._buffer[0]);
-		glEnableVertexAttribArray(a_position);
-		glVertexAttribPointer(a_position, SHAPE_VERTEX_POS_SIZE, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
-
-		glBindBuffer(GL_ARRAY_BUFFER, shape._buffer[1]);
-		glEnableVertexAttribArray(a_texCoord);
-		glVertexAttribPointer(a_texCoord, SHAPE_VERTEX_TEX_SIZE, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, shape._buffer[3]);
-
-		_cuttrentBufer = shape._buffer[3];
+		_textureTemp = new Texture("Textures/Simple_Metal.jpg", true);
 	}
 
-	if (textureId != _cuttrentTexture)
-	{
-		GLuint u_color = glGetUniformLocation(_programBase, "u_color");
-		GLuint s_baseMap = glGetUniformLocation(_programBase, "s_baseMap");
+	prepareDraw(true);
+	glUseProgram(_programBase);
 
-		float color[] = { 1.0, 1.0, 1.0, 1.0 };
-		glUniform4fv(u_color, 1, color);
-
-		glUniform1i(s_baseMap, 0);
-		glBindTexture(GL_TEXTURE_2D, textureId);
-
-		_cuttrentTexture = textureId;
-	}
+	GLuint u_matProjectionView = glGetUniformLocation(_programBase, "u_matProjectionView");
+	glUniformMatrix4fv(u_matProjectionView, 1, GL_FALSE, CameraGLM::current().matPV());
 
 	GLuint u_matViewModel = glGetUniformLocation(_programBase, "u_matViewModel");
-	//glUniformMatrix4fv(u_matViewModel, 1, GL_FALSE, object.matrixFloat());
-
-	//glDrawElements(GL_TRIANGLES, shape._countIndex, GL_UNSIGNED_SHORT, 0);
-}*/
-
-
-/*void DrawEngine::drawModelTemp(Object &object)
-{
-	unsigned int textureId = object.model().textureId();
-	Shape &shape = object.model().shape();
 	
-	drawShape(shape);
-}*/
+	ArrayTemplate <Object>& objects = map._objects;
 
-/*void DrawEngine::drawShape(Shape& shape)
-{
-	if (!shape._hasVBO) shape.initVBO();
-
-	if (shape._buffer[3] != _cuttrentBufer)
+	for (int i = 0; i < objects.count(); ++i)
 	{
-		GLuint a_position = glGetAttribLocation(_programBase, "a_position");
-		GLuint a_texCoord = glGetAttribLocation(_programBase, "a_texCoord");
+		MeshPhysic* meshPhysic = objects[i].getModel().getShape().getPhysic();
 
-		glBindBuffer(GL_ARRAY_BUFFER, shape._buffer[0]);
-		glEnableVertexAttribArray(a_position);
-		glVertexAttribPointer(a_position, SHAPE_VERTEX_POS_SIZE, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
+		if (meshPhysic)
+		{
+			const float* matrix = objects[i].matrixFloat();
+			glUniformMatrix4fv(u_matViewModel, 1, GL_FALSE, matrix);
 
-		glBindBuffer(GL_ARRAY_BUFFER, shape._buffer[1]);
-		glEnableVertexAttribArray(a_texCoord);
-		glVertexAttribPointer(a_texCoord, SHAPE_VERTEX_TEX_SIZE, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, shape._buffer[3]);
-
-		_cuttrentBufer = shape._buffer[3];
+			for (int iP = 0; iP < meshPhysic->_count; ++iP)
+			{
+				drawMesh(meshPhysic->_meshes[iP], _textureTemp);
+			}
+		}
 	}
 
-	if (textureId != _cuttrentTexture)
+	ArrayTemplate <Glider>& gliders = map._gliders;
+
+	for (int i = 0; i < gliders.count(); ++i)
 	{
-		GLuint u_color = glGetUniformLocation(_programBase, "u_color");
-		GLuint s_baseMap = glGetUniformLocation(_programBase, "s_baseMap");
+		MeshPhysic* meshPhysic = gliders[i].getModel().getShape().getPhysic();
 
-		float color[] = { 1.0, 1.0, 1.0, 1.0 };
-		glUniform4fv(u_color, 1, color);
+		if (meshPhysic)
+		{
+			const float* matrix = gliders[i].matrixFloat();
+			glUniformMatrix4fv(u_matViewModel, 1, GL_FALSE, matrix);
 
-		glUniform1i(s_baseMap, 0);
-		glBindTexture(GL_TEXTURE_2D, textureId);
-
-		_cuttrentTexture = textureId;
+			for (int iP = 0; iP < meshPhysic->_count; ++iP)
+			{
+				drawMesh(meshPhysic->_meshes[iP], _textureTemp);
+			}
+		}
 	}
-
-	glm::mat4x4 mat(1.0);
-	mat = glm::translate(mat, glm::vec3(0.5, 1.0, 2.0));
-
-	GLuint u_matViewModel = glGetUniformLocation(_programBase, "u_matViewModel");
-	glUniformMatrix4fv(u_matViewModel, 1, GL_FALSE, glm::value_ptr(mat));
-
-	glDrawElements(GL_TRIANGLES, shape._countIndex, GL_UNSIGNED_SHORT, 0);
-}*/
+}
 
 void DrawEngine::drawObject(Object& object)
 {
@@ -256,7 +215,7 @@ void DrawEngine::drawModel(Model& model, const float* matrix)
 	glDrawElements(GL_TRIANGLES, mesh._countIndex, GL_UNSIGNED_SHORT, 0);
 }
 
-void DrawEngine::drawMesh(Mesh& mesh)
+void DrawEngine::drawMesh(Mesh& mesh, Texture* texture)
 {
 	if (!mesh._hasVBO) mesh.initVBO();
 
@@ -278,7 +237,13 @@ void DrawEngine::drawMesh(Mesh& mesh)
 		_cuttrentBufer = mesh._buffer[3];
 	}
 
-	/*if (textureId != _cuttrentTexture)
+	unsigned int textureId = 0;
+	if (texture)
+	{
+		textureId = texture->id();
+	}
+
+	if (textureId != _cuttrentTexture)
 	{
 		GLuint u_color = glGetUniformLocation(_programBase, "u_color");
 		GLuint s_baseMap = glGetUniformLocation(_programBase, "s_baseMap");
@@ -290,13 +255,7 @@ void DrawEngine::drawMesh(Mesh& mesh)
 		glBindTexture(GL_TEXTURE_2D, textureId);
 
 		_cuttrentTexture = textureId;
-	}*/
-
-	glm::mat4x4 mat(1.0);
-	mat = glm::translate(mat, glm::vec3(1.0, 0.5, 2.0));
-
-	GLuint u_matViewModel = glGetUniformLocation(_programBase, "u_matViewModel");
-	glUniformMatrix4fv(u_matViewModel, 1, GL_FALSE, glm::value_ptr(mat));
+	}
 
 	glDrawElements(GL_TRIANGLES, mesh._countIndex, GL_UNSIGNED_SHORT, 0);
 }
