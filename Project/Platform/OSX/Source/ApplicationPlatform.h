@@ -2,6 +2,8 @@
 
 #include "glfw3.h"
 
+class AppConfig;
+
 class ApplicationPlatform
 {
 public:
@@ -25,7 +27,8 @@ public:
     
 public:
 	static void actionOnFrame();
-
+    
+    static AppConfig& getAppConfig();
 	static int width();
 	static int height();
 	static float aspect();

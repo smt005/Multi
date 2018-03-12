@@ -1,4 +1,5 @@
 
+#include "Application.h"
 #include "Game/Source/Game.h"
 #include "Example/Source/Draw/Draw.h"
 #include "ApplicationPlatform.h"
@@ -14,8 +15,15 @@ int ApplicationPlatform::_windowWidth = 640;
 int ApplicationPlatform::_windowHeight = 480;
 float ApplicationPlatform::_cursorPos[2];
 
+AppConfig _appConfig;
+
 bool ApplicationPlatform::execution()
 {
+    _appConfig.load();
+    
+    _windowHeight = _appConfig.getHeight();
+    _windowWidth = _appConfig.getWidth();
+    
     GLFWwindow* window;
     
     if (!glfwInit())
@@ -34,9 +42,9 @@ bool ApplicationPlatform::execution()
     
     glfwMakeContextCurrent(window);
 
-    if (EXAMPLE)
+    if (_appConfig.getExample())
     {
-        Draw::nextDraw(4);
+        Draw::nextDraw(_appConfig.getExampleNumber());
     }
     else
     {
@@ -47,7 +55,7 @@ bool ApplicationPlatform::execution()
     {
         ApplicationPlatform::actionOnFrame();
         
-        if (EXAMPLE)
+        if (_appConfig.getExample())
         {
             Draw::draws();
         }
@@ -70,6 +78,11 @@ void ApplicationPlatform::actionOnFrame()
 {
     Callback::move(_cursorPos);
     Callback::tap_pinch();
+}
+
+AppConfig& ApplicationPlatform::getAppConfig()
+{
+    return _appConfig;
 }
 
 int ApplicationPlatform::width()
@@ -173,5 +186,20 @@ void ApplicationPlatform::mouseButtonCallback(GLFWwindow* Window, int Button, in
 
 void ApplicationPlatform::keyCallback(GLFWwindow* Window, int Key, int Scancode, int Action, int Mods)
 {
-    
+    switch (Action)
+    {
+        case GLFW_PRESS:
+        {
+            Callback::buttonDown(Key);
+            Callback::_key[Key] = true;
+        }
+            break;
+            
+        case GLFW_RELEASE:
+        {
+            Callback::buttonUp(Key);
+            Callback::_key[Key] = false;
+        }
+            break;
+    }
 }
