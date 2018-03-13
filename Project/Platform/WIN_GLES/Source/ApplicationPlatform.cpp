@@ -73,6 +73,7 @@ void ApplicationPlatform::actionOnFrame()
 	float pos[] = { static_cast<float>(mousePos.x), static_cast<float>(mousePos.y) };
 	Callback::move(pos);
 	Callback::tap_pinch();
+	Callback::buttonPinch();
 }
 
 AppConfig& ApplicationPlatform::getAppConfig()

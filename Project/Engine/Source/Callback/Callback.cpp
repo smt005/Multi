@@ -13,6 +13,7 @@ glm::vec2 Callback::_pos;
 glm::vec2 Callback::_vector;
 
 bool Callback::_key[256];
+int Callback::_pressButtons = 0;
 char Callback::_charButtonDown;
 char Callback::_charButtonUp;
 
@@ -178,7 +179,8 @@ void Callback::buttonDown(char charVar)
 	if (_key[charVar] == true) return;
 	Callback::_key[charVar] = true;
 	_charButtonDown = charVar;
-	
+	++_pressButtons;
+
 	if (_hintObject && _hintObject->_buttonDown)
 	{
 		_hintObject->_buttonDown(_hintObject);
@@ -189,7 +191,7 @@ void Callback::buttonDown(char charVar)
 
 void Callback::buttonPinch()
 {
-	if (_hintObject && _hintObject->_buttonPinch)
+	if (_pressButtons > 0 && _hintObject && _hintObject->_buttonPinch)
 	{
 		_hintObject->_buttonPinch(_hintObject);
 	}
@@ -200,6 +202,7 @@ void Callback::buttonUp(char charVar)
 	if (_key[charVar] == false) return;
 	Callback::_key[charVar] = false;
 	_charButtonUp = charVar;
+	--_pressButtons;
 
 	if (_hintObject && _hintObject->_buttonUp)
 	{

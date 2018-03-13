@@ -29,6 +29,7 @@ public:
 private:
 	bool rotateCamera(void *data);
 	bool pressButton(void *data);
+	bool pressButtonPinch(void *data);
 	bool pressButtonDown(void *data);
 	void addObject(char* name);
 };

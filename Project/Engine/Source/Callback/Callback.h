@@ -50,6 +50,7 @@ public:
 	static glm::vec2 _vector;
 
 	static bool _key[256];
+	static int _pressButtons;
 	static char _charButtonDown;
 	static char _charButtonUp;
 

@@ -71,6 +71,7 @@ void GameTerrain::initCallback()
 {
 	this->setCallback(EventCallback::TAP_PINCH, UiFunction(rotateCamera));
 	this->setCallback(EventCallback::BUTTON_UP, UiFunction(pressButton));
+	this->setCallback(EventCallback::BUTTON_PINCH, UiFunction(pressButtonPinch));
 	this->setCallback(EventCallback::BUTTON_DOWN, UiFunction(pressButtonDown));
 	
 	Callback::_hintObject = this;
@@ -90,7 +91,7 @@ bool GameTerrain::pressButton(void *data)
 		return true;
 	}
 
-	if (_charButtonUp == 'A')
+	if (_charButtonUp == 'E')
 	{
 		addObject("Cylinder");
 		return true;
@@ -99,9 +100,44 @@ bool GameTerrain::pressButton(void *data)
 	return false;
 }
 
+bool GameTerrain::pressButtonPinch(void *data)
+{
+	if (Callback::_key['W'])
+	{
+		CameraGLM::current().move(CAMERA_FORVARD, 1.0f);
+	}
+
+	if (Callback::_key['S'])
+	{
+		CameraGLM::current().move(CAMERA_BACK, 1.0f);
+	}
+
+	if (Callback::_key['A'])
+	{
+		CameraGLM::current().move(CAMERA_RIGHT, 1.0f);
+	}
+
+	if (Callback::_key['D'])
+	{
+		CameraGLM::current().move(CAMERA_LEFT, 1.0f);
+	}
+
+	if (Callback::_key['R'])
+	{
+		CameraGLM::current().move(CAMERA_TOP, 1.0f);
+	}
+
+	if (Callback::_key['F'])
+	{
+		CameraGLM::current().move(CAMERA_DOWN, 1.0f);
+	}
+
+	return true;
+}
+
 bool GameTerrain::pressButtonDown(void *data)
 {
-	if (_charButtonDown == 'A')
+	if (_charButtonDown == 'E')
 	{
 		addObject("Chain");
 		return true;
