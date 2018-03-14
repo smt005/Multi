@@ -5,7 +5,9 @@
 #include "Draw/DrawEngine.h"
 #include "Draw/CameraGLM.h"
 #include "Object/Map.h"
+#include "Object/Object.h"
 #include "Common/Help.h"
+#include "Common/IncludesMatem.h"
 
 GameTerrain::GameTerrain()
 {
@@ -31,6 +33,7 @@ void GameTerrain::save()
 
 void GameTerrain::tact()
 {
+    _angleMap += 0.01;
 	_map->action();
 	Physics::update();
 }
@@ -41,6 +44,11 @@ void GameTerrain::draw()
 
 	if (_visiblePhysic)
 	{
+        Object& terrainObj = _map->_objects.getByName("Plane");
+        glm::mat4x4 terrainMat = terrainObj.getMatrix();
+        terrainMat = glm::rotate(terrainMat, _angleMap, glm::vec3(0.0, 0.0, 1.0));
+        terrainObj.setMatrix(terrainMat);
+        
 		DrawEngine::drawMap(*_map);
 	}
 	else
@@ -93,7 +101,7 @@ bool GameTerrain::pressButton(void *data)
 
 	if (_charButtonUp == 'E')
 	{
-		addObject("Cylinder");
+		addObject("Chain_degree_90");
 		return true;
 	}
 
@@ -139,7 +147,7 @@ bool GameTerrain::pressButtonDown(void *data)
 {
 	if (_charButtonDown == 'E')
 	{
-		addObject("Chain");
+		addObject("Chain_degree_00");
 		return true;
 	}
 

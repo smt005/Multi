@@ -78,6 +78,7 @@ void ApplicationPlatform::actionOnFrame()
 {
     Callback::move(_cursorPos);
     Callback::tap_pinch();
+    Callback::buttonPinch();
 }
 
 AppConfig& ApplicationPlatform::getAppConfig()

@@ -81,7 +81,7 @@ void DrawEngine::prepareDraw(bool clear)
 void DrawEngine::initDrawMap()
 {
 #ifdef BUILD_OSX
-    Shader::getShaderProgram(_programBase, "Shaders/OSX/Base.vert", "Shaders/OSX/Base.frag");
+    Shader::getShaderProgram(_programBase, "Shaders/OSX/BaseLight.vert", "Shaders/OSX/BaseLight.frag");
 #else
     Shader::getShaderProgram(_programBase, "Shaders/Base.vert", "Shaders/Base.frag");
 #endif
@@ -97,6 +97,13 @@ void DrawEngine::drawMap(Map& map)
 	GLuint u_matProjectionView = glGetUniformLocation(_programBase, "u_matProjectionView");
 	glUniformMatrix4fv(u_matProjectionView, 1, GL_FALSE, CameraGLM::current().matPV());
 
+#ifdef BUILD_OSX
+    glm::vec3 lightDirection(1.0, 0.25, -0.4);
+    lightDirection = glm::normalize(lightDirection);
+    GLuint u_lightDirection = glGetUniformLocation(_programBase, "u_lightDirection");
+    glUniform3fv(u_lightDirection, 1, glm::value_ptr(lightDirection));
+#endif
+    
 	ArrayTemplate <Object>& objects = map._objects;
 
 	for (int i = 0; i < objects.count(); ++i)
@@ -181,7 +188,8 @@ void DrawEngine::drawModel(Model& model, const float* matrix)
 	{
 		GLuint a_position = glGetAttribLocation(_programBase, "a_position");
 		GLuint a_texCoord = glGetAttribLocation(_programBase, "a_texCoord");
-
+        GLuint a_normal = glGetAttribLocation(_programBase, "a_normal");
+        
 		glBindBuffer(GL_ARRAY_BUFFER, mesh._buffer[0]);
 		glEnableVertexAttribArray(a_position);
 		glVertexAttribPointer(a_position, SHAPE_VERTEX_POS_SIZE, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
@@ -190,6 +198,10 @@ void DrawEngine::drawModel(Model& model, const float* matrix)
 		glEnableVertexAttribArray(a_texCoord);
 		glVertexAttribPointer(a_texCoord, SHAPE_VERTEX_TEX_SIZE, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
 
+        glBindBuffer(GL_ARRAY_BUFFER, mesh._buffer[2]);
+        glEnableVertexAttribArray(a_normal);
+        glVertexAttribPointer(a_normal, SHAPE_VERTEX_POS_SIZE, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
+        
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh._buffer[3]);
 
 		_cuttrentBufer = mesh._buffer[3];
