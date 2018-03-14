@@ -18,11 +18,15 @@ private:
 
 	static unsigned int _programLine;
 
+	static float _lightDirection[3];
+
 public:
 	static void setBackgroundColor(const float *color);
 	static void setBackgroundColor(const float &red, const float &green, const float &blue, const float &alpha);
 	static const float* backgroundColor();
+	static void setLightDirect(const float& x, const float& y, const float& z);
 
+	static const float* getLightDirect();
 public:
 	static void clearColor();
 	static void clearColor(const float &red, const float &green, const float &blue, const float &alpha);

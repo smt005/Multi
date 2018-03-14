@@ -3,6 +3,17 @@
 #include "Engine/Source/Common/IncludesMatem.h"
 #include <functional>
 
+#define VK_RETURN	13
+#define VK_SHIFT	16
+#define VK_CONTROL	17
+#define VK_ESCAPE	27
+#define VK_SPACE	32
+
+#define VK_LEFT		37
+#define VK_UP		38
+#define VK_RIGHT	39
+#define VK_DOWN		40
+
 #define CallbackFunction std::function<bool(void *data)>
 #define UiFunction(metod) [this](void *data) { return this->metod(data); }
 

@@ -20,7 +20,6 @@ GameTerrain::~GameTerrain()
 void GameTerrain::init()
 {
 	Physics::init();
-	//Physics::createWorldTest();
 
 	initMap();
 	initDraw();
@@ -33,7 +32,7 @@ void GameTerrain::save()
 
 void GameTerrain::tact()
 {
-    _angleMap += 0.01;
+    //_angleMap += 0.01;
 	_map->action();
 	Physics::update();
 }
@@ -42,14 +41,29 @@ void GameTerrain::draw()
 {
 	DrawEngine::prepareDraw(true);
 
-	if (_visiblePhysic)
+	if (!_visiblePhysic)
 	{
-        Object& terrainObj = _map->_objects.getByName("Plane");
+        /*Object& terrainObj = _map->_objects.getByName("Plane");
         glm::mat4x4 terrainMat = terrainObj.getMatrix();
         terrainMat = glm::rotate(terrainMat, _angleMap, glm::vec3(0.0, 0.0, 1.0));
-        terrainObj.setMatrix(terrainMat);
+        terrainObj.setMatrix(terrainMat);*/
         
 		DrawEngine::drawMap(*_map);
+
+		DrawEngine::prepareDrawLine();
+		ArrayTemplate <Object>& objects = _map->_objects;
+
+		for (int i = 0; i < objects.count(); ++i)
+		{
+			const glm::mat4x4& mat = objects[i].getMatrix();
+
+			float posObject[] = { mat[3][0], mat[3][1] , mat[3][2] };
+			const float* lightDirect = DrawEngine::getLightDirect();
+			float lenghtLine = 10.0f;
+			float lightVector[] = { (posObject[0] - lightDirect[0] * lenghtLine), (posObject[1] - lightDirect[1] * lenghtLine), (posObject[2] - lightDirect[2] * lenghtLine) };
+			float color[] = { 1.0f, 0.0f, 0.0f, 1.0f };
+			DrawEngine::drawLine(posObject, lightVector, color);
+		}
 	}
 	else
 	{
@@ -67,6 +81,7 @@ void GameTerrain::initDraw()
 {
 	DrawEngine::setBackgroundColor(0.3f, 0.6f, 0.9f, 1.0f);
 	DrawEngine::initDrawMap();
+	DrawEngine::initDrawLines();
 
 	_camera = &CameraGLM::getByName("First");
 	_camera->setDefault();
@@ -93,13 +108,13 @@ bool GameTerrain::rotateCamera(void *data)
 
 bool GameTerrain::pressButton(void *data)
 {
-	if (_charButtonUp == 'Q')
+	if (_charButtonUp == VK_ESCAPE)
 	{
 		App::close();
 		return true;
 	}
 
-	if (_charButtonUp == 'E')
+	if (_charButtonUp == VK_SPACE)
 	{
 		addObject("Chain_degree_90");
 		return true;
@@ -110,34 +125,40 @@ bool GameTerrain::pressButton(void *data)
 
 bool GameTerrain::pressButtonPinch(void *data)
 {
+	float speedCamera = 1.0f;
+	if (Callback::_key[VK_SHIFT])
+	{
+		speedCamera = 0.125f;
+	}
+
 	if (Callback::_key['W'])
 	{
-		CameraGLM::current().move(CAMERA_FORVARD, 1.0f);
+		CameraGLM::current().move(CAMERA_FORVARD, speedCamera);
 	}
 
 	if (Callback::_key['S'])
 	{
-		CameraGLM::current().move(CAMERA_BACK, 1.0f);
+		CameraGLM::current().move(CAMERA_BACK, speedCamera);
 	}
 
 	if (Callback::_key['A'])
 	{
-		CameraGLM::current().move(CAMERA_RIGHT, 1.0f);
+		CameraGLM::current().move(CAMERA_RIGHT, speedCamera);
 	}
 
 	if (Callback::_key['D'])
 	{
-		CameraGLM::current().move(CAMERA_LEFT, 1.0f);
+		CameraGLM::current().move(CAMERA_LEFT, speedCamera);
 	}
 
 	if (Callback::_key['R'])
 	{
-		CameraGLM::current().move(CAMERA_TOP, 1.0f);
+		CameraGLM::current().move(CAMERA_TOP, speedCamera);
 	}
 
 	if (Callback::_key['F'])
 	{
-		CameraGLM::current().move(CAMERA_DOWN, 1.0f);
+		CameraGLM::current().move(CAMERA_DOWN, speedCamera);
 	}
 
 	return true;
@@ -145,14 +166,14 @@ bool GameTerrain::pressButtonPinch(void *data)
 
 bool GameTerrain::pressButtonDown(void *data)
 {
-	if (_charButtonDown == 'E')
+	if (_charButtonDown == VK_SPACE)
 	{
 		addObject("Chain_degree_00");
 		return true;
 	}
 
 
-	if (Callback::_key['Z'] && Callback::_key['P'])
+	if (Callback::_key[VK_CONTROL] && Callback::_key['P'])
 	{
 		_visiblePhysic = !_visiblePhysic;
 	}

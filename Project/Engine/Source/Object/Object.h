@@ -40,7 +40,7 @@ public:
 
 	const ObjectType& type() { return _type; };
 	const string& name() { return _name; };
-	mat4x4& getMatrix() { return _matrix; };
+	const mat4x4& getMatrix() { return _matrix; };
 	const float* matrixFloat() { return value_ptr(_matrix); };
 	void getDataJson(json& dataJson);
 

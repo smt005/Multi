@@ -26,6 +26,8 @@ Texture* DrawEngine::_textureTemp = nullptr;
 
 unsigned int DrawEngine::_programLine = 0;
 
+float DrawEngine::_lightDirection[] = {1.0f, 2.0f, -0.5f};
+
 void DrawEngine::setBackgroundColor(const float *color)
 {
 	_backgroundColor[0] = color[0];
@@ -34,12 +36,26 @@ void DrawEngine::setBackgroundColor(const float *color)
 	_backgroundColor[3] = color[3];
 }
 
+void DrawEngine::setLightDirect(const float& x, const float& y, const float& z)
+{
+	glm::vec3 vec = glm::normalize(glm::vec3(x, y, z));
+
+	_lightDirection[0] = vec.x;
+	_lightDirection[1] = vec.y;
+	_lightDirection[2] = vec.z;
+}
+
 void DrawEngine::setBackgroundColor(const float &red, const float &green, const float &blue, const float &alpha)
 {
 	_backgroundColor[0] = red;
 	_backgroundColor[1] = green;
 	_backgroundColor[2] = blue;
 	_backgroundColor[3] = alpha;
+}
+
+const float* DrawEngine::getLightDirect()
+{
+	return _lightDirection;
 }
 
 const float* DrawEngine::backgroundColor()
@@ -83,7 +99,7 @@ void DrawEngine::initDrawMap()
 #ifdef BUILD_OSX
     Shader::getShaderProgram(_programBase, "Shaders/OSX/BaseLight.vert", "Shaders/OSX/BaseLight.frag");
 #else
-    Shader::getShaderProgram(_programBase, "Shaders/Base.vert", "Shaders/Base.frag");
+    Shader::getShaderProgram(_programBase, "Shaders/BaseLight.vert", "Shaders/BaseLight.frag");
 #endif
 }
 
@@ -97,13 +113,9 @@ void DrawEngine::drawMap(Map& map)
 	GLuint u_matProjectionView = glGetUniformLocation(_programBase, "u_matProjectionView");
 	glUniformMatrix4fv(u_matProjectionView, 1, GL_FALSE, CameraGLM::current().matPV());
 
-#ifdef BUILD_OSX
-    glm::vec3 lightDirection(1.0, 0.25, -0.4);
-    lightDirection = glm::normalize(lightDirection);
     GLuint u_lightDirection = glGetUniformLocation(_programBase, "u_lightDirection");
-    glUniform3fv(u_lightDirection, 1, glm::value_ptr(lightDirection));
-#endif
-    
+    glUniform3fv(u_lightDirection, 1, _lightDirection);
+
 	ArrayTemplate <Object>& objects = map._objects;
 
 	for (int i = 0; i < objects.count(); ++i)
@@ -301,8 +313,8 @@ void DrawEngine::prepareDrawLine()
 	glEnableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 
-	glClearColor(0.3f, 0.6f, 0.9f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glClearColor(0.3f, 0.6f, 0.9f, 1.0f);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void DrawEngine::drawLine(float* point0, float* point1, float* color)
@@ -326,9 +338,6 @@ void DrawEngine::drawLine(float* point0, float* point1, float* color)
 
 		glLineWidth(2.0f);
 	}
-
-	
-	//glUniform1f(_u_pointSize, 8.0f);
 
 	glUniformMatrix4fv(_u_matrix, 1, GL_FALSE, CameraGLM::current().matProjectViewFloat());
 	

@@ -1,7 +1,7 @@
 {
   "Terrain_box_mono": {
     "shape": "Models/Terrain_box_mono.obj",
-    "texture": "Textures/Simple_Metal.jpg",
+	"texture": "Textures/Greed/Greed_00.png",
 	"scale": 0.5
   },
   "Plane_with_box_100": {
@@ -11,7 +11,7 @@
   },
   "Terrain": {
     "shape": "Models/Terrain.obj",
-    "texture": "Textures/Rock.jpg",
+	"texture": "Textures/Greed/Greed_00.png",
 	"scale": 2.0
   },
   "First": {

@@ -11,8 +11,8 @@ class GameTerrain : public Game, public Callback
 private:
 	Map * _map = nullptr;
 	CameraGLM *_camera = nullptr;
-	bool _visiblePhysic = true;
-    float _angleMap = 0.0;
+	bool _visiblePhysic = false;
+    //float _angleMap = 0.0;
     
 public:
 	GameTerrain();
