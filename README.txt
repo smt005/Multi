@@ -5,4 +5,10 @@
 
 - Для генерации проекта под Windows (debug), требуется Make, CMake, Visual Studio 17. Команда в консоли "make WIN_GLES".
 
-- Для генерации проекта под OSX (debug), требуется Make, CMake, XCode 9. Команда в консоли "make OSX". Для запуска приложения не из Xcode нужно скопировать файл "Multi/Project/ThirdParty/GLFW/OSX/libglfw.3.dylib" в директорию "/usr/local/lib/".
+- Для генерации проекта под OSX (debug), требуется Make, CMake, XCode 9. Команда в терминале "make OSX". Для запуска приложения не из Xcode нужно скопировать файл "Multi/Project/ThirdParty/GLFW/OSX/libglfw.3.dylib" в директорию "/usr/local/lib/".
+
+Управление (GameTerrain)
+Esc - закрытие программы
+WASDRF - перемещение камеры
+Shift - уменьшение скорости перемещения камеры в 4 раза
+L - вкл./откл. отображения направления света.

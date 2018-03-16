@@ -5,12 +5,12 @@
 
 #define CALLBACK_COUNT_KEY 1024
 
-#ifdef BUILD_OSX
+#if define BUILD_OSX
     #define VK_ESCAPE   256
     #define VK_SHIFT    340
     #define VK_CONTROL  347
     #define VK_RETURN   259
-#elif
+#else
     #define VK_ESCAPE   27
     #define VK_SHIFT    16
     #define VK_CONTROL  17
@@ -70,9 +70,9 @@ public:
 	static glm::vec2 _vector;
 
 	static bool _key[CALLBACK_COUNT_KEY];
-	static int _countPressButtons;
-	static int _charButtonDown;
-	static int _charButtonUp;
+	static unsigned int _countPressButtons;
+	static unsigned int _charButtonDown;
+	static unsigned int _charButtonUp;
 
 public:
 	const bool &hasCallback() { return _hasCallback; };
@@ -91,7 +91,7 @@ public:
 	static void move(const float *pos);
 	static void hint();
 
-	static void buttonDown(int indexChar);
+	static void buttonDown(unsigned int indexChar);
 	static void buttonPinch();
-	static void buttonUp(int indexChar);
+	static void buttonUp(unsigned int indexChar);
 };

@@ -12,7 +12,7 @@ private:
 	Map * _map = nullptr;
 	CameraGLM *_camera = nullptr;
 	bool _visiblePhysic = false;
-    bool _visibleVectorLight = true;
+    bool _visibleVectorLight = false;
     //float _angleMap = 0.0;
     
 public:

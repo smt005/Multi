@@ -13,9 +13,9 @@ glm::vec2 Callback::_pos;
 glm::vec2 Callback::_vector;
 
 bool Callback::_key[CALLBACK_COUNT_KEY];
-int Callback::_countPressButtons = 0;
-int Callback::_charButtonDown;
-int Callback::_charButtonUp;
+unsigned int Callback::_countPressButtons = 0;
+unsigned int Callback::_charButtonDown;
+unsigned int Callback::_charButtonUp;
 
 void Callback::setCallback(const EventCallback &event, const CallbackFunction &function)
 {
@@ -174,9 +174,10 @@ void Callback::hint()
 	}*/
 }
 
-void Callback::buttonDown(int indexChar)
+void Callback::buttonDown(unsigned int indexChar)
 {
-	if (indexChar >= 0 && indexChar < CALLBACK_COUNT_KEY && _key[indexChar] == true) return;
+	if (indexChar >= CALLBACK_COUNT_KEY) return;
+	if (_key[indexChar] == true) return;
 	Callback::_key[indexChar] = true;
 	_charButtonDown = indexChar;
 	++_countPressButtons;
@@ -197,9 +198,10 @@ void Callback::buttonPinch()
 	}
 }
 
-void Callback::buttonUp(int indexChar)
+void Callback::buttonUp(unsigned int indexChar)
 {
-	if (indexChar >= 0 && indexChar < CALLBACK_COUNT_KEY && _key[indexChar] == false) return;
+	if (indexChar >= CALLBACK_COUNT_KEY) return;
+	if (_key[indexChar] == false) return;
 	Callback::_key[indexChar] = false;
 	_charButtonUp = indexChar;
 	--_countPressButtons;
