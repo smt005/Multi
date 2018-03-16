@@ -19,14 +19,20 @@ private:
 	static unsigned int _programLine;
 
 	static float _lightDirection[3];
+    static float _lightColor[4];
+    static float _ambientColor[4];
 
 public:
 	static void setBackgroundColor(const float *color);
 	static void setBackgroundColor(const float &red, const float &green, const float &blue, const float &alpha);
-	static const float* backgroundColor();
 	static void setLightDirect(const float& x, const float& y, const float& z);
-
+    static void setLightColor(const float& red, const float& green, const float& blue, const float &alpha = 1.0f);
+    static void setAmbientColor(const float& red, const float& green, const float& blue, const float &alpha = 1.0f);
+    
+    static const float* getBackgroundColor();
 	static const float* getLightDirect();
+    static const float* getLightColor();
+    static const float* getAmbientColor();
 public:
 	static void clearColor();
 	static void clearColor(const float &red, const float &green, const float &blue, const float &alpha);

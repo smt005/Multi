@@ -3,12 +3,21 @@
 #include "Engine/Source/Common/IncludesMatem.h"
 #include <functional>
 
-#define VK_RETURN	13
-#define VK_SHIFT	16
-#define VK_CONTROL	17
-#define VK_ESCAPE	27
-#define VK_SPACE	32
+#define CALLBACK_COUNT_KEY 1024
 
+#ifdef BUILD_OSX
+    #define VK_ESCAPE   256
+    #define VK_SHIFT    340
+    #define VK_CONTROL  347
+    #define VK_RETURN   259
+#elif
+    #define VK_ESCAPE   27
+    #define VK_SHIFT    16
+    #define VK_CONTROL  17
+    #define VK_RETURN   13
+#endif
+
+#define VK_SPACE    32
 #define VK_LEFT		37
 #define VK_UP		38
 #define VK_RIGHT	39
@@ -60,10 +69,10 @@ public:
 	static glm::vec2 _pos;
 	static glm::vec2 _vector;
 
-	static bool _key[256];
-	static int _pressButtons;
-	static char _charButtonDown;
-	static char _charButtonUp;
+	static bool _key[CALLBACK_COUNT_KEY];
+	static int _countPressButtons;
+	static int _charButtonDown;
+	static int _charButtonUp;
 
 public:
 	const bool &hasCallback() { return _hasCallback; };
@@ -82,7 +91,7 @@ public:
 	static void move(const float *pos);
 	static void hint();
 
-	static void buttonDown(char charVar);
+	static void buttonDown(int indexChar);
 	static void buttonPinch();
-	static void buttonUp(char charVar);
+	static void buttonUp(int indexChar);
 };

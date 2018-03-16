@@ -44,15 +44,13 @@ public:
 
 };
 
-// VIRTUAL 
+// PUBLIC
 
 template <class Tarray>
 void ArrayClass<Tarray>::create(const string &name)
 {
 	setName(name);
 }
-
-// PUBLIC STATIC
 
 template <class Tarray>
 unsigned int ArrayClass<Tarray>::_increaseCapasity = 10;

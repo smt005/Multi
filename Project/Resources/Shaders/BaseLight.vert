@@ -7,15 +7,12 @@ varying vec4 uv_color;
 
 uniform mat4 u_matProjectionView;
 uniform mat4 u_matViewModel;
-
 uniform vec3 u_lightDirection;
+uniform vec4 u_color;
+uniform vec4 u_ambientColor;
 
 void main(void)
 {
-    vec4 u_color = vec4(1.0, 1.0, 1.0, 1.0);
-    vec4 u_ambientColor = vec4(0.0,0.0,0.0,1.0);
-    float u_diffuse = 1.0;
-    
     mat4 u_transform = u_matProjectionView * u_matViewModel;
     
     gl_Position = u_transform * a_position;
@@ -28,7 +25,7 @@ void main(void)
     float lcoef = max(dot(v_normal, -u_lightDirection.xyz), 0.0);
 
     uv_color = u_ambientColor;
-    uv_color.rgb += lcoef * (u_diffuse);
+    uv_color.rgb += lcoef;
     uv_color *= u_color;
 }
 

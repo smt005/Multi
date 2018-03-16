@@ -22,15 +22,20 @@ bool Shader::getShaderProgram(unsigned int& program, const char* vertexLink, con
 		return false;
 	}
 
-	char* fragmentShaderSource = FilesManager::loadTextFile(fragmentLink);
-	if (!fragmentShaderSource)
+    std::string fragmentShaderSource = FilesManager::loadTextFile(fragmentLink);
+	if (fragmentShaderSource.empty())
 	{
 		return false;
 	}
 
+    #if defined BUILD_WIN_GLES || defined BUILD_WIN_GLFW
+        fragmentShaderSource = "#define BUILD_WIN_GLES\n#define BUILD_WIN_GLES\n" + fragmentShaderSource;
+    #endif
+    
 	GLuint _fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
-	glShaderSource(_fragmentShader, 1, (const char**)&fragmentShaderSource, 0);
+    const char* shaderSource = fragmentShaderSource.c_str();
+    glShaderSource(_fragmentShader, 1, &shaderSource, 0);
 	glCompileShader(_fragmentShader);
 
 	GLint isShaderCompiled;
@@ -43,26 +48,25 @@ bool Shader::getShaderProgram(unsigned int& program, const char* vertexLink, con
 
 		char* infoLog = new char[infoLogLength];
 		glGetShaderInfoLog(_fragmentShader, infoLogLength, &charactersWritten, infoLog);
-//
-//            #ifdef __ANDROID__
-//                LOGI("Shader compiled fragment ERROR: %s", infoLog);
-//            #else
-//                MessageBox(0, infoLog, "Shader compiled fragment ERROR", 0);
-//            #endif
-
-		delete infoLog;
+        
+        #ifdef BUILD_OSX
+                printf("Shader compiled fragment ERROR: %s", infoLog);
+        #endif
+        
+		delete[] infoLog;
 		return false;
 	}
 
-	char* vertexShaderSource = FilesManager::loadTextFile(vertexLink);
-	if (!vertexShaderSource)
+	std::string vertexShaderSource = FilesManager::loadTextFile(vertexLink);
+	if (vertexShaderSource.empty())
 	{
 		return false;
 	}
 
 	GLuint _vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
-	glShaderSource(_vertexShader, 1, (const char**)&vertexShaderSource, 0);
+    shaderSource = vertexShaderSource.c_str();
+    glShaderSource(_vertexShader, 1, &shaderSource, 0);
 	glCompileShader(_vertexShader);
 
 	glGetShaderiv(_vertexShader, GL_COMPILE_STATUS, &isShaderCompiled);
@@ -75,11 +79,9 @@ bool Shader::getShaderProgram(unsigned int& program, const char* vertexLink, con
 		char* infoLog = new char[infoLogLength];
 		glGetShaderInfoLog(_vertexShader, infoLogLength, &charactersWritten, infoLog);
 
-//            #ifdef __ANDROID__
-//                LOGI("Shader compiled vertex ERROR: %s", infoLog);
-//            #else
-//               MessageBox(NULL, infoLog, "Shader compiled vertex ERROR", 0);
-//            #endif
+        #ifdef BUILD_OSX
+                printf("Shader compiled vertex ERROR: %s", infoLog);
+        #endif
 
 		delete[] infoLog;
 		return false;
@@ -102,11 +104,9 @@ bool Shader::getShaderProgram(unsigned int& program, const char* vertexLink, con
 		char* infoLog = new char[infoLogLength];
 		glGetProgramInfoLog(_shaderProgram, infoLogLength, &charactersWritten, infoLog);
 
-//            #ifdef __ANDROID__
-//                LOGI("Shader linked ERROR: %s", infoLog);
-//            #else
-//                MessageBox(NULL, infoLog, "Shader linked ERROR", 0);
-//            #endif
+        #ifdef BUILD_OSX
+                printf("Shader linked ERROR: %s", infoLog);
+        #endif
 
 		delete[] infoLog;
 		return false;

@@ -49,21 +49,24 @@ void GameTerrain::draw()
         terrainObj.setMatrix(terrainMat);*/
         
 		DrawEngine::drawMap(*_map);
+        
+        if (_visibleVectorLight)
+        {
+            DrawEngine::prepareDrawLine();
+            ArrayTemplate <Object>& objects = _map->_objects;
 
-		DrawEngine::prepareDrawLine();
-		ArrayTemplate <Object>& objects = _map->_objects;
+            for (int i = 0; i < objects.count(); ++i)
+            {
+                const glm::mat4x4& mat = objects[i].getMatrix();
 
-		for (int i = 0; i < objects.count(); ++i)
-		{
-			const glm::mat4x4& mat = objects[i].getMatrix();
-
-			float posObject[] = { mat[3][0], mat[3][1] , mat[3][2] };
-			const float* lightDirect = DrawEngine::getLightDirect();
-			float lenghtLine = 10.0f;
-			float lightVector[] = { (posObject[0] - lightDirect[0] * lenghtLine), (posObject[1] - lightDirect[1] * lenghtLine), (posObject[2] - lightDirect[2] * lenghtLine) };
-			float color[] = { 1.0f, 0.0f, 0.0f, 1.0f };
-			DrawEngine::drawLine(posObject, lightVector, color);
-		}
+                float posObject[] = { mat[3][0], mat[3][1] , mat[3][2] };
+                const float* lightDirect = DrawEngine::getLightDirect();
+                float lenghtLine = 10.0f;
+                float lightVector[] = { (posObject[0] - lightDirect[0] * lenghtLine), (posObject[1] - lightDirect[1] * lenghtLine), (posObject[2] - lightDirect[2] * lenghtLine) };
+                float color[] = { 1.0f, 0.0f, 0.0f, 1.0f };
+                DrawEngine::drawLine(posObject, lightVector, color);
+            }
+        }
 	}
 	else
 	{
@@ -120,6 +123,11 @@ bool GameTerrain::pressButton(void *data)
 		return true;
 	}
 
+    if (_charButtonUp == 'L')
+    {
+        _visibleVectorLight = !_visibleVectorLight;
+    }
+    
 	return false;
 }
 

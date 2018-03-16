@@ -24,6 +24,8 @@ bool ApplicationPlatform::execution()
     _windowHeight = _appConfig.getHeight();
     _windowWidth = _appConfig.getWidth();
     
+    Callback::reset();
+    
     GLFWwindow* window;
     
     if (!glfwInit())

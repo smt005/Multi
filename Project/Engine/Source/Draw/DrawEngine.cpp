@@ -18,7 +18,7 @@
     #include "glfw3.h"
 #endif
 
-float DrawEngine::_backgroundColor[4] = {0.3f, 0.6f, 0.9f, 1.0f};
+float DrawEngine::_backgroundColor[] = {0.3f, 0.6f, 0.9f, 1.0f};
 unsigned int DrawEngine::_programBase;
 unsigned int DrawEngine::_cuttrentBufer = 0;
 unsigned int DrawEngine::_cuttrentTexture = 0;
@@ -27,6 +27,8 @@ Texture* DrawEngine::_textureTemp = nullptr;
 unsigned int DrawEngine::_programLine = 0;
 
 float DrawEngine::_lightDirection[] = {1.0f, 2.0f, -0.5f};
+float DrawEngine::_lightColor[]     = {0.95f, 1.0f, 0.9f, 1.0f};
+float DrawEngine::_ambientColor[]   = {0.1f, 0.1f, 0.1f, 1.0f};
 
 void DrawEngine::setBackgroundColor(const float *color)
 {
@@ -45,6 +47,22 @@ void DrawEngine::setLightDirect(const float& x, const float& y, const float& z)
 	_lightDirection[2] = vec.z;
 }
 
+void DrawEngine::setLightColor(const float& red, const float& green, const float& blue, const float &alpha)
+{
+    _lightColor[0] = red;
+    _lightColor[1] = green;
+    _lightColor[2] = blue;
+    _lightColor[3] = 1.0f;
+}
+
+void DrawEngine::setAmbientColor(const float& red, const float& green, const float& blue, const float &alpha)
+{
+    _ambientColor[0] = red;
+    _ambientColor[1] = green;
+    _ambientColor[2] = blue;
+    _ambientColor[3] = 1.0f;
+}
+
 void DrawEngine::setBackgroundColor(const float &red, const float &green, const float &blue, const float &alpha)
 {
 	_backgroundColor[0] = red;
@@ -53,14 +71,24 @@ void DrawEngine::setBackgroundColor(const float &red, const float &green, const 
 	_backgroundColor[3] = alpha;
 }
 
+const float* DrawEngine::getBackgroundColor()
+{
+    return _backgroundColor;
+}
+
 const float* DrawEngine::getLightDirect()
 {
 	return _lightDirection;
 }
 
-const float* DrawEngine::backgroundColor()
+const float* DrawEngine::getLightColor()
 {
-	return _backgroundColor;
+    return _lightColor;
+}
+
+const float* DrawEngine::getAmbientColor()
+{
+    return _ambientColor;
 }
 
 void DrawEngine::clearColor()
@@ -71,7 +99,6 @@ void DrawEngine::clearColor()
 void DrawEngine::clearColor(const float &red, const float &green, const float &blue, const float &alpha)
 {
 	glClearColor(red, green, blue, alpha);
-//glClearDepthf(1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -96,11 +123,7 @@ void DrawEngine::prepareDraw(bool clear)
 // DrawMap
 void DrawEngine::initDrawMap()
 {
-#ifdef BUILD_OSX
-    Shader::getShaderProgram(_programBase, "Shaders/OSX/BaseLight.vert", "Shaders/OSX/BaseLight.frag");
-#else
     Shader::getShaderProgram(_programBase, "Shaders/BaseLight.vert", "Shaders/BaseLight.frag");
-#endif
 }
 
 void DrawEngine::drawMap(Map& map)
@@ -116,6 +139,12 @@ void DrawEngine::drawMap(Map& map)
     GLuint u_lightDirection = glGetUniformLocation(_programBase, "u_lightDirection");
     glUniform3fv(u_lightDirection, 1, _lightDirection);
 
+    GLuint u_color = glGetUniformLocation(_programBase, "u_color");
+    glUniform4fv(u_color, 1, _lightColor);
+    
+    GLuint u_ambientColor = glGetUniformLocation(_programBase, "u_ambientColor");
+    glUniform4fv(u_ambientColor, 1, _ambientColor);
+    
 	ArrayTemplate <Object>& objects = map._objects;
 
 	for (int i = 0; i < objects.count(); ++i)
@@ -221,12 +250,7 @@ void DrawEngine::drawModel(Model& model, const float* matrix)
 
 	if (textureId != _cuttrentTexture)
 	{
-		GLuint u_color = glGetUniformLocation(_programBase, "u_color");
 		GLuint s_baseMap = glGetUniformLocation(_programBase, "s_baseMap");
-
-		float color[] = { 1.0, 1.0, 1.0, 1.0 };
-		glUniform4fv(u_color, 1, color);
-
 		glUniform1i(s_baseMap, 0);
 		glBindTexture(GL_TEXTURE_2D, textureId);
 
@@ -288,11 +312,7 @@ void DrawEngine::drawMesh(Mesh& mesh, Texture* texture)
 
 void DrawEngine::initDrawLines()
 {
-#ifdef BUILD_OSX
-	Shader::getShaderProgram(_programLine, "Shaders/OSX/LineMatrix.vert", "Shaders/OSX/LineMatrix.frag");
-#else
 	Shader::getShaderProgram(_programLine, "Shaders/LineMatrix.vert", "Shaders/LineMatrix.frag");
-#endif
 }
 
 void DrawEngine::prepareDrawLine()
@@ -312,9 +332,6 @@ void DrawEngine::prepareDrawLine()
 
 	glEnableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
-
-	//glClearColor(0.3f, 0.6f, 0.9f, 1.0f);
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void DrawEngine::drawLine(float* point0, float* point1, float* color)
