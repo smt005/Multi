@@ -1,14 +1,23 @@
 
 Любительский проект для изучения всего что может потребоваться для разработки собственной игр.
 
-Рабочие версии, для Windows 10 и OSX.
+Рабочие версии, для "Windows 10" и "OSX Sierra".
 
-- Для генерации проекта под Windows (debug), требуется Make, CMake, Visual Studio 17. Команда в консоли "make WIN_GLES".
+- Для генерации проекта под "Windows 10" (debug), требуется "Make 3.81", "CMake 2.8", "Visual Studio 17". Команда в консоли "make WIN_GLES".
 
-- Для генерации проекта под OSX (debug), требуется Make, CMake, XCode 9. Команда в терминале "make OSX". Для запуска приложения не из Xcode нужно скопировать файл "Multi/Project/ThirdParty/GLFW/OSX/libglfw.3.dylib" в директорию "/usr/local/lib/".
+- Для генерации проекта под "OSX Sierra" (debug), требуется "Make 3.81", "CMake 2.8", "XCode 9". Команда в терминале "make OSX". Для запуска приложения не из Xcode нужно скопировать файл "Multi/Project/ThirdParty/GLFW/OSX/libglfw.3.dylib" в директорию "/usr/local/lib/".
 
 Управление (GameTerrain)
 Esc - закрытие программы
 WASDRF - перемещение камеры
-Shift - уменьшение скорости перемещения камеры в 4 раза
+Shift (удерживание) - уменьшение скорости перемещения камеры в 4 раза
+Space - создание динамических объектов.
 L - вкл./откл. отображения направления света.
+Ctrl + P - отображение физической модели.
+
+Используемые библиотеки:
+- OpenGL, OpenGL ES
+- GLFW
+- GLM
+- FreeImage
+- bullet3
