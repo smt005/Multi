@@ -17,8 +17,8 @@ EGLConfig ApplicationPlatform::_eglConfig = nullptr;
 EGLSurface ApplicationPlatform::_eglSurface = nullptr;
 EGLContext ApplicationPlatform::_eglContext = nullptr;
 
-int ApplicationPlatform::WindowWidth = 1500;
-int ApplicationPlatform::WindowHeight = 1000;
+int ApplicationPlatform::WindowWidth = 640;
+int ApplicationPlatform::WindowHeight = 480;
 
 AppConfig _appConfig;
 
@@ -234,7 +234,7 @@ bool ApplicationPlatform::execution(HINSTANCE& applicationInstance)
 	Callback::reset();
 
 	if (!ApplicationPlatform::createWindow(applicationInstance, ApplicationPlatform::_nativeWindow, ApplicationPlatform::_deviceContext)) exit(true);
-	if (!ApplicationPlatform::initGLES()) exit(1);
+	if (!ApplicationPlatform::initGLES()) exit(true);
 
 	if (_appConfig.getExample())
 	{

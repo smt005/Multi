@@ -9,7 +9,7 @@ template <class ArrayT>
 class ArrayTemplate
 {
 private:
-	unsigned int _increaseCapasity = 10000;	//10; При привышени крашит, ИСПРАВИТЬ!
+	unsigned int _increaseCapasity = 10;
 	unsigned int _capasity = 0;
 	unsigned int _count = 0;
 	ArrayT **_array = 0;
@@ -29,7 +29,6 @@ public:
 	void remove(const ArrayT &item);
 	void remove(const int &index);
 
-	ArrayT* addReturnPoint();
 	ArrayT& add();
 	ArrayT& add(ArrayT *newItem);
 
@@ -146,22 +145,6 @@ void ArrayTemplate<ArrayT>::remove(const int &index)
 //---
 
 template <class ArrayT>
-ArrayT* ArrayTemplate<ArrayT>::addReturnPoint()
-{
-	ArrayT *newItem = new ArrayT();
-
-	if (!_array)
-	{
-		_array = new ArrayT*[100];
-		_count = 0;
-	}
-
-	_array[_count] = newItem;
-	++_count;
-	return newItem;
-}
-
-template <class ArrayT>
 ArrayT& ArrayTemplate<ArrayT>::add()
 {
 	ArrayT *newItem = new ArrayT();
@@ -171,23 +154,12 @@ ArrayT& ArrayTemplate<ArrayT>::add()
 template <class ArrayT>
 ArrayT& ArrayTemplate<ArrayT>::add(ArrayT *newItem)
 {
-	if (!newItem)
-	{
-		if (_count > 0)
-		{
-			ArrayT *item = _array[0];
-			return *item;
-		}
-
-		newItem = new ArrayT();
-	}
-
 	if (_count >= _capasity)
 	{
-		_capasity = _capasity + _increaseCapasity;
+ 		_capasity = _capasity + _increaseCapasity;
 		ArrayT* *newArray = new ArrayT*[_capasity];
 
-		for (static unsigned int i = 0; i < _count; ++i) newArray[i] = _array[i];
+		for (unsigned int i = 0; i < _count; ++i) newArray[i] = _array[i];
 
 		delete[] _array;
 		_array = newArray;

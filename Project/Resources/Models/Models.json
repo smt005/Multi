@@ -6,7 +6,7 @@
   },
   "Plane_with_box_100": {
     "shape": "Models/Plane_with_box_100.obj",
-    "texture": "Textures/Ambient.png",
+    "texture": "Textures/Greed/Ambient.png",
 	"scale": 2.0
   },
   "Terrain": {
@@ -20,7 +20,7 @@
   },
   "Plane100": {
     "shape": "Models/Plane100.obj",
-    "texture": "Textures/Ambient.png"
+    "texture": "Textures/Greed/Ambient.png"
   },
    "PlaneFood": {
     "shape": "Models/Plane100.obj",
@@ -32,7 +32,8 @@
   },
   "Car": {
 	"shape": "Models/Car.obj",
-    "texture": "Textures/Car.jpg"
+    "texture": "Textures/Car.jpg",
+	"scale": 2.0
    },
   "Cell_test": {
 	"shape": "Models/Cell_test.obj",
@@ -54,23 +55,37 @@
     "texture": "Textures/Food_128.png",
 	"scale": 0.25
   },
-  "Chain": {
-    "shape": "Models/Chain.obj",
-    "texture": "Textures/Box.jpg",
-	"scale": 0.25
-  },
   "Chain_degree_00": {
     "shape": "Models/Chain_degree_00.obj",
-    "texture": "Textures/Box.jpg"
+    "texture": "Textures/Simple_Metal.jpg"
   },
   "Chain_degree_90": {
     "shape": "Models/Chain_degree_90.obj",
-    "texture": "Textures/Box.jpg"
+    "texture": "Textures/Simple_Metal.jpg"
   },
-  "Dumbbell": {
+  "Dumbbell_05": {
     "shape": "Models/Dumbbell.obj",
-    "texture": "Textures/Box.jpg",
+    "texture": "Textures/Simple_Metal.jpg",
+	"scale": 0.5
+  },
+  "Dumbbell_025": {
+    "shape": "Models/Dumbbell.obj",
+    "texture": "Textures/Simple_Metal.jpg",
 	"scale": 0.25
+  },
+  "Dumbbell_0125": {
+    "shape": "Models/Dumbbell.obj",
+    "texture": "Textures/Simple_Metal.jpg",
+	"scale": 0.125
+  },
+  "MapArena": {
+    "shape": "Models/MapArena.obj",
+    "texture": "Textures/nochnoy_2.jpg"
+  },
+  "MapField": {
+    "shape": "Models/MapField.obj",
+    "_texture": "Textures/Simple_Metal.jpg",
+	"texture": "Textures/nochnoy_2.jpg"
   }
 }
 

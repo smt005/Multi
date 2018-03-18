@@ -83,6 +83,7 @@ void GameTerrain::initMap()
 void GameTerrain::initDraw()
 {
 	DrawEngine::setBackgroundColor(0.3f, 0.6f, 0.9f, 1.0f);
+	DrawEngine::setAmbientColor(0.2, 0.2, 0.3);
 	DrawEngine::initDrawMap();
 	DrawEngine::initDrawLines();
 
@@ -119,7 +120,7 @@ bool GameTerrain::pressButton(void *data)
 
 	if (_charButtonUp == VK_SPACE)
 	{
-		addObject("Chain_degree_90");
+		addObject("Dumbbell_05");
 		return true;
 	}
 
@@ -176,7 +177,7 @@ bool GameTerrain::pressButtonDown(void *data)
 {
 	if (_charButtonDown == VK_SPACE)
 	{
-		addObject("Chain_degree_00");
+		addObject("Dumbbell_0125");
 		return true;
 	}
 
@@ -192,9 +193,9 @@ bool GameTerrain::pressButtonDown(void *data)
 void GameTerrain::addObject(char* name)
 {
 	glm::vec3 randomPos;
-	randomPos.x = help::random_f(10.0f, 50.0f);
-	randomPos.y = help::random_f(10.0f, 50.0f);
-	randomPos.z = help::random_f(1.0f, 10.0f);
+	randomPos.x = help::random_f(-50.0f, 100.0f);
+	randomPos.y = help::random_f(-50.0f, 100.0f);
+	randomPos.z = help::random_f(10.0f, 100.0f);
 
 #ifdef BUILD_WIN_GLES
 	_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, "addObject %s [%f %f %f]\n", name, randomPos.x, randomPos.y, randomPos.z);
