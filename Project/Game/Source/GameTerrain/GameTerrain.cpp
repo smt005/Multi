@@ -4,6 +4,7 @@
 
 #include "Draw/DrawEngine.h"
 #include "Draw/CameraGLM.h"
+#include "Draw/DrawText.h"
 #include "Object/Map.h"
 #include "Object/Object.h"
 #include "Common/Help.h"
@@ -15,6 +16,7 @@ GameTerrain::GameTerrain()
 
 GameTerrain::~GameTerrain()
 {
+    delete _text;
 }
 
 void GameTerrain::init()
@@ -40,13 +42,8 @@ void GameTerrain::draw()
 {
 	DrawEngine::prepareDraw(true);
 
-	if (!_visiblePhysic)
+	/*if (!_visiblePhysic)
 	{
-        /*Object& terrainObj = _map->_objects.getByName("Plane");
-        glm::mat4x4 terrainMat = terrainObj.getMatrix();
-        terrainMat = glm::rotate(terrainMat, _angleMap, glm::vec3(0.0, 0.0, 1.0));
-        terrainObj.setMatrix(terrainMat);*/
-        
 		DrawEngine::drawMap(*_map);
         
         if (_visibleVectorLight)
@@ -70,7 +67,22 @@ void GameTerrain::draw()
 	else
 	{
 		DrawEngine::drawMapPhysic(*_map);
-	}
+	}*/
+    
+    if (!_text)
+    {
+        _text = new TextDrawContainer();
+    }
+    
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_BLEND);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    
+    _text->set("text", 50);
+    _text->drawOnScreen();
 }
 
 void GameTerrain::initMap()

@@ -58,6 +58,7 @@ set(RESOURCE_DIRS
 	Map
 	Models
 	Shaders
+    Shaders/Text
 	Textures
 	Data
 )
@@ -137,6 +138,13 @@ endforeach(DIR)
 
 # Подключение библиотек -----------------------------------------------------------------
 
+# freetype
+set(FREETYPE_NAME_LIB freetype)
+set(FREETYPE_DIR "ThirdParty/${FREETYPE_NAME_LIB}")
+include_directories("${FREETYPE_DIR}")
+include_directories("${FREETYPE_DIR}/include")
+add_subdirectory(${FREETYPE_DIR})
+
 #	Физика -------------------
 
 set(BULLET_NAME_LIB "bullet3")
@@ -144,17 +152,24 @@ set(BULLET_PHYSICS_SOURCE_DIR ${THIRD_PARTY_DIR}/${BULLET_NAME_LIB})
 
 message("BULLET_PHYSICS_SOURCE_DIR = ${BULLET_PHYSICS_SOURCE_DIR}")
 
+OPTION(BUILD_SHARED_LIBS "Use shared libraries" ON)
 OPTION(BUILD_UNIT_TESTS "Build Unit Tests"	OFF)
 OPTION(BUILD_BULLET2_DEMOS "Build Unit Tests"	OFF)
 OPTION(USE_GRAPHICAL_BENCHMARK "Use Graphical Benchmark" OFF)
 OPTION(BUILD_CPU_DEMOS "Build original Bullet CPU examples" OFF)
 OPTION(USE_GLUT "Use Glut"	OFF)
-OPTION(BUILD_PYBULLET "Set when you want to build pybullet (Python bindings for Bullet)" OFF)
 OPTION(BUILD_ENET "Set when you want to build apps with enet UDP networking support" OFF)
 OPTION(BUILD_CLSOCKET "Set when you want to build apps with enet TCP networking support" OFF)
 OPTION(BUILD_BULLET2_DEMOS "Set when you want to build the Bullet 2 demos" OFF)
 OPTION(BUILD_EXTRAS "Set when you want to build the extras" OFF)
 OPTION(INSTALL_CMAKE_FILES "Install generated CMake files" OFF)
+OPTION(BUILD_OPENGL3_DEMOS "Set when you want to build the OpenGL3+ demos" OFF)
+OPTION(BUILD_BULLET2_DEMOS "Set when you want to build the Bullet 2 demos" OFF)
+OPTION(BUILD_EXTRAS "Set when you want to build the extras" OFF)
+OPTION(BUILD_PYBULLET_MAC_USE_PYTHON_FRAMEWORK "Set when you want to use the Python Framework on Mac" OFF)
+OPTION(BUILD_PYBULLET_ENET "Set when you want to build pybullet with enet UDP networking support" OFF)
+OPTION(BUILD_PYBULLET_CLSOCKET "Set when you want to build pybullet with enet TCP networking support" OFF)
+OPTION(BUILD_PYBULLET "Set when you want to build pybullet (Python bindings for Bullet)" OFF)
 
 add_subdirectory(${BULLET_PHYSICS_SOURCE_DIR})
 
@@ -167,13 +182,6 @@ LINK_LIBRARIES(
 )
 
 # ---------------------
-
-
-# freetype
-#set(FREETYPE_NAME_LIB freetype)
-#set(FREETYPE_DIR "ThirdParty/${FREETYPE_NAME_LIB}")
-#include_directories("${FREETYPE_DIR}/include")
-#add_subdirectory(${FREETYPE_DIR})
 
 if (${BUILD_PALTFORM} STREQUAL "WIN_GLES")
 	# OpenGL es
@@ -291,7 +299,7 @@ target_link_libraries(${PROJECT_NAME}  ${GAME_NAME_LIB})
 target_link_libraries(${PROJECT_NAME}  ${PLATFORM_NAME_LIB})
 
 target_link_libraries(${PROJECT_NAME}  ${FREEIMAGE_NAME_LIB})
-#target_link_libraries(${PROJECT_NAME}  ${FREETYPE_NAME_LIB})
+target_link_libraries(${PROJECT_NAME}  ${FREETYPE_NAME_LIB})
 
 if (${BUILD_PALTFORM} STREQUAL "WIN_GLES")
 	# OpenGL ES
@@ -326,9 +334,6 @@ elseif (${BUILD_PALTFORM} STREQUAL "OSX")
 	find_library(GLFW_LIBRARY NAMES libglfw.3.dylib HINTS "${THIRD_PARTY_DIR}/GLFW/OSX")
 	target_link_libraries(${PROJECT_NAME} ${GLFW_LIBRARY})
 	file(COPY ${GLFW_LIBRARY} DESTINATION Debug)
-
-	# FreeImage
-	target_link_libraries(${PROJECT_NAME}  ${FREEIMAGE_NAME_LIB})
 
 	message("target_link_libraries LIB OSX")
 elseif()

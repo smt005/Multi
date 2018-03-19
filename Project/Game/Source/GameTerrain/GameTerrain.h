@@ -5,6 +5,7 @@
 
 class Map;
 class CameraGLM;
+class TextDrawContainer;
 
 class GameTerrain : public Game, public Callback
 {
@@ -13,6 +14,7 @@ private:
 	CameraGLM *_camera = nullptr;
 	bool _visiblePhysic = false;
     bool _visibleVectorLight = false;
+    TextDrawContainer* _text;
     
 public:
 	GameTerrain();
