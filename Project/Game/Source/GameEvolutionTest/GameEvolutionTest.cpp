@@ -35,9 +35,6 @@ void GameEvolutionTest::save()
 	{
 		_map->getDataJson(dataJson);
 	}
-
-	//std::string dataString = dataJson.dump();
-	//FilesManager::saveTextFile("Saves/GameEvolutionTest.sav", dataString.c_str());
 }
 
 void GameEvolutionTest::tact()
@@ -80,18 +77,14 @@ void GameEvolutionTest::initDraw()
 	_camera = &CameraGLM::getByName("First");
 	_camera->setDefault();
 	_camera->setLookAt(glm::vec3(-50.0f, 50.0f, 50.0f), glm::vec3(0.5f, 0.5f, 1.0f));
-    //_camera->setLookAt(glm::vec3(-15.0f, -15.0f, 15.0f), glm::vec3(0.5f, 0.5f, 1.0f));
-	//_camera->setLookAt(glm::vec3(-5.0f, -5.0f, 5.0f), glm::vec3(0.5f, 0.5f, 1.0f));
 	_camera->setSpeed(0.1f);
 	_camera->setCalcFrustum(false);
 }
 
 void GameEvolutionTest::initCallback()
 {
-	//this->setCallback(EventCallback::TAP_LONG, UiFunction(closeGame));
-	this->setCallback(EventCallback::TAP_DOUBLE, UiFunction(closeGame));
-	this->setCallback(EventCallback::TAP_PINCH, UiFunction(rotateCamera));
-	//this->setCallback(EventCallback::TAP_UP, UiFunction(addObject));
+	this->setCallback(EventCallback::TAP_DOUBLE, Function(closeGame));
+	this->setCallback(EventCallback::TAP_PINCH, Function(rotateCamera));
 	
 	Callback::_hintObject = this;
 }

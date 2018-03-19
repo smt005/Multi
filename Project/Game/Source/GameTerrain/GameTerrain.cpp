@@ -42,11 +42,6 @@ void GameTerrain::draw()
 
 	if (!_visiblePhysic)
 	{
-        /*Object& terrainObj = _map->_objects.getByName("Plane");
-        glm::mat4x4 terrainMat = terrainObj.getMatrix();
-        terrainMat = glm::rotate(terrainMat, _angleMap, glm::vec3(0.0, 0.0, 1.0));
-        terrainObj.setMatrix(terrainMat);*/
-        
 		DrawEngine::drawMap(*_map);
         
         if (_visibleVectorLight)
@@ -95,10 +90,10 @@ void GameTerrain::initDraw()
 
 void GameTerrain::initCallback()
 {
-	this->setCallback(EventCallback::TAP_PINCH, UiFunction(rotateCamera));
-	this->setCallback(EventCallback::BUTTON_UP, UiFunction(pressButton));
-	this->setCallback(EventCallback::BUTTON_PINCH, UiFunction(pressButtonPinch));
-	this->setCallback(EventCallback::BUTTON_DOWN, UiFunction(pressButtonDown));
+	this->setCallback(EventCallback::TAP_PINCH, Function(rotateCamera));
+	this->setCallback(EventCallback::BUTTON_UP, Function(pressButton));
+	this->setCallback(EventCallback::BUTTON_PINCH, Function(pressButtonPinch));
+	this->setCallback(EventCallback::BUTTON_DOWN, Function(pressButtonDown));
 	
 	Callback::_hintObject = this;
 }

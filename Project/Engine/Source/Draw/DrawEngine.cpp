@@ -166,7 +166,7 @@ void DrawEngine::drawMapPhysic(Map& map)
 
 	if (!_textureTemp)
 	{
-		_textureTemp = new Texture("Textures/Simple_Metal.jpg", true);
+		_textureTemp = new Texture("Textures/Greed/Greed_00.png", true);
 	}
 
 	prepareDraw(true);

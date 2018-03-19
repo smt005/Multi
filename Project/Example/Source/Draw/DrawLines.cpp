@@ -16,41 +16,11 @@
 #include "glfw3.h"
 #endif
 
-#ifdef WIN32
-#include <fstream>
-#include <iostream>
-#include <stdlib.h>
-#endif
-
 #include <string>
 using namespace std;
 
 DrawLines::DrawLines()
 {
-#ifdef WIN32
-	std::ofstream _WRITE_LOG("Log.txt");
-#endif
-
-	/*{
-		float v = help::random(0.0f, 10.0f);
-		int i = 0;
-	}
-
-	{
-		float v = help::random(-1.0f, 1.0f);
-		int i = 0;
-	}
-
-	{
-		float v = help::random(-2.0f, -1.0f);
-		int i = 0;
-	}
-
-	{
-		float v = help::random(1.0f, 10.0f);
-		int i = 0;
-	}*/
-
     init();
 }
 
@@ -85,8 +55,8 @@ void DrawLines::initDraw()
 
 void DrawLines::initCallback()
 {
-    this->setCallback(EventCallback::TAP_DOUBLE, UiFunction(closeGame));
-    this->setCallback(EventCallback::TAP_PINCH, UiFunction(rotateCamera));
+    this->setCallback(EventCallback::TAP_DOUBLE, Function(closeGame));
+    this->setCallback(EventCallback::TAP_PINCH, Function(rotateCamera));
     
     Callback::_hintObject = this;
 }

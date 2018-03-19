@@ -18,10 +18,10 @@ public:
 	GameTerrain();
 	~GameTerrain();
 
-	void init();
-	void save();
-	void tact();
-	void draw();
+	void init() override;
+	void save() override;
+	void tact() override;
+	void draw() override;
 
 	void initMap();
 	void initDraw();

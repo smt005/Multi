@@ -21,14 +21,9 @@
 
 DrawLoadOBJ::DrawLoadOBJ()
 {
-#ifdef BUILD_OSX
-    _status = Shader::getShaderProgram(_program, "Shaders/OSX/Texture.vert", "Shaders/OSX/Texture.frag");
-#else
     _status = Shader::getShaderProgram(_program, "Shaders/Texture.vert", "Shaders/Texture.frag");
-#endif
 	
 	_countIndex = initVBO();
-	//getGridTextureId();
 	getLoadTextureId();
 
 	_time = 0;
@@ -201,7 +196,6 @@ int DrawLoadOBJ::initModelVBO()
 
 	Shape mesh;
 	mesh.load("Models/Glider.obj");
-	//mesh.check();
 
 	glGenBuffers(3, _buffer);
 

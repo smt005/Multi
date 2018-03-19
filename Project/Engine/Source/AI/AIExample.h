@@ -15,7 +15,7 @@ private:
 public:
 	AIExample(Glider &glider);
 
-	void action();
+	void action() override;
 
 	static void findTarget(Map& map, const char* nameTarget);
 };

@@ -14,11 +14,7 @@
 
 DrawGreed::DrawGreed()
 {
-#ifdef BUILD_OSX
-    Shader::getShaderProgram(_program, "Shaders/OSX/LineMatrix.vert", "Shaders/OSX/LineMatrix.frag");
-#else
     Shader::getShaderProgram(_program, "Shaders/LineMatrix.vert", "Shaders/LineMatrix.frag");
-#endif
 	
 	if (!_program) return;
 

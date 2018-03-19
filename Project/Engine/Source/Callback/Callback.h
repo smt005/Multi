@@ -24,7 +24,7 @@
 #define VK_DOWN		40
 
 #define CallbackFunction std::function<bool(void *data)>
-#define UiFunction(metod) [this](void *data) { return this->metod(data); }
+#define Function(metod) [this](void *data) { return this->metod(data); }
 
 enum EventCallback
 {

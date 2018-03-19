@@ -42,5 +42,4 @@ private:
 	static bool createEGLSurface();
 	static bool setupEGLContext();
 	static bool testEGLError(const char* functionLastCalled);
-	static void releaseEGLState();
 };

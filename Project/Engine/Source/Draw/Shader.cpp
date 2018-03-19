@@ -51,6 +51,8 @@ bool Shader::getShaderProgram(unsigned int& program, const char* vertexLink, con
         
         #ifdef BUILD_OSX
                 printf("Shader compiled fragment ERROR: %s", infoLog);
+		#elif BUILD_WIN_GLES
+			_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, "Shader compiled fragment ERROR: %s\n", infoLog);
         #endif
         
 		delete[] infoLog;
@@ -80,7 +82,9 @@ bool Shader::getShaderProgram(unsigned int& program, const char* vertexLink, con
 		glGetShaderInfoLog(_vertexShader, infoLogLength, &charactersWritten, infoLog);
 
         #ifdef BUILD_OSX
-                printf("Shader compiled vertex ERROR: %s", infoLog);
+               printf("Shader compiled vertex ERROR: %s", infoLog);
+		#elif BUILD_WIN_GLES
+			_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, "Shader compiled vertex ERROR: %s\n", infoLog);
         #endif
 
 		delete[] infoLog;
@@ -106,18 +110,13 @@ bool Shader::getShaderProgram(unsigned int& program, const char* vertexLink, con
 
         #ifdef BUILD_OSX
                 printf("Shader linked ERROR: %s", infoLog);
+		#elif BUILD_WIN_GLES
+			_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, "Shader linked ERROR: %s \n", infoLog);
         #endif
 
 		delete[] infoLog;
 		return false;
 	}
-
-	glUseProgram(_shaderProgram);
-
-	/*if (!testGLError(nativeWindow, "glUseProgram"))
-	{
-		return false;
-	}*/
 
 	program = _shaderProgram;
 	return true;
