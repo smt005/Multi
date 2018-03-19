@@ -32,7 +32,6 @@ void GameTerrain::save()
 
 void GameTerrain::tact()
 {
-    //_angleMap += 0.01;
 	_map->action();
 	Physics::update();
 }

@@ -43,8 +43,7 @@ foreach(DIR ${PLATFORM_SOURCE_DIR})
 
 endforeach(DIR)
 
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 add_library(${PLATFORM_NAME_LIB} STATIC ${ALL_PLATFORM_HEADERS} ${ALL_PLATFORM_SOURCES})
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
 message(" END generatte ${PLATFORM_NAME_LIB}")

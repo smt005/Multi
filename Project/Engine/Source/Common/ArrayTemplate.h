@@ -9,7 +9,7 @@ template <class ArrayT>
 class ArrayTemplate
 {
 private:
-	unsigned int _increaseCapasity = 10;
+	unsigned int _increaseCapasity = 100;
 	unsigned int _capasity = 0;
 	unsigned int _count = 0;
 	ArrayT **_array = 0;

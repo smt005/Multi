@@ -5,7 +5,7 @@
 
 #define CALLBACK_COUNT_KEY 1024
 
-#if define BUILD_OSX
+#if defined BUILD_OSX
     #define VK_ESCAPE   256
     #define VK_SHIFT    340
     #define VK_CONTROL  347

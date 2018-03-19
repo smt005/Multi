@@ -251,9 +251,8 @@ elseif(${BUILD_PALTFORM} STREQUAL "WIN_GLFW")
 
 	message("add_executable WIN_GLFW")
 elseif (${BUILD_PALTFORM} STREQUAL "OSX")
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 	add_executable(${PROJECT_NAME} MACOSX_BUNDLE  ${ALL_HEADERS} ${ALL_SOURCES} ${ALL_RESOURCES} )
-	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
 	message("add_executable no OSX")
 endif()
