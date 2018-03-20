@@ -3,6 +3,8 @@
 #include "Shader.h"
 #include "CameraGLM.h"
 #include "Common/IncludesMatem.h"
+#include "../Platform/Source/FilesManager.h"
+
 using namespace glm;
 
 using namespace std;
@@ -17,7 +19,7 @@ void TextDrawManager::init(TextDrawContainer& textDraw)
 {
     if (!_state)
     {
-        Shader::getShaderProgram(_program, "Shaders/Text/Text.vert", "Shaders/Text/Text.frag");
+        _state = Shader::getShaderProgram(_program, "Shaders/Text/Text.vert", "Shaders/Text/Text.frag");
         _state = initFont("Fonts/Futured.ttf");
     }
     
@@ -39,7 +41,10 @@ void TextDrawManager::clean()
 
 bool TextDrawManager::initFont(char* filePath)
 {
-    FILE* fp = fopen(filePath, "rb");
+    char* fileNameWithDir = FilesManager::getFullPath(filePath);
+    FILE* fp = fopen(fileNameWithDir, "r");
+    delete [] fileNameWithDir;
+    
     if (!fp) return false;
     
     fseek(fp, 0, SEEK_END);
@@ -51,10 +56,18 @@ bool TextDrawManager::initFont(char* filePath)
     fclose(fp);
     
     FT_Error err = FT_Init_FreeType(&_lib);
-    if (err)  return false;
+    if (err)
+    {
+        printf("TextDrawManager::initFont FT_Init_FreeType ERROR: %d", err);
+        return false;
+    }
     
     err = FT_New_Memory_Face(_lib, (const FT_Byte*)_fd, fs, 0, &_face);
-    if (err) return false;
+    if (err)
+    {
+        printf("TextDrawManager::initFont FT_New_Memory_Face ERROR: %d", err);
+        return false;
+    }
     
     return true;
 }
@@ -278,7 +291,7 @@ void TextDrawContainer::drawOnScreen()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     glUseProgram(TextDrawManager::_program);
-    float scale = 0.5;
+    float scale = 0.25;
     float k = (float)_height / (float)_width;
     float width = 1.0f * scale;
     float height = 1.0f * scale* k;
@@ -306,6 +319,7 @@ void TextDrawContainer::drawOnScreen()
     };
     
     mat4x4 matrix(1.0f);
+    matrix = glm::scale(matrix, vec3(0.975, 0.975, 0.975));
     
     unsigned int a_position = glGetAttribLocation(TextDrawManager::_program, "a_position");
     unsigned int a_texCoord = glGetAttribLocation(TextDrawManager::_program, "a_texCoord");

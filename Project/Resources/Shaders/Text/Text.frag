@@ -1,4 +1,6 @@
-precision mediump float;
+#if defined BUILD_WIN_GLES || defined BUILD_WIN_GLFW
+    precision mediump float;
+#endif
 
 uniform vec4 vColor;
 varying vec2 v_texCoord;

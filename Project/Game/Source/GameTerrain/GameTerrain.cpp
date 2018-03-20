@@ -1,7 +1,6 @@
 #include "GameTerrain.h"
 #include "Application.h"
 #include "FilesManager.h"
-
 #include "Draw/DrawEngine.h"
 #include "Draw/CameraGLM.h"
 #include "Draw/DrawText.h"
@@ -9,6 +8,8 @@
 #include "Object/Object.h"
 #include "Common/Help.h"
 #include "Common/IncludesMatem.h"
+
+#include <ctime>
 
 GameTerrain::GameTerrain()
 {
@@ -42,7 +43,7 @@ void GameTerrain::draw()
 {
 	DrawEngine::prepareDraw(true);
 
-	/*if (!_visiblePhysic)
+	if (!_visiblePhysic)
 	{
 		DrawEngine::drawMap(*_map);
         
@@ -67,22 +68,9 @@ void GameTerrain::draw()
 	else
 	{
 		DrawEngine::drawMapPhysic(*_map);
-	}*/
+	}
     
-    if (!_text)
-    {
-        _text = new TextDrawContainer();
-    }
-    
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_BLEND);
-    
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    
-    _text->set("text", 50);
-    _text->drawOnScreen();
+    showFPS();
 }
 
 void GameTerrain::initMap()
@@ -113,6 +101,43 @@ void GameTerrain::initCallback()
 	this->setCallback(EventCallback::BUTTON_DOWN, UiFunction(pressButtonDown));
 	
 	Callback::_hintObject = this;
+}
+
+void GameTerrain::showFPS()
+{
+    if (!_text)
+    {
+        _text = new TextDrawContainer();
+    }
+    
+    int currentTime = std::clock();
+    int passedTime = currentTime - _lastTime;
+    _lastTime = currentTime;
+    
+    float passedTimedSec = static_cast<float>(passedTime) / 1000000.0f;
+    float fps = 1.0f / passedTimedSec;
+    
+    _fps += fps;
+    ++_countTime;
+    
+    if (_countTime > 10)
+    {
+        _fps /= static_cast<float>(_countTime);
+        _countTime = 0;
+        std::string fpsText = "FPS: " + std::to_string(static_cast<int>(_fps));
+        _text->set(fpsText, 25);
+    }
+    
+    {
+        glDisable(GL_DEPTH_TEST);
+        glDisable(GL_CULL_FACE);
+        glDisable(GL_BLEND);
+        
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        
+        _text->drawOnScreen();
+    }
 }
 
 bool GameTerrain::rotateCamera(void *data)

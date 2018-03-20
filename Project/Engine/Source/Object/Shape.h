@@ -9,9 +9,6 @@ using namespace std;
 #define SHAPE_VERTEX_POS_SIZE	3
 #define SHAPE_VERTEX_TEX_SIZE   2
 
-#define SHAPE_VERTEX_POS_INDX		0
-#define SHAPE_VERTEX_TEX_POS_INDX	1
-
 class btCollisionShape;
 class btBvhTriangleMeshShape;
 

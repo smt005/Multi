@@ -16,6 +16,10 @@ private:
     bool _visibleVectorLight = false;
     TextDrawContainer* _text;
     
+    int _countTime = 0;
+    int _lastTime;
+    float _fps = 0;
+    
 public:
 	GameTerrain();
 	~GameTerrain();
@@ -30,6 +34,8 @@ public:
 	void initCallback();
 
 private:
+    void showFPS();
+    
 	bool rotateCamera(void *data);
 	bool pressButton(void *data);
 	bool pressButtonPinch(void *data);
