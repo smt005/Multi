@@ -106,6 +106,8 @@ struct BlockTemporary
 
 	~BlockTemporary()
 	{
+        delete[] _floatArray;
+        delete[] _intArray;
 		delete[] _charLine;
 	}
 
@@ -239,7 +241,7 @@ struct BlockTemporary
 				++iIndexNew;
 			}
 		}
-
+        
 		mesh._countIndex = iIndexNew;
 		mesh._aIndex = aIndexNew;
 
