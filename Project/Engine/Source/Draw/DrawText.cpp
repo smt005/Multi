@@ -156,8 +156,12 @@ int TextDrawManager::getTexture(unsigned char* imageFont, int width, int height)
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
     
+#ifdef BUILD_OSX
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, imageFont);
-    
+#elif BUILD_WIN_GLES
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RED_BITS, width, height, 0, GL_RED_BITS, GL_UNSIGNED_BYTE, imageFont);
+#endif
+
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     
