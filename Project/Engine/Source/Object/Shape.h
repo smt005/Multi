@@ -29,7 +29,7 @@ public:
 	unsigned int _buffer[4];
 
 public:
-	~Mesh();
+	virtual ~Mesh();
 	void initVBO();
 };
 
@@ -43,7 +43,7 @@ public:
 	btBvhTriangleMeshShape* _triangleMeshShape = nullptr;
 
 public:
-	~MeshPhysic();
+	virtual ~MeshPhysic();
 };
 
 class Shape: public Mesh, public ArrayClass <Shape>
@@ -52,8 +52,8 @@ private:
 	MeshPhysic* _physic = nullptr;
 
 public:
-	~Shape();
-
+	virtual ~Shape();
+    
 	void create(const string &name);
 	void load(const string& name);
 

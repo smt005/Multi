@@ -21,7 +21,7 @@ public:
 	ArrayTemplate <Glider> _gliders;
 
 	Map();
-	~Map();
+	virtual ~Map();
 
 	const float& getArea() { return _area; };
 
@@ -31,7 +31,6 @@ public:
 	void getDataJson(json& dataJson);
 	void action();
 
-	//Object& addObjectBoxToPos(const string& nameModel, int& id, const int& type = 0, const glm::vec3& pos = glm::vec3(0.0, 0.0, 0.0));
 	Object& addObjectToPos(const string& nameModel, const PhysicType& type = PhysicType::NONE, const glm::vec3& pos = glm::vec3(0.0, 0.0, 0.0));
 	Object& addObject(const string& nameModel, const PhysicType& type = PhysicType::NONE, const glm::mat4x4& mat = glm::mat4x4(1.0));
 };

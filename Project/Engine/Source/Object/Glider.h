@@ -6,7 +6,7 @@ class AIInterface;
 
 struct GliderTemplate
 {
-	// Временно один экземпляр
+	// В
 	static GliderTemplate _template;
 
 	float _minHeight = 0.9f;

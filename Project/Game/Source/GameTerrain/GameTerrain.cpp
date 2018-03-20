@@ -6,6 +6,8 @@
 #include "Draw/CameraGLM.h"
 #include "Object/Map.h"
 #include "Object/Object.h"
+#include "Object/Model.h"
+#include "Object/Shape.h"
 #include "Common/Help.h"
 #include "Common/IncludesMatem.h"
 

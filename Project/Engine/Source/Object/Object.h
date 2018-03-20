@@ -34,7 +34,7 @@ protected:
 public:
 	Object();
 	Object(const string &name, const string &modelName, PhysicType physicType = PhysicType::NONE, const vec3 &pos = vec3(0.0f), const json &data = json::basic_json());
-	~Object();
+	virtual ~Object();
 
 	void setName(const string& name) { _name = name; };
 

@@ -11,7 +11,7 @@ class ArrayClass
 protected:
 	string _name;
 
-public:
+public:    
 	const string& name() { return _name; }
 	void setName(const string &name) { _name = name; }
 	virtual void create(const string &name);

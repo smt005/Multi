@@ -15,9 +15,8 @@ private:
 	ArrayT **_array = 0;
 
 public:
-
 	ArrayTemplate() {};
-	~ArrayTemplate() { clean(); };
+	~ArrayTemplate() { };
 
 	unsigned int count() { return _count; };
 

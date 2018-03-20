@@ -6,7 +6,7 @@ public:
 	bool _status;
 
 	Draw();
-	~Draw();
+	virtual ~Draw();
 
 	virtual void draw(bool clear = true);
 
