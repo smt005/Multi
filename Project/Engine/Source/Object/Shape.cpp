@@ -43,6 +43,26 @@ Mesh::~Mesh()
 		delete[] _aIndex;
 		_aIndex = nullptr;
 	}
+    
+    if (_buffer[0])
+    {
+        glDeleteBuffers(1, &_buffer[0]);
+    }
+    
+    if (_buffer[1])
+    {
+        glDeleteBuffers(1, &_buffer[1]);
+    }
+    
+    if (_buffer[2])
+    {
+        glDeleteBuffers(1, &_buffer[2]);
+    }
+    
+    if (_buffer[3])
+    {
+        glDeleteBuffers(1, &_buffer[3]);
+    }
 }
 
 void Mesh::initVBO()
