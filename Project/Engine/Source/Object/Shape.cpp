@@ -303,18 +303,19 @@ Shape::~Shape()
 	}
 }
 
-void Shape::create(const string &name)
+bool Shape::create(const string &name)
 {
-	load(_name);
+	_name = name;
+	return load(_name);
 }
 
-void Shape::load(const string& name)
+bool Shape::load(const string& name)
 {
 	char* data = FilesManager::loadTextFile(name.c_str());
 
 	if (!data)
 	{
-		return;
+		return false;
 	}
 
 	int len = strlen(data);
@@ -443,6 +444,8 @@ void Shape::load(const string& name)
 			BlockTemporary::getMesh(_physic->_meshes[i], 1, &indexPhysicTemporary[i], vertexTemporary, normalTemporary, textureTemporary);
 		}
 	}
+
+	return true;
 }
 
 void Shape::setScale(float* scale)

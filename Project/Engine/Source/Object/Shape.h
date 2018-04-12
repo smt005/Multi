@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Common/ArrayClass.h"
+#include "Common/DataClass.h"
 #include "Common/IncludesMatem.h"
 #include <string>
 
@@ -11,6 +11,8 @@ using namespace std;
 
 class btCollisionShape;
 class btBvhTriangleMeshShape;
+class Shape;
+typedef shared_ptr<Shape> ShapePtr;
 
 struct MeshTemporary;
 
@@ -46,7 +48,7 @@ public:
 	virtual ~MeshPhysic();
 };
 
-class Shape: public Mesh, public ArrayClass <Shape>
+class Shape: public Mesh, public DataClassT<Shape>
 {
 private:
 	MeshPhysic* _physic = nullptr;
@@ -54,8 +56,8 @@ private:
 public:
 	virtual ~Shape();
     
-	void create(const string &name);
-	void load(const string& name);
+	bool create(const string &name) override;
+	bool load(const string& name);
 
 	MeshPhysic* getPhysic() { return _physic; };
 	void setScale(float* scale);

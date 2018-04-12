@@ -8,18 +8,14 @@
 Shape& Model::getShape()
 {
 	if (_shape) return *_shape;
-
-	_shape = &Shape::getByName(_name);
-
+	_shape = Shape::getByName(_name);
 	return *_shape;
 }
 
 Mesh& Model::getMesh()
 {
 	if (_shape) return *_shape;
-
-	_shape = &Shape::getByName(_name);
-
+	_shape = Shape::getByName(_name);
 	return *_shape;
 }
 
@@ -89,7 +85,7 @@ void Model::create(const string &newName)
 
 	if (!hasScalling)
 	{
-		_shape = &Shape::getByName(nameShape);
+		_shape = Shape::getByName(nameShape);
 	}
 	else
 	{
@@ -97,11 +93,12 @@ void Model::create(const string &newName)
 
 		if (Shape::hasByName(nameWithSuffixScale))
 		{
-			_shape = &Shape::getByName(nameShape);
+			_shape = Shape::getByName(nameShape);
 		}
 		else
 		{
-			_shape = &Shape::getByName(nameShape);
+			_shape = Shape::getByName(nameShape);
+
 			_shape->setScale(_scale);
 			_shape->setName(nameWithSuffixScale);
 		}

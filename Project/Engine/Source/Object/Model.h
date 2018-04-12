@@ -13,7 +13,7 @@ using json = nlohmann::json;
 class Model : public ArrayClass <Model>
 {
 private:
-	Shape* _shape;
+	ShapePtr _shape;
 	Texture *_texture;
 	float _scale[3];
 
