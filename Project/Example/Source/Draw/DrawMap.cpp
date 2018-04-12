@@ -38,10 +38,10 @@ void DrawMap::init()
     status *= Shader::getShaderProgram(_program, "Shaders/Base.vert", "Shaders/Base.frag");
 	_status = status;
 
-	CameraGLM::current().setDefault();
-	CameraGLM::current().setLookAt(glm::vec3(3.0f, 1.5f, 3.0f), glm::vec3(.5f, .25f, .0f));
-	CameraGLM::current().setSpeed(0.1f);
-	CameraGLM::current().setCalcFrustum(false);
+	CameraGLM::current.setDefault();
+	CameraGLM::current.setLookAt(glm::vec3(3.0f, 1.5f, 3.0f), glm::vec3(.5f, .25f, .0f));
+	CameraGLM::current.setSpeed(0.1f);
+	CameraGLM::current.setCalcFrustum(false);
 
 	this->setCallback(EventCallback::TAP_DOUBLE, Function(closeGame));
 	this->setCallback(EventCallback::TAP_PINCH, Function(rotateCamera));
@@ -57,7 +57,7 @@ bool DrawMap::closeGame(void *data)
 
 bool DrawMap::rotateCamera(void *data)
 {
-	CameraGLM::current().rotate(Callback::_vector);
+	CameraGLM::current.rotate(Callback::_vector);
 	return true;
 }
 
@@ -91,7 +91,7 @@ void DrawMap::draw(bool clear)
 	prepareDraw(clear);
 
 	GLuint u_matProjectionView = glGetUniformLocation(_program, "u_matProjectionView");
-	glUniformMatrix4fv(u_matProjectionView, 1, GL_FALSE, CameraGLM::current().matPV());
+	glUniformMatrix4fv(u_matProjectionView, 1, GL_FALSE, CameraGLM::current.matPV());
 
 	/*ArrayTemplate <Object> &objects = Map::getByName("Map")->_objects;
 

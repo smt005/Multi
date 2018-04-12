@@ -76,11 +76,10 @@ void GameEvolutionTest::initDraw()
 	DrawEngine::setBackgroundColor(0.3f, 0.6f, 0.9f, 1.0f);
 	DrawEngine::initDrawMap();
 
-	_camera = &CameraGLM::getByName("First");
-	_camera->setDefault();
-	_camera->setLookAt(glm::vec3(-50.0f, 50.0f, 50.0f), glm::vec3(0.5f, 0.5f, 1.0f));
-	_camera->setSpeed(0.1f);
-	_camera->setCalcFrustum(false);
+	CameraGLM::current.setDefault();
+	CameraGLM::current.setLookAt(glm::vec3(-50.0f, 50.0f, 50.0f), glm::vec3(0.5f, 0.5f, 1.0f));
+	CameraGLM::current.setSpeed(0.1f);
+	CameraGLM::current.setCalcFrustum(false);
 }
 
 void GameEvolutionTest::initCallback()
@@ -114,7 +113,7 @@ bool GameEvolutionTest::closeGame(void *data)
 
 bool GameEvolutionTest::rotateCamera(void *data)
 {
-	CameraGLM::current().rotate(Callback::_vector);
+	CameraGLM::current.rotate(Callback::_vector);
 	return true;
 }
 

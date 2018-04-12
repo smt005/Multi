@@ -14,7 +14,7 @@ using namespace glm;
 #define CAMERA_HORIZONT			7
 #define CAMERA_BACK_HORIZONT	8
 
-class CameraGLM: public ArrayClass <CameraGLM>
+class CameraGLM
 {
 private:
 	mat4x4 _matProject;
@@ -75,7 +75,7 @@ public:
 	
 	// STATIC
 	static mat4x4 _matPVM;
-	static CameraGLM *_currentCamera;
-	static CameraGLM& current();
+	static CameraGLM current;
+	static CameraGLM& setCurrent(CameraGLM& camera);
 
 };

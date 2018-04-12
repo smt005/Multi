@@ -327,14 +327,10 @@ void CameraGLM::rotate(const vec2 &angles)
 #pragma mark STATIC
 
 mat4x4 CameraGLM::_matPVM;
-CameraGLM *CameraGLM::_currentCamera = 0;
+CameraGLM CameraGLM::current;
 
-CameraGLM& CameraGLM::current()
+CameraGLM& CameraGLM::setCurrent(CameraGLM& camera)
 {
-	if (!_currentCamera)
-	{
-		_currentCamera = &getByIndex(0);
-	}
-
-	return *_currentCamera;
+	current = camera;
+	return current;
 }

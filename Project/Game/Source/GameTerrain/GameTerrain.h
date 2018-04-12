@@ -13,8 +13,7 @@ class CameraGLM;
 class GameTerrain : public Game, public Callback
 {
 private:
-	CameraGLM *_camera = nullptr;
-	MapPtr _map = nullptr;
+	MapPtr _map;
 	bool _visiblePhysic = false;
     bool _visibleVectorLight = false;
     

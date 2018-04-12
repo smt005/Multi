@@ -69,7 +69,7 @@ bool DrawLines::closeGame(void *data)
 
 bool DrawLines::rotateCamera(void *data)
 {
-    CameraGLM::current().rotate(Callback::_vector);
+    CameraGLM::current.rotate(Callback::_vector);
     return true;
 }
 

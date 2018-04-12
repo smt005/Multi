@@ -14,7 +14,6 @@ typedef std::shared_ptr<Map> MapPtr;
 class GameEvolutionTest: public Game, public Callback
 {
 private:
-	CameraGLM *_camera = nullptr;
 	MapPtr _map = nullptr;
 	double _timerTarget = 0.0;
 	int _idShape = 0;
