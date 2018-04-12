@@ -22,16 +22,14 @@ Mesh& Model::getMesh()
 Texture& Model::texture()
 {
 	if (_texture) return *_texture;
-
-	_texture = &Texture::getByIndex(0);
+	_texture = Texture::getByName(_name);
 	return *_texture;
 }
 
 const unsigned int& Model::textureId()
 {
 	if (_texture) return _texture->id();
-
-	_texture = &Texture::getByIndex(0);
+	_texture = Texture::getByName(_name);
 	return _texture->id();
 }
 
@@ -43,7 +41,7 @@ void Model::create(const string &newName)
 	if (dataModel.empty()) return;
 
 	const string &nameShape = dataModel["shape"].is_string() ? dataModel["shape"] : FILE_NAME_SHAPE_FILE;
-	const string &texture = dataModel["texture"].is_string() ? dataModel["texture"] : FILE_NAME_TEXTURE_FILE;
+	const string &nameTexture = dataModel["texture"].is_string() ? dataModel["texture"] : FILE_NAME_TEXTURE_FILE;
 
 	bool hasScalling = false;
 	string suffixScale;
@@ -104,7 +102,7 @@ void Model::create(const string &newName)
 		}
 	}
 	
-	_texture = &Texture::getByName(texture);
+	_texture = Texture::getByName(nameTexture);
 }
 
 // STATIC

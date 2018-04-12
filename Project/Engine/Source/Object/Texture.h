@@ -1,11 +1,14 @@
 #pragma once
 
 #include <string>
-#include "Common/ArrayClass.h"
+#include "Common/DataClass.h"
 
 using namespace std;
 
-class Texture: public ArrayClass <Texture>
+class Texture;
+typedef std::shared_ptr<Texture> TexturePtr;
+
+class Texture: public DataClass <Texture>
 {
 private:
 	string _fileName;

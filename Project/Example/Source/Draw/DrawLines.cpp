@@ -37,7 +37,7 @@ void DrawLines::init()
     initDraw();
     initCallback();
     
-    _map = &Map::getByName("MapGameEvolutionTest");
+    _map = Map::getByName("MapGameEvolutionTest");
 }
 
 void DrawLines::initDraw()

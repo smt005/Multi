@@ -69,7 +69,7 @@ void GameMini::draw()
 
 void GameMini::initMap()
 {
-	_map = &Map::getByName("Map");
+	_map = Map::getByName("Map");
 	AIExample::findTarget(*_map, "Target");
 }
 

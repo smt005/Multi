@@ -4,14 +4,17 @@
 #include "Engine/Source/Callback/Callback.h"
 #include "Classes/RandomLines.h"
 
+#include <memory>
+
 class CameraGLM;
 class Map;
+typedef std::shared_ptr<Map> MapPtr;
 
 class DrawLines : public Draw, public Callback
 {
 private:
     CameraGLM *_camera = nullptr;
-    Map *_map = nullptr;
+    MapPtr _map = nullptr;
 	RandomLines _lines;
 
 public:

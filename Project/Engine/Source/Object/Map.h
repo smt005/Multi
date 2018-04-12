@@ -1,17 +1,21 @@
 #pragma once
 
 #include "Physics/Physics.h"
-#include "Common/ArrayClass.h"
+#include "Common/DataClass.h"
 #include "Common/ArrayTemplate.h"
 #include "Common/IncludesMatem.h"
 
 #include "Common/json.h"
 using json = nlohmann::json;
 
+#include <memory>
+
 class Object;
 class Glider;
+class Map;
+typedef std::shared_ptr<Map> MapPtr;
 
-class Map : public ArrayClass <Map>
+class Map : public DataClass <Map>
 {
 private:
 	float _area = 10.0f;
@@ -25,7 +29,7 @@ public:
 
 	const float& getArea() { return _area; };
 
-	void create(const string &newName);
+	bool create(const string &newName);
 	void setPhysic();
 
 	void getDataJson(json& dataJson);

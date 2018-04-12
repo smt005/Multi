@@ -10,11 +10,14 @@ using namespace std;
 
 using json = nlohmann::json;
 
+class Model;
+typedef std::shared_ptr<Model> ModelPtr;
+
 class Model : public ArrayClass <Model>
 {
 private:
 	ShapePtr _shape;
-	Texture *_texture;
+	TexturePtr _texture;
 	float _scale[3];
 
 public:

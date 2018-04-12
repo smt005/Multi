@@ -12,7 +12,7 @@ using namespace std;
 class btCollisionShape;
 class btBvhTriangleMeshShape;
 class Shape;
-typedef shared_ptr<Shape> ShapePtr;
+typedef std::shared_ptr<Shape> ShapePtr;
 
 struct MeshTemporary;
 

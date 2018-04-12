@@ -3,14 +3,18 @@
 #include "Game.h"
 #include "Callback/Callback.h"
 
-class Map;
+#include <memory>
+
 class CameraGLM;
+
+class Map;
+typedef std::shared_ptr<Map> MapPtr;
 
 class GameMini: public Game, public Callback
 {
 private:
-	Map *_map = nullptr;
 	CameraGLM *_camera = nullptr;
+	MapPtr _map = nullptr;
 	double _timerTarget = 0.0;
 
 public:

@@ -16,12 +16,18 @@ Map::~Map()
 
 }
 
-void Map::create(const string &newName)
+bool Map::create(const string &newName)
 {
 	setName(newName);
 
 	string fileName = "Map/" + name() + ".json";
-	string dataString = FilesManager::loadTextFile(fileName.c_str());;
+	string dataString = FilesManager::loadTextFile(fileName.c_str());
+
+	if (dataString.empty())
+	{
+		return false;
+	}
+
 	json data = json::parse(dataString.c_str());
 
 	_area = data["area"].is_null() ? 10.0f : data["area"].get<float>();
@@ -87,6 +93,8 @@ void Map::create(const string &newName)
 		Glider &object = _gliders.add();
 		object.set(name, modelName, physicType, pos);
 	}
+
+	return true;
 }
 
 void Map::setPhysic()

@@ -93,7 +93,7 @@ void DrawMap::draw(bool clear)
 	GLuint u_matProjectionView = glGetUniformLocation(_program, "u_matProjectionView");
 	glUniformMatrix4fv(u_matProjectionView, 1, GL_FALSE, CameraGLM::current().matPV());
 
-	ArrayTemplate <Object> &objects = Map::getByName("Map")._objects;
+	ArrayTemplate <Object> &objects = Map::getByName("Map")->_objects;
 
 	for (int i = 0; i < objects.count(); ++i)
 	{

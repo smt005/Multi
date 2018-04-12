@@ -4,14 +4,18 @@
 #include "Engine/Source/Physics/Physics.h"
 #include "Callback/Callback.h"
 
-class Map;
+#include <memory>
+
 class CameraGLM;
+
+class Map;
+typedef std::shared_ptr<Map> MapPtr;
 
 class GameEvolutionTest: public Game, public Callback
 {
 private:
-	Map *_map = nullptr;
 	CameraGLM *_camera = nullptr;
+	MapPtr _map = nullptr;
 	double _timerTarget = 0.0;
 	int _idShape = 0;
 	int _countObjects = 0;

@@ -65,7 +65,7 @@ void GameEvolutionTest::draw()
 
 void GameEvolutionTest::initMap()
 {
-	_map = &Map::getByName("MapGameEvolutionTest");
+	_map = Map::getByName("MapGameEvolutionTest");
 	AIExample::findTarget(*_map, "Target");
 }
 

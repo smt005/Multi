@@ -19,27 +19,29 @@ public:
 	virtual ~DataClass() {};
 
 	virtual bool create(const string &name);
+	virtual void setDefault();
 
 	void setName(const string& name) { _name = name; };
 	const string name() { return _name; };
 
 private:
 	static map<string, ObjectPtrT> _map;
-	static ObjectPtrT _defaultPtr;
+	static ObjectT _default;
 
 public:
 	static ObjectPtrT& getByName(const string& name);
 	static bool hasByName(const string& name);
+	static ObjectPtrT& default();
 
 	static void remove(const string& name);
-	static void clear();
+	static void clear(bool onlyUnused = true);
 };
 
 template <class ObjectT>
 map<string, ObjectPtrT> DataClass<ObjectT>::_map;
 
 template <class ObjectT>
-ObjectPtrT DataClass<ObjectT>::_defaultPtr;
+ObjectT DataClass<ObjectT>::_default;
 
 template <class ObjectT>
 bool DataClass<ObjectT>::create(const string &name)
@@ -47,6 +49,12 @@ bool DataClass<ObjectT>::create(const string &name)
 	_name = name;
 	return true;
 };
+
+template <class ObjectT>
+void DataClass<ObjectT>::setDefault()
+{
+	setName("DEFAULT_DATA_CLASS");
+}
 
 template <class ObjectT>
 ObjectPtrT& DataClass<ObjectT>::getByName(const string& name)
@@ -59,19 +67,14 @@ ObjectPtrT& DataClass<ObjectT>::getByName(const string& name)
 	}
 
 	ObjectT* newItem = new ObjectT();
-	if (newItem->create(name))
-	{
-		ObjectPtrT newItemPtr(newItem);
-		return _map[name] = newItemPtr;
-	}
 
-	if (!_defaultPtr)
+	if (!newItem->create(name))
 	{
-		_defaultPtr = make_shared<ObjectT>();
-		_defaultPtr->setName("NONE_NAME");
+		newItem->setDefault();
 	}
-
-	return _defaultPtr;
+	
+	ObjectPtrT newItemPtr(newItem);
+	return _map[name] = newItemPtr;
 }
 
 template <class ObjectT>
@@ -93,7 +96,14 @@ void DataClass<ObjectT>::remove(const string& name)
 }
 
 template <class ObjectT>
-void DataClass<ObjectT>::clear()
+void DataClass<ObjectT>::clear(bool onlyUnused)
 {
-	_map.clear();
+	if (onlyUnused = false)
+	{
+		_map.clear();
+	}
+	else
+	{
+		remove(_map.begin(), _map.end(), [](ObjectPtrT& itemPtr) { return itemPtr.use_count <= 0 ? true : false; });
+	}
 }

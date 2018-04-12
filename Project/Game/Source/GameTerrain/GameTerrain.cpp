@@ -72,7 +72,7 @@ void GameTerrain::draw()
 
 void GameTerrain::initMap()
 {
-	_map = &Map::getByName("MapGameTerrain");
+	_map = Map::getByName("MapGameTerrain");
 	_map->setPhysic();
 }
 
