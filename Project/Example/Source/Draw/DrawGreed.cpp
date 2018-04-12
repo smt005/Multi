@@ -1,7 +1,7 @@
 
 #include "DrawGreed.h"
 #include "Draw/Shader.h"
-#include "Engine/Source/Draw/CameraGLM.h"
+#include "Engine/Source/Draw/Camera.h"
 
 #ifdef BUILD_WIN_GLES
 	#define GL_GLEXT_PROTOTYPES
@@ -91,7 +91,7 @@ void DrawGreed::drawGreed(bool clear)
 
 	prepareDraw();
 
-	glUniformMatrix4fv(_u_matrix, 1, GL_FALSE, CameraGLM::current.matProjectViewFloat());
+	glUniformMatrix4fv(_u_matrix, 1, GL_FALSE, Camera::current.matProjectViewFloat());
 	glUniform1f(_u_pointSize, 8.0f);
 	glUniform4fv(_u_color, 1, _colorBlue);
 

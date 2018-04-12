@@ -4,7 +4,7 @@
 #include "Platform/Source/FilesManager.h"
 #include "Object/Shape.h"
 #include "Object/TextureManager.h"
-#include "Draw/CameraGLM.h"
+#include "Draw/Camera.h"
 
 #ifdef BUILD_WIN_GLES
 	#define GL_GLEXT_PROTOTYPES
@@ -83,7 +83,7 @@ void DrawLoadOBJ::draw(bool clear)
 	glEnableVertexAttribArray(a_texCoord);
 	glVertexAttribPointer(a_texCoord, SHAPE_VERTEX_TEX_SIZE, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
 
-	glUniformMatrix4fv(u_matrix, 1, GL_FALSE, CameraGLM::current.matProjectViewFloat());
+	glUniformMatrix4fv(u_matrix, 1, GL_FALSE, Camera::current.matProjectViewFloat());
 
 	glUniform1i(s_baseMap, 0);
 	glBindTexture(GL_TEXTURE_2D, _textureId);

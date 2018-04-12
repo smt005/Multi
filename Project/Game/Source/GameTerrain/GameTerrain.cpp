@@ -3,7 +3,7 @@
 #include "FilesManager.h"
 
 #include "Draw/DrawEngine.h"
-#include "Draw/CameraGLM.h"
+#include "Draw/Camera.h"
 #include "Object/Map.h"
 #include "Object/Object.h"
 #include "Object/Model.h"
@@ -83,10 +83,10 @@ void GameTerrain::initDraw()
 	DrawEngine::initDrawMap();
 	DrawEngine::initDrawLines();
 
-	CameraGLM::current.setDefault();
-	CameraGLM::current.setLookAt(glm::vec3(-50.0f, -50.0f, 50.0f), glm::vec3(0.5f, 0.5f, 1.0f));
-	CameraGLM::current.setSpeed(0.1f);
-	CameraGLM::current.setCalcFrustum(false);
+	Camera::current.setDefault();
+	Camera::current.setLookAt(glm::vec3(-50.0f, -50.0f, 50.0f), glm::vec3(0.5f, 0.5f, 1.0f));
+	Camera::current.setSpeed(0.1f);
+	Camera::current.setCalcFrustum(false);
 }
 
 void GameTerrain::initCallback()
@@ -101,7 +101,7 @@ void GameTerrain::initCallback()
 
 bool GameTerrain::rotateCamera(void *data)
 {
-	CameraGLM::current.rotate(Callback::_vector);
+	Camera::current.rotate(Callback::_vector);
 	return true;
 }
 
@@ -137,32 +137,32 @@ bool GameTerrain::pressButtonPinch(void *data)
 
 	if (Callback::_key['W'])
 	{
-		CameraGLM::current.move(CAMERA_FORVARD, speedCamera);
+		Camera::current.move(CAMERA_FORVARD, speedCamera);
 	}
 
 	if (Callback::_key['S'])
 	{
-		CameraGLM::current.move(CAMERA_BACK, speedCamera);
+		Camera::current.move(CAMERA_BACK, speedCamera);
 	}
 
 	if (Callback::_key['A'])
 	{
-		CameraGLM::current.move(CAMERA_RIGHT, speedCamera);
+		Camera::current.move(CAMERA_RIGHT, speedCamera);
 	}
 
 	if (Callback::_key['D'])
 	{
-		CameraGLM::current.move(CAMERA_LEFT, speedCamera);
+		Camera::current.move(CAMERA_LEFT, speedCamera);
 	}
 
 	if (Callback::_key['R'])
 	{
-		CameraGLM::current.move(CAMERA_TOP, speedCamera);
+		Camera::current.move(CAMERA_TOP, speedCamera);
 	}
 
 	if (Callback::_key['F'])
 	{
-		CameraGLM::current.move(CAMERA_DOWN, speedCamera);
+		Camera::current.move(CAMERA_DOWN, speedCamera);
 	}
 
 	return true;

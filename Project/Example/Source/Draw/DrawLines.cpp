@@ -2,7 +2,7 @@
 #include "DrawLines.h"
 #include "../Platform/Source/Application.h"
 #include "Draw/Shader.h"
-#include "Draw/CameraGLM.h"
+#include "Draw/Camera.h"
 #include "Draw/DrawEngine.h"
 #include "Object/Shape.h"
 #include "Object/Map.h"
@@ -46,7 +46,7 @@ void DrawLines::initDraw()
     DrawEngine::initDrawMap();
 	DrawEngine::initDrawLines();
     
-    _camera = new CameraGLM();
+    _camera = new Camera();
     _camera->setDefault();
     _camera->setLookAt(glm::vec3(-1.0f, -1.0f, 1.0f), glm::vec3(0.5f, 0.5f, 1.0f));
     _camera->setSpeed(0.1f);
@@ -69,7 +69,7 @@ bool DrawLines::closeGame(void *data)
 
 bool DrawLines::rotateCamera(void *data)
 {
-    CameraGLM::current.rotate(Callback::_vector);
+    Camera::current.rotate(Callback::_vector);
     return true;
 }
 

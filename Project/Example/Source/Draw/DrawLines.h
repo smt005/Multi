@@ -6,14 +6,14 @@
 
 #include <memory>
 
-class CameraGLM;
+class Camera;
 class Map;
 typedef std::shared_ptr<Map> MapPtr;
 
 class DrawLines : public Draw, public Callback
 {
 private:
-    CameraGLM *_camera = nullptr;
+    Camera *_camera = nullptr;
     MapPtr _map = nullptr;
 	RandomLines _lines;
 

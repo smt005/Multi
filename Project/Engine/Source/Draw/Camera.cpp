@@ -1,17 +1,17 @@
 
-#include "CameraGLM.h"
+#include "Camera.h"
 #include "../Platform/Source/Application.h"
 
-CameraGLM::CameraGLM()
+Camera::Camera()
 {
 	setDefault();
 }
 
-CameraGLM::~CameraGLM() { }
+Camera::~Camera() { }
 
 // PRIVATE
 
-inline void CameraGLM::makeMatProjectView()
+inline void Camera::makeMatProjectView()
 {
 	_matProjectView = _matProject * _matView;
 
@@ -21,7 +21,7 @@ inline void CameraGLM::makeMatProjectView()
 	}
 }
 
-void CameraGLM::makeFrustum()
+void Camera::makeFrustum()
 {
 	float *clip = value_ptr(_matProjectView);
 
@@ -70,19 +70,19 @@ void CameraGLM::makeFrustum()
 
 // PUBLIC
 
-void CameraGLM::setDefault()
+void Camera::setDefault()
 {
 	_matProject = perspective(45.0f, App::aspect(), 0.1f, 1000.0f);
 	setLookAt(vec3(25.0f, 25.0f, 25.0f), vec3(0.0f, 0.0f, 0.0f));
 }
 
-const float* CameraGLM::matPVM(const mat4x4 &matModel)
+const float* Camera::matPVM(const mat4x4 &matModel)
 {
 	_matPVM = _matProjectView * matModel;
 	return value_ptr(_matPVM);
 }
 
-float CameraGLM::frustum(const mat4x4 &mat, const float &radius)
+float Camera::frustum(const mat4x4 &mat, const float &radius)
 {
 	float dist = FLT_MAX;
 	if (!_calcFrustum) return dist;
@@ -95,19 +95,19 @@ float CameraGLM::frustum(const mat4x4 &mat, const float &radius)
 	return dist + radius;
 }
 
-void CameraGLM::setOrtho(const float &left, const float &right, const float &bottom, const float &top)
+void Camera::setOrtho(const float &left, const float &right, const float &bottom, const float &top)
 {
 	_matProject = ortho(left, right, bottom, top);
 	makeMatProjectView();
 }
 
-void CameraGLM::setPerspective(const float &fov, const float &aspect, const float &zNear, const float &zFar)
+void Camera::setPerspective(const float &fov, const float &aspect, const float &zNear, const float &zFar)
 {
 	_matProject = perspective(fov, aspect, zNear, zFar);
 	makeMatProjectView();
 }
 
-void CameraGLM::setLookAt(const vec3 &eye, const vec3 &center)
+void Camera::setLookAt(const vec3 &eye, const vec3 &center)
 {
 	if (_fromEye)
 	{
@@ -128,13 +128,13 @@ void CameraGLM::setLookAt(const vec3 &eye, const vec3 &center)
 	makeMatProjectView();
 }
 
-void CameraGLM::setLookAt(const vec3 &pos, const vec3 &vector, const float &dist)
+void Camera::setLookAt(const vec3 &pos, const vec3 &vector, const float &dist)
 {
 	if (_vector != vector || (dist != 0.0f && _dist != dist))
 	{
 		_pos = pos;
 		_vector = vector;
-		
+
 		vec3 eye;
 		vec3 center;
 
@@ -148,7 +148,7 @@ void CameraGLM::setLookAt(const vec3 &pos, const vec3 &vector, const float &dist
 		{
 			center = _pos;
 			if (dist > 0.1f) _dist = dist;
-			eye = _pos + _vector * (- _dist);
+			eye = _pos + _vector * (-_dist);
 		}
 
 		_matView = lookAt(eye, center, vec3(0.0f, 0.0f, 1.0f));
@@ -162,20 +162,20 @@ void CameraGLM::setLookAt(const vec3 &pos, const vec3 &vector, const float &dist
 	}
 }
 
-void CameraGLM::setCalcFrustum(const bool &calcFrustum)
+void Camera::setCalcFrustum(const bool &calcFrustum)
 {
 	_calcFrustum = calcFrustum;
 	if (_calcFrustum) makeFrustum();
 };
 
-void CameraGLM::setFromEye(const bool &fromEye)
+void Camera::setFromEye(const bool &fromEye)
 {
 	if (_fromEye == fromEye) return;
 
 	_fromEye = fromEye;
 }
 
-void CameraGLM::setDist(const float &dist)
+void Camera::setDist(const float &dist)
 {
 	if (_fromEye) return;
 	if (_dist == dist || dist <= 1.0f) return;
@@ -184,12 +184,12 @@ void CameraGLM::setDist(const float &dist)
 
 	vec3 center = _pos;
 	vec3 eye = _pos + _vector * (-_dist);
-	
+
 	_matView = lookAt(eye, center, vec3(0.0f, 0.0f, 1.0f));
 	makeMatProjectView();
 }
 
-void CameraGLM::setVector(const vec3 &vector)
+void Camera::setVector(const vec3 &vector)
 {
 	if (_vector == vector) return;
 	_vector = vector;
@@ -212,7 +212,7 @@ void CameraGLM::setVector(const vec3 &vector)
 	makeMatProjectView();
 }
 
-void CameraGLM::setPos(const vec3 &pos)
+void Camera::setPos(const vec3 &pos)
 {
 	if (_pos == pos) return;
 	_pos = pos;
@@ -235,7 +235,7 @@ void CameraGLM::setPos(const vec3 &pos)
 	makeMatProjectView();
 }
 
-void CameraGLM::move(const int &direct, float speed)
+void Camera::move(const int &direct, float speed)
 {
 	if (speed > 0.0f) _speed = speed;
 	speed = _fromEye ? -_speed : _speed;
@@ -243,47 +243,47 @@ void CameraGLM::move(const int &direct, float speed)
 
 	switch (direct)
 	{
-		case CAMERA_FORVARD:
-			pos -= _vector * speed;
+	case CAMERA_FORVARD:
+		pos -= _vector * speed;
 		break;
 
-		case CAMERA_BACK:
-			pos += _vector * speed;
+	case CAMERA_BACK:
+		pos += _vector * speed;
 		break;
 
-		case CAMERA_LEFT:
-			pos.x -= (_vector.y * speed);
-			pos.y += (_vector.x * speed);
+	case CAMERA_LEFT:
+		pos.x -= (_vector.y * speed);
+		pos.y += (_vector.x * speed);
 		break;
 
-		case CAMERA_RIGHT:
-			pos.x += (_vector.y * speed);
-			pos.y -= (_vector.x * speed);
+	case CAMERA_RIGHT:
+		pos.x += (_vector.y * speed);
+		pos.y -= (_vector.x * speed);
 		break;
 
-		case CAMERA_TOP:
-			pos.z += abs(speed);
+	case CAMERA_TOP:
+		pos.z += abs(speed);
 		break;
 
-		case CAMERA_DOWN:
-			pos.z -= abs(speed);
+	case CAMERA_DOWN:
+		pos.z -= abs(speed);
 		break;
 
-		case CAMERA_HORIZONT:
-			pos.x += (_vector.x * speed);
-			pos.y += (_vector.y * speed);
+	case CAMERA_HORIZONT:
+		pos.x += (_vector.x * speed);
+		pos.y += (_vector.y * speed);
 		break;
 
-		case CAMERA_BACK_HORIZONT:
-			pos.x -= (_vector.x * speed);
-			pos.y -= (_vector.y * speed);
+	case CAMERA_BACK_HORIZONT:
+		pos.x -= (_vector.x * speed);
+		pos.y -= (_vector.y * speed);
 		break;
 	}
 
 	setPos(pos);
 }
 
-void CameraGLM::move(const vec2 &direct)
+void Camera::move(const vec2 &direct)
 {
 	float speed = _fromEye ? -_speed : _speed;
 	vec3 pos = _pos;
@@ -297,7 +297,7 @@ void CameraGLM::move(const vec2 &direct)
 	setPos(pos);
 }
 
-void CameraGLM::rotate(const vec2 &angles)
+void Camera::rotate(const vec2 &angles)
 {
 	vec3 vector = _vector;
 	double angleY = asinf(vector.z);
@@ -311,7 +311,7 @@ void CameraGLM::rotate(const vec2 &angles)
 	angleX = angleX - angles.x * _speedRotate;
 	angleY = angleY + angles.y * _speedRotate;
 
-	if (angleY > (M_PI / 2.0 - 0.25)) angleY = (M_PI / 2.0 - 0.25);
+	if (angleY >(M_PI / 2.0 - 0.25)) angleY = (M_PI / 2.0 - 0.25);
 	if (angleY < -(M_PI / 2.0 - 0.25)) angleY = -(M_PI / 2.0 - 0.25);
 
 	vector.x = sinf(angleX) * cosf(angleY);
@@ -326,10 +326,10 @@ void CameraGLM::rotate(const vec2 &angles)
 
 #pragma mark STATIC
 
-mat4x4 CameraGLM::_matPVM;
-CameraGLM CameraGLM::current;
+mat4x4 Camera::_matPVM;
+Camera Camera::current;
 
-CameraGLM& CameraGLM::setCurrent(CameraGLM& camera)
+Camera& Camera::setCurrent(Camera& camera)
 {
 	current = camera;
 	return current;

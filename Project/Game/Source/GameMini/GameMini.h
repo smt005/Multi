@@ -5,7 +5,7 @@
 
 #include <memory>
 
-class CameraGLM;
+class Camera;
 
 class Map;
 typedef std::shared_ptr<Map> MapPtr;

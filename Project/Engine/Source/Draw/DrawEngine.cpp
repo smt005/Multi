@@ -2,7 +2,7 @@
 #include "DrawEngine.h"
 #include "Application.h"
 #include "Shader.h"
-#include "Draw/CameraGLM.h"
+#include "Draw/Camera.h"
 #include "Object/Map.h"
 #include "Object/Object.h"
 #include "Object/Glider.h"
@@ -134,7 +134,7 @@ void DrawEngine::drawMap(Map& map)
 	glUseProgram(_programBase);
 
 	GLuint u_matProjectionView = glGetUniformLocation(_programBase, "u_matProjectionView");
-	glUniformMatrix4fv(u_matProjectionView, 1, GL_FALSE, CameraGLM::current.matPV());
+	glUniformMatrix4fv(u_matProjectionView, 1, GL_FALSE, Camera::current.matPV());
 
     GLuint u_lightDirection = glGetUniformLocation(_programBase, "u_lightDirection");
     glUniform3fv(u_lightDirection, 1, _lightDirection);
@@ -178,7 +178,7 @@ void DrawEngine::drawMapPhysic(Map& map)
 	glUseProgram(_programBase);
 
 	GLuint u_matProjectionView = glGetUniformLocation(_programBase, "u_matProjectionView");
-	glUniformMatrix4fv(u_matProjectionView, 1, GL_FALSE, CameraGLM::current.matPV());
+	glUniformMatrix4fv(u_matProjectionView, 1, GL_FALSE, Camera::current.matPV());
 
 	GLuint u_matViewModel = glGetUniformLocation(_programBase, "u_matViewModel");
 	
@@ -361,7 +361,7 @@ void DrawEngine::drawLine(float* point0, float* point1, float* color)
 		glLineWidth(2.0f);
 	}
 
-	glUniformMatrix4fv(_u_matrix, 1, GL_FALSE, CameraGLM::current.matProjectViewFloat());
+	glUniformMatrix4fv(_u_matrix, 1, GL_FALSE, Camera::current.matProjectViewFloat());
 	
 	GLfloat line[] = {point0[0], point0[1] , point0[2], point1[0], point1[1] , point1[2]};
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, line);

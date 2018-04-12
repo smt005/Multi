@@ -14,7 +14,7 @@ using namespace glm;
 #define CAMERA_HORIZONT			7
 #define CAMERA_BACK_HORIZONT	8
 
-class CameraGLM
+class Camera
 {
 private:
 	mat4x4 _matProject;
@@ -34,8 +34,8 @@ private:
 	void makeFrustum();
 
 public:
-	CameraGLM();
-	~CameraGLM();
+	Camera();
+	~Camera();
 	void setDefault();
 
 	const mat4x4& matProject() { return _matProject; }
@@ -75,7 +75,7 @@ public:
 	
 	// STATIC
 	static mat4x4 _matPVM;
-	static CameraGLM current;
-	static CameraGLM& setCurrent(CameraGLM& camera);
+	static Camera current;
+	static Camera& setCurrent(Camera& camera);
 
 };

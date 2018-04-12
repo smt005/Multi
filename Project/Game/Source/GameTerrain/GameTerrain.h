@@ -8,7 +8,7 @@
 class Map;
 typedef std::shared_ptr<Map> MapPtr;
 
-class CameraGLM;
+class Camera;
 
 class GameTerrain : public Game, public Callback
 {

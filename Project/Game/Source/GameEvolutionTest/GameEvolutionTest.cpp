@@ -3,7 +3,7 @@
 #include "FilesManager.h"
 
 #include "Draw/DrawEngine.h"
-#include "Draw/CameraGLM.h"
+#include "Draw/Camera.h"
 #include "Object/Map.h"
 #include "AI/AIExample.h"
 
@@ -76,10 +76,10 @@ void GameEvolutionTest::initDraw()
 	DrawEngine::setBackgroundColor(0.3f, 0.6f, 0.9f, 1.0f);
 	DrawEngine::initDrawMap();
 
-	CameraGLM::current.setDefault();
-	CameraGLM::current.setLookAt(glm::vec3(-50.0f, 50.0f, 50.0f), glm::vec3(0.5f, 0.5f, 1.0f));
-	CameraGLM::current.setSpeed(0.1f);
-	CameraGLM::current.setCalcFrustum(false);
+	Camera::current.setDefault();
+	Camera::current.setLookAt(glm::vec3(-50.0f, 50.0f, 50.0f), glm::vec3(0.5f, 0.5f, 1.0f));
+	Camera::current.setSpeed(0.1f);
+	Camera::current.setCalcFrustum(false);
 }
 
 void GameEvolutionTest::initCallback()
@@ -113,7 +113,7 @@ bool GameEvolutionTest::closeGame(void *data)
 
 bool GameEvolutionTest::rotateCamera(void *data)
 {
-	CameraGLM::current.rotate(Callback::_vector);
+	Camera::current.rotate(Callback::_vector);
 	return true;
 }
 
