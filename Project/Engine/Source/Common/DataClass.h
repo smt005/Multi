@@ -31,7 +31,6 @@ private:
 public:
 	static ObjectPtrT& getByName(const string& name);
 	static bool hasByName(const string& name);
-	static ObjectPtrT& default();
 
 	static void remove(const string& name);
 	static void clear(bool onlyUnused = true);

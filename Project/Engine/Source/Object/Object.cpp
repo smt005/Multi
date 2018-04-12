@@ -117,3 +117,23 @@ void Object::action()
 	trans.getOpenGLMatrix(mat);
 	setMatrix(mat);
 }
+
+
+Object* Object::_default = nullptr;
+
+Object& Object::defaultItem()
+{
+	if (!_default)
+	{
+		_default = new Object();
+		_default->setName("DEFAULT_OBJECT");
+	}
+
+	return *_default;
+}
+
+void Object::removeDefault()
+{
+	delete _default;
+	_default = nullptr;
+}

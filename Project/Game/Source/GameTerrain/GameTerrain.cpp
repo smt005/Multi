@@ -49,11 +49,11 @@ void GameTerrain::draw()
         if (_visibleVectorLight)
         {
             DrawEngine::prepareDrawLine();
-            ArrayTemplate <Object>& objects = _map->_objects;
+            vector<Object*>& objects = _map->_objects;
 
-            for (int i = 0; i < objects.count(); ++i)
+            for (auto object : objects)
             {
-                const glm::mat4x4& mat = objects[i].getMatrix();
+                const glm::mat4x4& mat = object->getMatrix();
 
                 float posObject[] = { mat[3][0], mat[3][1] , mat[3][2] };
                 const float* lightDirect = DrawEngine::getLightDirect();

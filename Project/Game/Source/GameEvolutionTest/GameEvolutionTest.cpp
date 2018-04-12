@@ -11,6 +11,8 @@
 #include "Object/Model.h"
 #include "Object/Shape.h"
 
+#include "Common/Help.h"
+
 GameEvolutionTest::GameEvolutionTest()
 {
 }
@@ -48,7 +50,7 @@ void GameEvolutionTest::tact()
 		{
 			glm::mat4x4 matrix = glm::translate(glm::mat4x4(1.0f), randomPos());
 
-			Object& target = _map->_objects.getByName("Target");
+			Object& target = help::find(_map->_objects, "Target");
 			target.setMatrix(matrix);
 		}
 	}

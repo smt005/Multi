@@ -145,11 +145,16 @@ void DrawEngine::drawMap(Map& map)
     GLuint u_ambientColor = glGetUniformLocation(_programBase, "u_ambientColor");
     glUniform4fv(u_ambientColor, 1, _ambientColor);
     
-	ArrayTemplate <Object>& objects = map._objects;
+	/*ArrayTemplate <Object>& objects = map._objects;
 
 	for (int i = 0; i < objects.count(); ++i)
 	{
 		drawObject(objects[i]);
+	}*/
+
+	for (auto object : map._objects)
+	{
+		drawObject(*object);
 	}
 
 	ArrayTemplate <Glider>& gliders = map._gliders;
@@ -177,15 +182,15 @@ void DrawEngine::drawMapPhysic(Map& map)
 
 	GLuint u_matViewModel = glGetUniformLocation(_programBase, "u_matViewModel");
 	
-	ArrayTemplate <Object>& objects = map._objects;
+	vector<Object*>& objects = map._objects;
 
-	for (int i = 0; i < objects.count(); ++i)
+	for (auto object : objects)
 	{
-		MeshPhysic* meshPhysic = objects[i].getModel().getShape().getPhysic();
+		MeshPhysic* meshPhysic = object->getModel().getShape().getPhysic();
 
 		if (meshPhysic)
 		{
-			const float* matrix = objects[i].matrixFloat();
+			const float* matrix = object->matrixFloat();
 			glUniformMatrix4fv(u_matViewModel, 1, GL_FALSE, matrix);
 
 			for (int iP = 0; iP < meshPhysic->_count; ++iP)

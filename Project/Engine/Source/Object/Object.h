@@ -61,4 +61,10 @@ public:
 	virtual void setData(const json &data);
 	virtual void action();
 
+public:
+	static Object* _default;
+
+public:
+	static Object& defaultItem();
+	static void removeDefault();
 };

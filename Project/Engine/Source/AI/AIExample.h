@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AIInterface.h"
+#include <string>
 
 class Map;
 class Glider;
@@ -17,5 +18,5 @@ public:
 
 	void action() override;
 
-	static void findTarget(Map& map, const char* nameTarget);
+	static void findTarget(Map& map, const std::string& nameTarget);
 };

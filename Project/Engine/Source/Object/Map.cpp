@@ -5,6 +5,7 @@
 #include "Model.h"
 #include "Physics/Physics.h"
 #include "../Platform/Source/FilesManager.h"
+#include "Common/Help.h"
 
 Map::Map()
 {
@@ -13,7 +14,7 @@ Map::Map()
 
 Map::~Map()
 {
-
+	help::clear(_objects);
 }
 
 bool Map::create(const string &newName)
@@ -59,7 +60,7 @@ bool Map::create(const string &newName)
 			++index;
 		}
 
-		Object& object = _objects.add();
+		Object& object = help::add(_objects);
 		object.set(name, modelName, physicType, pos);
 	}
 
@@ -99,9 +100,9 @@ bool Map::create(const string &newName)
 
 void Map::setPhysic()
 {
-	for (int i = 0; i < _objects.count(); ++i)
+	for (auto object : _objects)
 	{
-		_objects[i].setPhysic();
+		object->setPhysic();
 	}
 
 	//for (int i = 0; i < _gliders.count(); ++i) _gliders[i].action();
@@ -112,42 +113,30 @@ void Map::getDataJson(json& dataJson)
 	dataJson["name"] = name();
 	dataJson["area"] = _area;
 
-	for (int i = 0; i < _objects.count(); ++i)
+	for (auto object : _objects)
 	{
 		json dataObject;
-		_objects[i].getDataJson(dataObject);
+		object->getDataJson(dataObject);
 		dataJson["objects"].push_back(dataObject);
 	}
 
 	for (int i = 0; i < _gliders.count(); ++i)
 	{
 		json dataObject;
-		_objects[i].getDataJson(dataObject);
+		_gliders[i].getDataJson(dataObject);
 		dataJson["gliders"].push_back(dataObject);
 	}
 }
 
 void Map::action()
 {
-	for (int i = 0; i < _objects.count(); ++i) _objects[i].action();
+	for (auto object : _objects) object->action();
 	for (int i = 0; i < _gliders.count(); ++i) _gliders[i].action();
 }
 
-/*Object& Map::addObjectBoxToPos(const string& nameModel, int& id, const int& type, const glm::vec3& pos)
-{
-	Model& model = Model::getByName(nameModel);
-	Object& object = _objects.add();
-
-	object.set("", nameModel, pos);
-	object.setPhysic(1);
-
-	return object;
-}*/
-
 Object& Map::addObjectToPos(const string& nameModel, const PhysicType& type, const glm::vec3& pos)
 {
-	//Model& model = Model::getByName(nameModel);
-	Object &object = _objects.add();
+	Object &object = help::add(_objects);
 
 	object.set("", nameModel, type, pos);
 	object.setPhysic();
@@ -157,8 +146,7 @@ Object& Map::addObjectToPos(const string& nameModel, const PhysicType& type, con
 
 Object& Map::addObject(const string& nameModel, const PhysicType& type, const glm::mat4x4& mat)
 {
-	Model& model = Model::getByName(nameModel);
-	Object& object = _objects.add();
+	Object& object = help::add(_objects);
 
 	// Временно
 	glm::vec3 pos = glm::vec3(mat[3][0], mat[3][1], mat[3][2]);

@@ -4,6 +4,7 @@
 #include "Object/Object.h"
 #include "Object/Glider.h"
 #include "Common/IncludesMatem.h"
+#include "Common\Help.h"
 
 Object* AIExample::_targetObject = nullptr;
 
@@ -34,10 +35,8 @@ void AIExample::action()
 	}
 }
 
-void AIExample::findTarget(Map& map, const char* nameTarget)
+void AIExample::findTarget(Map& map, const string& nameTarget)
 {
-	ArrayTemplate <Object> &objects = map._objects;
-	_targetObject = &objects.getByName(nameTarget);
-
-	int i = 0;
+	vector<Object*>& objects = map._objects;
+	_targetObject = &help::find(objects, nameTarget);
 }

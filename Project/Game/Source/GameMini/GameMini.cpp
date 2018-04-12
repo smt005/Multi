@@ -9,6 +9,8 @@
 #include "Object/Map.h"
 #include "Object/Object.h"
 
+#include "Common\Help.h"
+
 GameMini::GameMini()
 {
 }
@@ -52,7 +54,10 @@ void GameMini::tact()
 			float posZ = 1.0f;
 			glm::mat4x4 matrix = glm::translate(glm::mat4x4(1.0f), glm::vec3(posX, posY, posZ));
 
-			Object& target = _map->_objects.getByName("Target");
+			//Object& target = help::find(_map->_objects, "Target");
+
+			vector<Object*>& objects = _map->_objects;
+			Object target = help::find(objects, "Target");
 			target.setMatrix(matrix);
 		}
 	}

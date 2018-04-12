@@ -9,6 +9,7 @@
 using json = nlohmann::json;
 
 #include <memory>
+#include <vector>
 
 class Object;
 class Glider;
@@ -21,7 +22,7 @@ private:
 	float _area = 10.0f;
 
 public:
-	ArrayTemplate <Object> _objects;
+	std::vector<Object*> _objects;
 	ArrayTemplate <Glider> _gliders;
 
 	Map();
