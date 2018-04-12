@@ -33,12 +33,13 @@ const unsigned int& Model::textureId()
 	return _texture->id();
 }
 
-void Model::create(const string &newName)
+bool Model::create(const string &newName)
 {
 	setName(newName);
 
 	json dataModel = data(newName);
-	if (dataModel.empty()) return;
+	if (dataModel.empty())
+		return false;
 
 	const string &nameShape = dataModel["shape"].is_string() ? dataModel["shape"] : FILE_NAME_SHAPE_FILE;
 	const string &nameTexture = dataModel["texture"].is_string() ? dataModel["texture"] : FILE_NAME_TEXTURE_FILE;
@@ -103,6 +104,8 @@ void Model::create(const string &newName)
 	}
 	
 	_texture = Texture::getByName(nameTexture);
+
+	return true;
 }
 
 // STATIC

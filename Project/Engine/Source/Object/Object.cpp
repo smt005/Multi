@@ -54,7 +54,7 @@ void Object::setMatrix(const float *matrix)
 
 Model& Object::getModel()
 {
-	if (!_model) _model = &Model::getByName("default");
+	if (!_model) _model = Model::getByName("default");
 	return *_model;
 };
 
@@ -66,7 +66,7 @@ const float& Object::getHeight()
 void Object::set(const string &name, const string &modelName, PhysicType physicType, const vec3 &pos, const json &data)
 {
 	_name = name;
-	_model = &Model::getByName(modelName);
+	_model = Model::getByName(modelName);
 	_physicType = physicType;
 
 	if (length(pos) > 0.0f) _matrix = translate(_matrix, pos);

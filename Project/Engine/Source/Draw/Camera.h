@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Common/ArrayClass.h"
 #include "Common/IncludesMatem.h"
 
 using namespace glm;

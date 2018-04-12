@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Common/ArrayClass.h"
+#include "Common/DataClass.h"
 #include "Common/Json.h"
 #include "Object/Shape.h"
 #include "Object/Texture.h"
@@ -13,7 +13,7 @@ using json = nlohmann::json;
 class Model;
 typedef std::shared_ptr<Model> ModelPtr;
 
-class Model : public ArrayClass <Model>
+class Model : public DataClass <Model>
 {
 private:
 	ShapePtr _shape;
@@ -26,7 +26,7 @@ public:
 	Texture& texture();
 	const unsigned int& textureId();
 
-	void create(const string &name);
+	bool create(const string &name);
 
 private:
 	static json _data;

@@ -144,13 +144,6 @@ void DrawEngine::drawMap(Map& map)
     
     GLuint u_ambientColor = glGetUniformLocation(_programBase, "u_ambientColor");
     glUniform4fv(u_ambientColor, 1, _ambientColor);
-    
-	/*ArrayTemplate <Object>& objects = map._objects;
-
-	for (int i = 0; i < objects.count(); ++i)
-	{
-		drawObject(objects[i]);
-	}*/
 
 	for (auto object : map._objects)
 	{

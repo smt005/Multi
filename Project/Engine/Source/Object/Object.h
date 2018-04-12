@@ -9,8 +9,10 @@ using namespace std;
 using json = nlohmann::json;
 using namespace glm;
 
-class Model;
 class btCollisionObject;
+
+class Model;
+typedef std::shared_ptr<Model> ModelPtr;
 
 enum ObjectType
 {
@@ -26,7 +28,7 @@ protected:
 	ObjectType _type = ObjectType::PHYSIC_DEFAULT;
 	string _name;
 	mat4x4 _matrix = mat4x4(1.0f);
-	Model*_model = 0;
+	ModelPtr _model;
 
 	PhysicType _physicType = PhysicType::NONE;
 	btCollisionObject *_physic = nullptr;
