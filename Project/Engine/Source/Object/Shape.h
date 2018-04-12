@@ -48,7 +48,7 @@ public:
 	virtual ~MeshPhysic();
 };
 
-class Shape: public Mesh, public DataClassT<Shape>
+class Shape: public Mesh, public DataClass<Shape>
 {
 private:
 	MeshPhysic* _physic = nullptr;

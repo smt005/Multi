@@ -7,15 +7,16 @@
 using namespace std;
 
 template <class ObjectT>
+#define ObjectPtrT shared_ptr<ObjectT>
 
-class DataClassT
+class DataClass
 {
 protected:
 	string _name;
 
 public:
-	DataClassT() {};
-	virtual ~DataClassT() {};
+	DataClass() {};
+	virtual ~DataClass() {};
 
 	virtual bool create(const string &name);
 
@@ -23,11 +24,11 @@ public:
 	const string name() { return _name; };
 
 private:
-	static map<string, shared_ptr<ObjectT>> _map;
-	static shared_ptr<ObjectT> _defaultPtr;
+	static map<string, ObjectPtrT> _map;
+	static ObjectPtrT _defaultPtr;
 
 public:
-	static shared_ptr<ObjectT>& getByName(const string& name);
+	static ObjectPtrT& getByName(const string& name);
 	static bool hasByName(const string& name);
 
 	static void remove(const string& name);
@@ -35,20 +36,20 @@ public:
 };
 
 template <class ObjectT>
-map<string, shared_ptr<ObjectT>> DataClassT<ObjectT>::_map;
+map<string, ObjectPtrT> DataClass<ObjectT>::_map;
 
 template <class ObjectT>
-shared_ptr<ObjectT> DataClassT<ObjectT>::_defaultPtr;
+ObjectPtrT DataClass<ObjectT>::_defaultPtr;
 
 template <class ObjectT>
-bool DataClassT<ObjectT>::create(const string &name)
+bool DataClass<ObjectT>::create(const string &name)
 {
 	_name = name;
 	return true;
 };
 
 template <class ObjectT>
-shared_ptr<ObjectT>& DataClassT<ObjectT>::getByName(const string& name)
+ObjectPtrT& DataClass<ObjectT>::getByName(const string& name)
 {
 	auto it = _map.find(name);
 
@@ -60,7 +61,7 @@ shared_ptr<ObjectT>& DataClassT<ObjectT>::getByName(const string& name)
 	ObjectT* newItem = new ObjectT();
 	if (newItem->create(name))
 	{
-		shared_ptr<ObjectT> newItemPtr(newItem);
+		ObjectPtrT newItemPtr(newItem);
 		return _map[name] = newItemPtr;
 	}
 
@@ -74,14 +75,14 @@ shared_ptr<ObjectT>& DataClassT<ObjectT>::getByName(const string& name)
 }
 
 template <class ObjectT>
-bool DataClassT<ObjectT>::hasByName(const string& name)
+bool DataClass<ObjectT>::hasByName(const string& name)
 {
 	auto it = _map.find(name);
 	return it != _map.end() ? true : false;
 }
 
 template <class ObjectT>
-void DataClassT<ObjectT>::remove(const string& name)
+void DataClass<ObjectT>::remove(const string& name)
 {
 	auto it = _map.find(name);
 
@@ -92,7 +93,7 @@ void DataClassT<ObjectT>::remove(const string& name)
 }
 
 template <class ObjectT>
-void DataClassT<ObjectT>::clear()
+void DataClass<ObjectT>::clear()
 {
 	_map.clear();
 }
