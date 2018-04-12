@@ -23,7 +23,7 @@ private:
 
 public:
 	std::vector<Object*> _objects;
-	ArrayTemplate <Glider> _gliders;
+	std::vector<Glider*> _gliders;
 
 	Map();
 	virtual ~Map();

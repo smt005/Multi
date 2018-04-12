@@ -157,11 +157,11 @@ void DrawEngine::drawMap(Map& map)
 		drawObject(*object);
 	}
 
-	ArrayTemplate <Glider>& gliders = map._gliders;
+	vector<Glider*>& gliders = map._gliders;
 
-	for (int i = 0; i < gliders.count(); ++i)
+	for (auto glider : gliders)
 	{
-		drawObject(gliders[i]);
+		drawObject(*glider);
 	}
 }
 
@@ -200,15 +200,15 @@ void DrawEngine::drawMapPhysic(Map& map)
 		}
 	}
 
-	ArrayTemplate <Glider>& gliders = map._gliders;
+	vector<Glider*>& gliders = map._gliders;
 
-	for (int i = 0; i < gliders.count(); ++i)
+	for (auto glider : gliders)
 	{
-		MeshPhysic* meshPhysic = gliders[i].getModel().getShape().getPhysic();
+		MeshPhysic* meshPhysic = glider->getModel().getShape().getPhysic();
 
 		if (meshPhysic)
 		{
-			const float* matrix = gliders[i].matrixFloat();
+			const float* matrix = glider->matrixFloat();
 			glUniformMatrix4fv(u_matViewModel, 1, GL_FALSE, matrix);
 
 			for (int iP = 0; iP < meshPhysic->_count; ++iP)

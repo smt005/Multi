@@ -15,6 +15,7 @@ Map::Map()
 Map::~Map()
 {
 	help::clear(_objects);
+	help::clear(_gliders);
 }
 
 bool Map::create(const string &newName)
@@ -91,7 +92,7 @@ bool Map::create(const string &newName)
 			++index;
 		}
 
-		Glider &object = _gliders.add();
+		Glider &object = help::add(_gliders);
 		object.set(name, modelName, physicType, pos);
 	}
 
@@ -105,7 +106,10 @@ void Map::setPhysic()
 		object->setPhysic();
 	}
 
-	//for (int i = 0; i < _gliders.count(); ++i) _gliders[i].action();
+	/*for (auto glider : _gliders)
+	{
+		glider->setPhysic();
+	}*/
 }
 
 void Map::getDataJson(json& dataJson)
@@ -120,10 +124,10 @@ void Map::getDataJson(json& dataJson)
 		dataJson["objects"].push_back(dataObject);
 	}
 
-	for (int i = 0; i < _gliders.count(); ++i)
+	for (auto glider : _gliders)
 	{
 		json dataObject;
-		_gliders[i].getDataJson(dataObject);
+		glider->getDataJson(dataObject);
 		dataJson["gliders"].push_back(dataObject);
 	}
 }
@@ -131,7 +135,7 @@ void Map::getDataJson(json& dataJson)
 void Map::action()
 {
 	for (auto object : _objects) object->action();
-	for (int i = 0; i < _gliders.count(); ++i) _gliders[i].action();
+	for (auto glider : _gliders) glider->action();
 }
 
 Object& Map::addObjectToPos(const string& nameModel, const PhysicType& type, const glm::vec3& pos)
