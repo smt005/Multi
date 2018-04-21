@@ -82,3 +82,7 @@ ObjectT& find(vector<ObjectT*>& vector, const string& name)
 }
 
 }
+
+/*
+//_CrtDbgReport(_CRT_WARN, NULL, 0, NULL, "KOP LOG: %f\n", 0.0f);
+*/

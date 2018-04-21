@@ -32,7 +32,7 @@ public:
 	static ObjectPtrT& getByName(const string& name);
 	static bool hasByName(const string& name);
 
-	static void remove(const string& name);
+	static void erase(const string& name);
 	static void clear(bool onlyUnused = true);
 };
 
@@ -84,7 +84,7 @@ bool DataClass<ObjectT>::hasByName(const string& name)
 }
 
 template <class ObjectT>
-void DataClass<ObjectT>::remove(const string& name)
+void DataClass<ObjectT>::erase(const string& name)
 {
 	auto it = _map.find(name);
 
