@@ -21,5 +21,4 @@ Used libraries:
 - Bullet 3
 
 Link:
-https://sites.google.com/site/intelligencecells/home
 https://youtu.be/ApGcZ2DcSfU?list=PLO-E0yPxWRZG1sPBP7UzHfQ8pLoj2yUWp
